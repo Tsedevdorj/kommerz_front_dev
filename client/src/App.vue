@@ -42,12 +42,12 @@
 </template>
 
 <script>
-// dynamic imports (corejs 3.^)
 const AppSidebar = () => import("@/components/layout/SideBar");
 const AppHeader = () => import("@/components/layout/Header");
 const AppFooter = () => import("@/components/layout/Footer");
 import { HTTP } from "@/api";
 import router from "@/router";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -68,7 +68,7 @@ export default {
             error.response.status == 401 ||
             error.response.status == 403
           ) {
-            router.push({ name: "dashboard" });
+            router.push("/403");
           }
         } else {
           return error.response.status;
@@ -77,7 +77,15 @@ export default {
       }
     );
   },
-  computed: {},
-  watch: {}
+  computed: {
+    // call auth token getters from store
+    ...mapGetters(["authToken"])
+  },
+  watch: {
+    // immediate token update on client side header
+    authToken(token) {
+      HTTP.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+  }
 };
 </script>

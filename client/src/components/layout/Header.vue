@@ -10,15 +10,9 @@
       </div>
     </router-link>
     <div style="float:right">
-      <a-dropdown>
-        <a-menu slot="overlay">
-          <a-menu-item><a-icon type="user" />Profile</a-menu-item>
-          <a-menu-item><a-icon type="logout" />Logout</a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px">
-          Username <a-icon type="down" />
-        </a-button>
-      </a-dropdown>
+      <a-button style="margin-left: 8px" @click="logout">
+        Logout
+      </a-button>
     </div>
   </a-layout-header>
 </template>
@@ -28,7 +22,11 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    }
+  }
 };
 </script>
 

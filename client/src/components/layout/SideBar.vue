@@ -8,9 +8,20 @@
       collapsedWidth="0"
     >
       <a-menu mode="inline" :style="{ borderRight: 0 }">
+        <a-divider>Pages</a-divider>
         <a-menu-item
           ><router-link :to="{ name: 'dashboard' }"
             ><a-icon type="dashboard" />Dashboard</router-link
+          ></a-menu-item
+        >
+        <a-menu-item
+          ><router-link :to="{ name: 'dashboard' }"
+            ><a-icon type="arrows-alt" />Keyword Churner</router-link
+          ></a-menu-item
+        >
+        <a-menu-item
+          ><router-link :to="{ name: 'dashboard' }"
+            ><a-icon type="layout" />Google Planner</router-link
           ></a-menu-item
         >
       </a-menu>
