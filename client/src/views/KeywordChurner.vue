@@ -68,7 +68,7 @@ export default {
   data() {
     return {
       campaignList: [],
-      loading: false,
+      loading: true,
       responseError: {}
     };
   },
@@ -77,6 +77,7 @@ export default {
       keywordChurner()
         .then(response => {
           this.campaignList = response.data;
+          this.loading = false;
         })
         .catch(error => {
           this.responseError = error.response.data.message;

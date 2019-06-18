@@ -10,6 +10,7 @@
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.Unfavourable"
           size="small"
+          :loading="loading"
         >
           <a-table-column
             title="Keyword Text"
@@ -101,6 +102,7 @@
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.Watchlist"
           size="small"
+          :loading="loading"
         >
           <a-table-column
             title="Keyword Text"
@@ -195,6 +197,7 @@
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.Favourable"
           size="small"
+          :loading="loading"
         >
           <a-table-column
             title="Keyword Text"
@@ -275,6 +278,7 @@
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.Immature"
           size="small"
+          :loading="loading"
         >
           <a-table-column
             title="Keyword Text"
@@ -372,6 +376,7 @@ export default {
         Unfavourable: [],
         Watchlist: []
       },
+      loading: true,
       responseError: {}
     };
   },
@@ -383,6 +388,7 @@ export default {
         dateRange: this.dateRange || 7
       })
         .then(response => {
+          this.loading = false;
           this.campaignDetail.Favourable = response.data.Favourable;
           this.campaignDetail.Immature = response.data.Immature;
           this.campaignDetail.Unfavourable = response.data.Unfavourable;
