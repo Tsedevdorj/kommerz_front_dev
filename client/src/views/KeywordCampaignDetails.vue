@@ -3,7 +3,7 @@
     <a-collapse
       defaultActiveKey="1"
       :bordered="false"
-      style="padding-bottom: 4s0px;"
+      style="padding-bottom: 40px;"
     >
       <a-collapse-panel header="Unfavourable" key="1">
         <a-table
