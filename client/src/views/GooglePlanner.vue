@@ -5,7 +5,7 @@
     </a-steps>
     <div class="steps-content" v-if="current == 0">
       <a-row :gutter="32">
-        <a-col :span="12">
+        <a-col :span="12" class="padding-top__20">
           <div class="form-label">
             <label>Brand Name</label>
           </div>
@@ -14,7 +14,7 @@
             placeholder="Brand Name in Japanese"
           ></a-input>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="12" class="padding-top__20">
           <div class="form-label">
             <label>Product Name</label>
           </div>
@@ -55,11 +55,19 @@
           <div class="form-label">
             <label>Level 1</label>
           </div>
-          <a-checkbox style="padding-right: 10px;"></a-checkbox>
-          <a-select defaultValue="lucy" style="width: 80%">
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-            <a-select-option value="Yiminghe">yiminghe</a-select-option>
+          <a-checkbox style="padding-right: 10px;" @change="categoryChecked"></a-checkbox>
+          <a-select
+            style="width: 80%"
+            showSearch
+            placeholder="Please select a value"
+            @change="categoryChange"
+          >
+            <a-select-option
+              v-for="(label, id) in categoryData"
+              :value="id"
+              :key="id"
+              >{{ label.Category }}</a-select-option
+            >
           </a-select>
         </a-col>
         <a-col :span="5" class="padding-top__20">
@@ -67,10 +75,19 @@
             <label>Level 2</label>
           </div>
           <a-checkbox style="padding-right: 10px;"></a-checkbox>
-          <a-select defaultValue="lucy" style="width: 80%">
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-            <a-select-option value="Yiminghe">yiminghe</a-select-option>
+          <a-select
+            style="width: 80%"
+            showSearch
+            placeholder="Please select a value"
+            @change="categoryChange"
+            :disabled="categorySelected.level_1.length == 0"
+          >
+            <a-select-option
+              v-for="(label, id) in categoryDataLevel.level_2"
+              :value="id"
+              :key="id"
+              >{{ label.Category }}</a-select-option
+            >
           </a-select>
         </a-col>
         <a-col :span="5" class="padding-top__20">
@@ -78,10 +95,19 @@
             <label>Level 3</label>
           </div>
           <a-checkbox style="padding-right: 10px;"></a-checkbox>
-          <a-select defaultValue="lucy" style="width: 80%">
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-            <a-select-option value="Yiminghe">yiminghe</a-select-option>
+          <a-select
+            style="width: 80%"
+            showSearch
+            placeholder="Please select a value"
+            @change="categoryChange"
+            :disabled="categorySelected.level_2.length == 0"
+          >
+            <a-select-option
+              v-for="(label, id) in categoryDataLevel.level_3"
+              :value="id"
+              :key="id"
+              >{{ label.Category }}</a-select-option
+            >
           </a-select>
         </a-col>
         <a-col :span="5" class="padding-top__20">
@@ -89,10 +115,19 @@
             <label>Level 4</label>
           </div>
           <a-checkbox style="padding-right: 10px;"></a-checkbox>
-          <a-select defaultValue="lucy" style="width: 80%">
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-            <a-select-option value="Yiminghe">yiminghe</a-select-option>
+          <a-select
+            style="width: 80%"
+            showSearch
+            placeholder="Please select a value"
+            @change="categoryChange"
+            :disabled="categorySelected.level_3.length == 0"
+          >
+            <a-select-option
+              v-for="(label, id) in categoryDataLevel.level_4"
+              :value="id"
+              :key="id"
+              >{{ label.Category }}</a-select-option
+            >
           </a-select>
         </a-col>
         <a-col :span="4" class="padding-top__20">
@@ -100,10 +135,19 @@
             <label>Level 5</label>
           </div>
           <a-checkbox style="padding-right: 10px;"></a-checkbox>
-          <a-select defaultValue="lucy" style="width: 80%">
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-            <a-select-option value="Yiminghe">yiminghe</a-select-option>
+          <a-select
+            style="width: 80%"
+            showSearch
+            placeholder="Please select a value"
+            @change="categoryChange"
+            :disabled="categorySelected.level_4.length == 0"
+          >
+            <a-select-option
+              v-for="(label, id) in categoryDataLevel.level_5"
+              :value="id"
+              :key="id"
+              >{{ label.Category }}</a-select-option
+            >
           </a-select>
         </a-col>
         <a-col :span="24" class="padding-top__20">
@@ -124,8 +168,7 @@
       </a-row>
     </div>
     <div class="steps-content" v-if="current == 1">Step 2</div>
-    <div class="steps-content" v-if="current == 2">Step 3</div>
-    <div class="steps-action">
+    <div class="steps-action" style="padding-top: 20px;">
       <a-button v-if="current < steps.length - 1" type="primary" @click="next">
         Next
       </a-button>
@@ -153,13 +196,11 @@ export default {
           title: "Campaign Information"
         },
         {
-          title: "Brand Keywords"
-        },
-        {
-          title: "Core Keywords"
+          title: "Keywords"
         }
       ],
       categoryData: categoryData,
+      categoryDataLevel: {},
       CampaignInformation: {
         brandName: "",
         brandNameEN: "",
@@ -168,6 +209,13 @@ export default {
         languageSwitch: false,
         productName: "",
         productNameEN: ""
+      },
+      categorySelected: {
+        level_1: "",
+        level_2: "",
+        level_3: "",
+        level_4: "",
+        level_5: ""
       }
     };
   },
@@ -180,18 +228,55 @@ export default {
     },
     onLanguageSwitch(checked) {
       this.CampaignInformation.languageSwitch = checked;
+    },
+    categoryChange(value) {
+      console.log(value)
+      if(value in this.categoryData) {
+        if (this.categoryData[value].level_num == 1) {
+          this.categorySelected.level_1 = value;
+          this.categoryDataLevel.level_2 = this.categoryData[value].children
+          this.CampaignInformation.selectedCategories.push(value)
+        } 
+      }
+      else if(value in this.categoryDataLevel.level_2) {
+        if (this.categoryDataLevel.level_2[value].level_num == 2) {
+          this.categorySelected.level_2 = value;
+          this.categoryDataLevel.level_3 = this.categoryDataLevel.level_2[value].children
+        } 
+      }
+      else if(value in this.categoryDataLevel.level_3) {
+        if (this.categoryDataLevel.level_3[value].level_num == 3) {
+          this.categorySelected.level_3 = value;
+          this.categoryDataLevel.level_4 = this.categoryDataLevel.level_3[value].children
+        } 
+      }
+      else if(value in this.categoryDataLevel.level_4) {
+        if (this.categoryDataLevel.level_4[value].level_num == 4) {
+          this.categorySelected.level_4 = value;
+          this.categoryDataLevel.level_5 = this.categoryDataLevel.level_4[value].children
+        }  
+      }
+      else if(value in this.categoryDataLevel.level_5) {
+        if (this.categoryDataLevel.level_5[value].level_num == 5) {
+          this.categorySelected.level_4 = value;
+          this.categoryDataLevel.level_5 = this.categoryDataLevel.level_4[value].children
+        } 
+      }
+    },
+    categoryChecked(e) {
+      console.log(e.target.checked)
     }
   }
 };
 </script>
 <style scoped>
 .steps-content {
-  margin-top: 24px;
+  margin-top: 32px;
   border: 1px dashed #e9e9e9;
   border-radius: 6px;
   background-color: #fafafa;
   min-height: 60vh;
-  padding: 25px;
+  padding: 0 25px;
 }
 
 .steps-action {
