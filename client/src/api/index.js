@@ -16,9 +16,25 @@ HTTP.defaults.headers.common[
   "Authorization"
 ] = `Bearer ${store.getters.authToken}`;
 
+export const KEYWORD_URL =
+  window.location.href.indexOf("localhost") >= 0
+    ? "http://13.231.137.102:5000/api"
+    : "http://13.231.137.102:5000/api";
+HTTP.defaults.headers.common[
+  "Authorization"
+] = `Bearer ${store.getters.authToken}`;
+
 // login
 export function authenticate(userData) {
   return HTTP.post(`${API_URL}/auth/login`, userData);
+}
+
+export function keywordChurner() {
+  return HTTP.get(`${KEYWORD_URL}/ping`);
+}
+
+export function keywordReport(userData) {
+  return HTTP.post(`${KEYWORD_URL}/report`, userData);
 }
 
 // global interceptor for catch http status and error

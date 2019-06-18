@@ -15,12 +15,12 @@
           ></a-menu-item
         >
         <a-menu-item
-          ><router-link :to="{ name: 'dashboard' }"
+          ><router-link :to="{ name: 'keywordchurner' }"
             ><a-icon type="arrows-alt" />Keyword Churner</router-link
           ></a-menu-item
         >
         <a-menu-item
-          ><router-link :to="{ name: 'dashboard' }"
+          ><router-link :to="{ name: 'googleplanner' }"
             ><a-icon type="layout" />Google Planner</router-link
           ></a-menu-item
         >

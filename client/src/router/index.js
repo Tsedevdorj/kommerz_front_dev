@@ -3,6 +3,7 @@ import Router from "vue-router";
 import store from "@/store";
 import Dashboard from "@/views/Dashboard";
 import KeywordChurner from "@/views/KeywordChurner";
+import keywordCampaignDetails from "@/views/KeywordCampaignDetails";
 import GooglePlanner from "@/views/GooglePlanner";
 import Login from "@/views/Auth/Login";
 import NotFound from "@/views/Error/404";
@@ -66,6 +67,14 @@ const router = new Router({
         isAuthenticated: true
       },
       component: KeywordChurner
+    },
+    {
+      path: "/keyword/detail/:id",
+      name: "keywordCampaignDetails",
+      meta: {
+        isAuthenticated: true
+      },
+      component: keywordCampaignDetails
     },
     {
       path: "/planner",
