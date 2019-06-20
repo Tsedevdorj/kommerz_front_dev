@@ -45,6 +45,14 @@ export function keywordReport(userData) {
   return HTTP.post(`${KEYWORD_URL}/report`, userData);
 }
 
+export function recommendedKeyword(userData) {
+  return HTTP.post(`${KEYWORD_URL}/recommend_keyword`, userData);
+}
+
+export function recommendObjective(userData) {
+  return HTTP.post(`${KEYWORD_URL}/recommend_objective`, userData);
+}
+
 // global interceptor for catch http status and error
 export function interceptors(cb) {
   HTTP.interceptors.response.use(

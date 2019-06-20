@@ -5,6 +5,12 @@ import store from "@/store";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 
+import VueLodash from "vue-lodash";
+
+const options = { name: "lodash" }; // customize the way you want to call it
+
+Vue.use(VueLodash, options); // options is optional
+
 Vue.use(Antd);
 Vue.config.productionTip = false;
 

@@ -1,5 +1,70 @@
 <template>
   <div class="keywordcampaigndetail">
+    <a-row style="padding: 16px">
+      <h2>Campaign ID: {{ campaignID }}</h2>
+      <a-col :span="4">
+        <a-popover title="Title">
+          <template slot="content">
+            <p>Content</p>
+          </template>
+          <a-button type="primary" @click="addCampaignTargetEvent"
+            >Add Campaign Targets</a-button
+          >
+        </a-popover>
+      </a-col>
+      <a-col :span="6">
+        <a-button type="dashed"
+          >Recommended Objective:
+          {{ campaignDetail.recommendObjective.data }}</a-button
+        >
+      </a-col>
+      <a-col :span="13">
+        <label>Select Period: </label>
+        <a-select
+          placeholder="Select Period"
+          style="width: 30%; padding-right: 10px;"
+          v-model="dateRange"
+        >
+          <a-select-option value="7">7 days</a-select-option>
+          <a-select-option value="14">14 days</a-select-option>
+          <a-select-option value="30">30 days</a-select-option>
+        </a-select>
+        <label>Choose Objectives: </label>
+        <a-select
+          v-model="campaignCPA"
+          placeholder="Choose Objectives"
+          style="width: 30%;"
+        >
+          <a-select-option value="CPM">CPM</a-select-option>
+          <a-select-option value="CPC">CPC</a-select-option>
+          <a-select-option value="CPO">CPO</a-select-option>
+          <a-select-option value="ROAS">ROAS</a-select-option>
+        </a-select>
+      </a-col>
+      <a-col :span="1">
+        <a-button shape="circle" icon="reload" @click="getCampaignDetail" />
+      </a-col>
+    </a-row>
+    <a-row
+      v-if="addCampaignTarget"
+      :gutter="32"
+      style="padding: 0 16px 16px 16px"
+    >
+      <a-col :span="12">
+        <a-input placeholder="Target Order" v-model="targetOrder"></a-input>
+        <a-button
+          type="primary"
+          style="margin-top: 16px;"
+          @click="requestRecommenendObjective"
+          >Send</a-button
+        >
+      </a-col>
+      <a-col :span="12">
+        <a-button type="dashed" color="red" @click="closeCampaignTargetEvent"
+          ><a-icon type="close"
+        /></a-button>
+      </a-col>
+    </a-row>
     <a-collapse
       defaultActiveKey="1"
       :bordered="false"
@@ -354,6 +419,32 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
+      <a-collapse-panel header="Recommended Keywords" key="5">
+        <a-table
+          :rowKey="record => record.keywordId"
+          :dataSource="campaignDetail.recommendedKeywords.data"
+          size="small"
+          :loading="loading"
+        >
+          <a-table-column
+            title="Keyword Text"
+            dataIndex="keywordText"
+            key="keywordText"
+          >
+            <template slot-scope="text">
+              {{ truncate_str(text, 6) }}
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Match Type"
+            dataIndex="matchType"
+            key="matchType"
+          >
+          </a-table-column>
+          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          </a-table-column>
+        </a-table>
+      </a-collapse-panel>
     </a-collapse>
   </div>
 </template>
@@ -361,7 +452,7 @@
 <script>
 // @ is an alias to /src
 
-import { keywordReport } from "@/api";
+import { keywordReport, recommendedKeyword, recommendObjective } from "@/api";
 
 export default {
   name: "keywordcampaigndetail",
@@ -370,11 +461,15 @@ export default {
       campaignID: "",
       campaignCPA: "",
       dateRange: "",
+      targetOrder: "",
+      addCampaignTarget: false,
       campaignDetail: {
         Favourable: [],
         Immature: [],
         Unfavourable: [],
-        Watchlist: []
+        Watchlist: [],
+        recommendedKeywords: [],
+        recommendObjective: {}
       },
       loading: true,
       responseError: {}
@@ -382,6 +477,7 @@ export default {
   },
   methods: {
     getCampaignDetail() {
+      this.loading = true;
       keywordReport({
         campaignId: this.campaignID,
         CPA: this.campaignCPA || "CPO",
@@ -405,11 +501,46 @@ export default {
     truncate_float(value) {
       if (value == null) return "INF";
       else return value.toFixed(2);
+    },
+    getRecommendedKeyword() {
+      recommendedKeyword({
+        campaignId: this.campaignID
+      }).then(response => {
+        this.campaignDetail.recommendedKeywords = response;
+      });
+    },
+    addCampaignTargetEvent() {
+      this.addCampaignTarget = true;
+    },
+    closeCampaignTargetEvent() {
+      this.addCampaignTarget = false;
+    },
+    requestRecommenendObjective() {
+      recommendObjective({
+        campaignId: this.campaignID,
+        targetOrder: this.targetOrder
+      }).then(response => {
+        this.campaignDetail.recommendObjective = response;
+        this.loading = true;
+        this.addCampaignTarget = false;
+        keywordReport({
+          campaignId: this.campaignID,
+          CPA: this.campaignDetail.recommendObjective.data,
+          dateRange: this.dateRange || 7
+        }).then(() => {
+          this.loading = false;
+          this.$message.success(
+            "Successfully set recommended objective to: " +
+              this.campaignDetail.recommendObjective.data
+          );
+        });
+      });
     }
   },
   mounted() {
     this.campaignID = this.$route.params.id;
     this.getCampaignDetail();
+    this.getRecommendedKeyword();
   }
 };
 </script>
