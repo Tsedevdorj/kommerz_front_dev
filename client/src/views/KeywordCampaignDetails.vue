@@ -467,7 +467,7 @@ export default {
       this.loading = true;
       keywordReport({
         campaignId: this.campaignID,
-        CPA: this.campaignCPA || "CPO",
+        CPA: this.campaignCPASelect || "CPO",
         dateRange: this.dateRange || 7
       })
         .then(response => {
