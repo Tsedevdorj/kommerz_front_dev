@@ -55,7 +55,10 @@
           <div class="form-label">
             <label>Level 1</label>
           </div>
-          <a-checkbox style="padding-right: 10px;" @change="categoryChecked"></a-checkbox>
+          <a-checkbox
+            style="padding-right: 10px;"
+            @change="categoryChecked"
+          ></a-checkbox>
           <a-select
             style="width: 80%"
             showSearch
@@ -230,41 +233,45 @@ export default {
       this.CampaignInformation.languageSwitch = checked;
     },
     categoryChange(value) {
-      console.log(value)
-      if(value in this.categoryData) {
+      console.log(value);
+      if (value in this.categoryData) {
         if (this.categoryData[value].level_num == 1) {
           this.categorySelected.level_1 = value;
-          this.categoryDataLevel.level_2 = this.categoryData[value].children
-          this.CampaignInformation.selectedCategories.push(value)
-        } 
-      }
-      else if(value in this.categoryDataLevel.level_2) {
+          this.categoryDataLevel.level_2 = this.categoryData[value].children;
+          this.CampaignInformation.selectedCategories.push(value);
+        }
+      } else if (value in this.categoryDataLevel.level_2) {
         if (this.categoryDataLevel.level_2[value].level_num == 2) {
           this.categorySelected.level_2 = value;
-          this.categoryDataLevel.level_3 = this.categoryDataLevel.level_2[value].children
-        } 
-      }
-      else if(value in this.categoryDataLevel.level_3) {
+          this.categoryDataLevel.level_3 = this.categoryDataLevel.level_2[
+            value
+          ].children;
+        }
+      } else if (value in this.categoryDataLevel.level_3) {
         if (this.categoryDataLevel.level_3[value].level_num == 3) {
           this.categorySelected.level_3 = value;
-          this.categoryDataLevel.level_4 = this.categoryDataLevel.level_3[value].children
-        } 
-      }
-      else if(value in this.categoryDataLevel.level_4) {
+          this.categoryDataLevel.level_4 = this.categoryDataLevel.level_3[
+            value
+          ].children;
+        }
+      } else if (value in this.categoryDataLevel.level_4) {
         if (this.categoryDataLevel.level_4[value].level_num == 4) {
           this.categorySelected.level_4 = value;
-          this.categoryDataLevel.level_5 = this.categoryDataLevel.level_4[value].children
-        }  
-      }
-      else if(value in this.categoryDataLevel.level_5) {
+          this.categoryDataLevel.level_5 = this.categoryDataLevel.level_4[
+            value
+          ].children;
+        }
+      } else if (value in this.categoryDataLevel.level_5) {
         if (this.categoryDataLevel.level_5[value].level_num == 5) {
           this.categorySelected.level_4 = value;
-          this.categoryDataLevel.level_5 = this.categoryDataLevel.level_4[value].children
-        } 
+          this.categoryDataLevel.level_5 = this.categoryDataLevel.level_4[
+            value
+          ].children;
+        }
       }
     },
     categoryChecked(e) {
-      console.log(e.target.checked)
+      console.log(e.target.checked);
     }
   }
 };

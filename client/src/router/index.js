@@ -6,6 +6,8 @@ import KeywordChurner from "@/views/KeywordChurner";
 import keywordCampaignDetails from "@/views/KeywordCampaignDetails";
 import GooglePlanner from "@/views/GooglePlanner";
 import Login from "@/views/Auth/Login";
+import Register from "@/views/Auth/Register";
+import NewPassword from "@/views/Auth/NewPassword";
 import NotFound from "@/views/Error/404";
 import AccessDenied from "@/views/Error/403";
 
@@ -70,7 +72,7 @@ const router = new Router({
     },
     {
       path: "/keyword/detail/:id",
-      name: "keywordCampaignDetails",
+      name: "keywordcampaigndetails",
       meta: {
         isAuthenticated: true
       },
@@ -92,6 +94,22 @@ const router = new Router({
         public: true
       },
       component: Login
+    },
+    {
+      path: "/register",
+      name: "register",
+      meta: {
+        public: true
+      },
+      component: Register
+    },
+    {
+      path: "/newpassword",
+      name: "newpassword",
+      meta: {
+        public: true
+      },
+      component: NewPassword
     }
   ]
 });

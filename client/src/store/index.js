@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import router from "@/router";
-import { authenticate } from "@/api";
+import { authenticate, userRegister, newPassword } from "@/api";
 import { isValidJwt } from "@/utils";
 
 Vue.use(Vuex);
@@ -30,6 +30,30 @@ const store = new Vuex.Store({
         router.go({ name: "login" });
         context.commit("clientLogout");
       }
+    },
+    register(context, userData) {
+      return new Promise((resolve, reject) => {
+        userRegister(userData)
+          .then(response => {
+            context.commit("clientRegister", { register: response.data });
+            resolve(response);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    newPassword(context, userData) {
+      return new Promise((resolve, reject) => {
+        newPassword(userData)
+          .then(response => {
+            context.commit("clientNewPassword", { newpassword: response.data });
+            resolve(response);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
     }
   },
   mutations: {
@@ -38,6 +62,12 @@ const store = new Vuex.Store({
     },
     clientLogout(state) {
       state.token = null;
+    },
+    clientRegister(state, payload) {
+      state.register = payload.register;
+    },
+    clientNewPassword(state, payload) {
+      state.newPassword = payload.newpassword;
     }
   },
   getters: {

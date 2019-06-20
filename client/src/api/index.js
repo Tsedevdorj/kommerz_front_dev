@@ -29,6 +29,14 @@ export function authenticate(userData) {
   return HTTP.post(`${API_URL}/auth/login`, userData);
 }
 
+export function userRegister(userData) {
+  return HTTP.post(`${API_URL}/auth/register`, userData);
+}
+
+export function newPassword(userData) {
+  return HTTP.post(`${API_URL}/auth/newpassword`, userData);
+}
+
 export function keywordChurner() {
   return HTTP.get(`${KEYWORD_URL}/ping`);
 }

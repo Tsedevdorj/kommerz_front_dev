@@ -9,23 +9,13 @@
           </a-input>
         </a-form-item>
         <a-form-item>
-          <a-input v-model="password" type="password" placeholder="Password">
-            <a-icon slot="prefix" type="lock" style="color:rgba(0,0,0,.25)" />
-          </a-input>
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary" html-type="submit" @click="authenticate">
-            Login
+          <a-button type="primary" html-type="submit" @click="newPassword">
+            Request New Password
           </a-button>
         </a-form-item>
-        <router-link :to="{ name: 'register' }">
-          <span class="login-form-register">
-            Register
-          </span>
-        </router-link>
-        <router-link :to="{ name: 'newpassword' }">
+        <router-link :to="{ name: 'login' }">
           <span class="login-form-forgot">
-            Request New Password
+            Go Back to Login
           </span>
         </router-link>
       </a-form></a-col
@@ -38,20 +28,20 @@ export default {
   data() {
     return {
       email: "",
-      password: "",
       responseError: {}
     };
   },
   methods: {
-    authenticate() {
+    newPassword() {
       this.$store
-        .dispatch("login", {
-          email: this.email,
-          password: this.password
+        .dispatch("newPassword", {
+          email: this.email
         })
         .then(() => {
-          this.$router.push({ name: "dashboard" });
-          this.$message.success(`Welcome back ${this.email}!`);
+          this.$router.push({ name: "login" });
+          this.$message.success(
+            `Successfully sent new password to ${this.email}!`
+          );
         })
         .catch(error => {
           this.responseError = error.response.data.message;
@@ -69,8 +59,5 @@ export default {
 }
 .login-form-forgot {
   float: right;
-}
-.login-form-register {
-  float: left;
 }
 </style>

@@ -85,7 +85,7 @@ export default {
         });
     },
     goCampaignRecord(id) {
-      this.$router.push({ name: "keywordCampaignDetails", params: { id } });
+      this.$router.push({ name: "keywordcampaigndetails", params: { id } });
     }
   },
   mounted() {
