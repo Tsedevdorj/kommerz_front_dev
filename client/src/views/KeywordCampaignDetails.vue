@@ -13,9 +13,8 @@
         </a-popover>
       </a-col>
       <a-col :span="6">
-        <a-button type="dashed"
-          >Recommended Objective:
-          {{ campaignCPA }}</a-button
+        <a-button type="dashed" @click="setCampaignCPA(campaignCPA)"
+          >Recommended Objective: {{ campaignCPA }}</a-button
         >
       </a-col>
       <a-col :span="13">
@@ -31,7 +30,7 @@
         </a-select>
         <label>Choose Objectives: </label>
         <a-select
-          v-model="campaignCPA"
+          v-model="campaignCPASelect"
           placeholder="Choose Objectives"
           style="width: 30%;"
         >
@@ -448,6 +447,7 @@ export default {
     return {
       campaignID: "",
       campaignCPA: "CPO",
+      campaignCPASelect: "CPO",
       dateRange: "7",
       targetOrder: "",
       addCampaignTarget: false,
@@ -509,7 +509,7 @@ export default {
       }).then(response => {
         this.loading = true;
         this.addCampaignTarget = false;
-        this.campaignCPA = response.data
+        this.campaignCPA = response.data;
         keywordReport({
           campaignId: this.campaignID,
           CPA: this.campaignCPA,
@@ -517,11 +517,13 @@ export default {
         }).then(() => {
           this.loading = false;
           this.$message.success(
-            "Successfully set recommended objective to: " +
-              this.campaignCPA
+            "Successfully set recommended objective to: " + this.campaignCPA
           );
         });
       });
+    },
+    setCampaignCPA(value) {
+      this.campaignCPASelect = value;
     }
   },
   mounted() {
