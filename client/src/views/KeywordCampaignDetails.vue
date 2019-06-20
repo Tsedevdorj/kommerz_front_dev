@@ -15,7 +15,7 @@
       <a-col :span="6">
         <a-button type="dashed"
           >Recommended Objective:
-          {{ campaignDetail.recommendObjective.data }}</a-button
+          {{ campaignCPA }}</a-button
         >
       </a-col>
       <a-col :span="13">
@@ -456,8 +456,7 @@ export default {
         Immature: [],
         Unfavourable: [],
         Watchlist: [],
-        recommendedKeywords: [],
-        recommendObjective: {}
+        recommendedKeywords: []
       },
       loading: true,
       responseError: {}
@@ -508,19 +507,18 @@ export default {
         campaignId: this.campaignID,
         targetOrder: this.targetOrder
       }).then(response => {
-        this.campaignDetail.recommendObjective = response;
         this.loading = true;
         this.addCampaignTarget = false;
-        this.campaignCPA = this.campaignDetail.recommendObjective.data
+        this.campaignCPA = response.data
         keywordReport({
           campaignId: this.campaignID,
-          CPA: this.campaignDetail.recommendObjective.data,
+          CPA: this.campaignCPA,
           dateRange: this.dateRange || 7
         }).then(() => {
           this.loading = false;
           this.$message.success(
             "Successfully set recommended objective to: " +
-              this.campaignDetail.recommendObjective.data
+              this.campaignCPA
           );
         });
       });
