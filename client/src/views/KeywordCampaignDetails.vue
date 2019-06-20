@@ -38,7 +38,7 @@
           <a-select-option value="CPM">CPM</a-select-option>
           <a-select-option value="CPC">CPC</a-select-option>
           <a-select-option value="CPO">CPO</a-select-option>
-          <a-select-option value="ROAS">ROAS</a-select-option>
+          <a-select-option value="ROS">ROAS</a-select-option>
         </a-select>
       </a-col>
       <a-col :span="1">
