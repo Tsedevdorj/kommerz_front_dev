@@ -110,11 +110,8 @@
           </a-table-column>
           <a-table-column title="CPO" dataIndex="CPO" key="CPO">
             <template slot-scope="text">
-              <div v-if="text == null">
-                Infinite
-              </div>
               <div else>
-                {{ text }}
+                {{ truncate_float(text) }}
               </div>
             </template>
           </a-table-column>
@@ -202,11 +199,8 @@
           </a-table-column>
           <a-table-column title="CPO" dataIndex="CPO" key="CPO">
             <template slot-scope="text">
-              <div v-if="text == null">
-                Infinite
-              </div>
               <div else>
-                {{ text }}
+                {{ truncate_float(text) }}
               </div>
             </template>
           </a-table-column>
@@ -297,11 +291,8 @@
           </a-table-column>
           <a-table-column title="CPO" dataIndex="CPO" key="CPO">
             <template slot-scope="text">
-              <div v-if="text == null">
-                Infinite
-              </div>
               <div else>
-                {{ text }}
+                {{ truncate_float(text) }}
               </div>
             </template>
           </a-table-column>
@@ -378,11 +369,8 @@
           </a-table-column>
           <a-table-column title="CPO" dataIndex="CPO" key="CPO">
             <template slot-scope="text">
-              <div v-if="text == null">
-                Infinite
-              </div>
               <div else>
-                {{ text }}
+                {{ truncate_float(text) }}
               </div>
             </template>
           </a-table-column>
@@ -459,8 +447,8 @@ export default {
   data() {
     return {
       campaignID: "",
-      campaignCPA: "",
-      dateRange: "",
+      campaignCPA: "CPO",
+      dateRange: "7",
       targetOrder: "",
       addCampaignTarget: false,
       campaignDetail: {
@@ -523,6 +511,7 @@ export default {
         this.campaignDetail.recommendObjective = response;
         this.loading = true;
         this.addCampaignTarget = false;
+        this.campaignCPA = this.campaignDetail.recommendObjective.data
         keywordReport({
           campaignId: this.campaignID,
           CPA: this.campaignDetail.recommendObjective.data,
