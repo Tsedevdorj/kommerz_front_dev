@@ -9,7 +9,12 @@
           </a-input>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" html-type="submit" @click="register">
+          <a-button
+            type="primary"
+            html-type="submit"
+            @click="register"
+            :loading="confirmLoading"
+          >
             Register
           </a-button>
         </a-form-item>
@@ -28,16 +33,19 @@ export default {
   data() {
     return {
       email: "",
+      confirmLoading: false,
       responseError: {}
     };
   },
   methods: {
     register() {
+      this.confirmLoading = true;
       this.$store
         .dispatch("register", {
           email: this.email
         })
         .then(() => {
+          this.confirmLoading = false;
           this.$router.push({ name: "login" });
           this.$message.success(`Successfully registered ${this.email}!`);
         })

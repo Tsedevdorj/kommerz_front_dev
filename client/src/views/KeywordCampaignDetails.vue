@@ -55,6 +55,7 @@
           type="primary"
           style="margin-top: 16px;"
           @click="requestRecommenendObjective"
+          :loading="confirmSend"
           >Send</a-button
         >
       </a-col>
@@ -451,6 +452,7 @@ export default {
       dateRange: "7",
       targetOrder: "",
       addCampaignTarget: false,
+      confirmSend: false,
       campaignDetail: {
         Favourable: [],
         Immature: [],
@@ -503,10 +505,12 @@ export default {
       this.addCampaignTarget = false;
     },
     requestRecommenendObjective() {
+      this.confirmSend = true;
       recommendObjective({
         campaignId: this.campaignID,
         targetOrder: this.targetOrder
       }).then(response => {
+        this.confirmSend = false;
         this.loading = true;
         this.addCampaignTarget = false;
         this.campaignCPA = response.data;

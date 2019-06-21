@@ -225,30 +225,590 @@
           <div class="form-label">
             <label>Landing URL</label>
           </div>
-          <a-input placeholder="Landing URL"></a-input>
+          <a-input
+            v-model="CampaignInformation.landingURL"
+            placeholder="Landing URL"
+          ></a-input>
         </a-col>
       </a-row>
     </div>
-    <div class="steps-content" v-if="current == 1">Step 2</div>
+    <div class="steps-content" v-if="current == 1">
+      <a-row :gutter="32">
+        <a-col :span="24" class="padding-top__20">
+          <a-tabs defaultActiveKey="1">
+            <a-tab-pane tab="Brand Keywords" key="1">
+              <a-row :gutter="32">
+                <a-col :span="12" style="padding: 0 16px">
+                  <h3 style="margin-left: 5px">Brand Keywords (Japanese)</h3>
+                  <a-input
+                    style="margin: 5px"
+                    placeholder="Insert additional keywords"
+                    v-model="additionalKeyword.brandJA"
+                  >
+                    <a-icon
+                      slot="addonAfter"
+                      type="plus"
+                      @click="additionalKeywordAdd('brandKeywordsJA')"
+                    />
+                  </a-input>
+                  <template v-for="(tag, index) in keywords.brandKeywordsJA">
+                    <a-tag
+                      :key="tag"
+                      :closable="index !== 0"
+                      :afterClose="
+                        () =>
+                          removeKeyword({ tag: tag, type: 'brandKeywordsJA' })
+                      "
+                    >
+                      {{ tag }}
+                    </a-tag>
+                  </template>
+                </a-col>
+                <a-col :span="12" style="padding: 0 16px">
+                  <h3 style="margin-left: 5px">Brand Keywords (English)</h3>
+                  <a-input
+                    style="margin: 5px"
+                    placeholder="Insert additional keywords"
+                    v-model="additionalKeyword.brandEN"
+                  >
+                    <a-icon
+                      slot="addonAfter"
+                      type="plus"
+                      @click="additionalKeywordAdd('brandKeywordsEN')"
+                    />
+                  </a-input>
+                  <template v-for="(tag, index) in keywords.brandKeywordsEN">
+                    <a-tag
+                      :key="tag"
+                      :closable="index !== 0"
+                      :afterClose="
+                        () =>
+                          removeKeyword({ tag: tag, type: 'brandKeywordsEN' })
+                      "
+                    >
+                      {{ tag }}
+                    </a-tag>
+                  </template>
+                </a-col>
+              </a-row>
+              <a-row>
+                <a-col :span="12">
+                  <template
+                    v-if="Object.entries(brandPlannerResult).length !== 0"
+                  >
+                    <a-tabs
+                      defaultActiveKey="1"
+                      style="padding-top: 15px; margin: 5px;"
+                    >
+                      <a-tab-pane tab="Campaigns" key="1">
+                        <a-table
+                          :rowKey="record => record.Campaign_Name"
+                          :dataSource="brandPlannerResult.ja_campaign"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Allocation"
+                            dataIndex="Allocation"
+                            key="Allocation"
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Volume"
+                            dataIndex="Volume"
+                            key="Volume"
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                      <a-tab-pane tab="Keywords" key="2">
+                        <a-table
+                          :rowKey="record => record.Keyword"
+                          :dataSource="brandPlannerResult.ja_keyword"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Ad Group"
+                            dataIndex="adgroup"
+                            key="adgroup"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Keyword"
+                            dataIndex="Keyword"
+                            key="Keyword"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column title="Bid" dataIndex="Bid" key="Bid">
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Traffic"
+                            dataIndex="Traffic"
+                            key="Traffic"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                    </a-tabs>
+                  </template>
+                </a-col>
+                <a-col :span="12">
+                  <template
+                    v-if="Object.entries(brandPlannerResult).length !== 0"
+                  >
+                    <a-tabs
+                      defaultActiveKey="1"
+                      style="padding-top: 15px; margin: 5px;"
+                    >
+                      <a-tab-pane tab="Campaigns" key="1">
+                        <a-table
+                          :rowKey="record => record.Campaign_Name"
+                          :dataSource="brandPlannerResult.en_campaign"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Allocation"
+                            dataIndex="Allocation"
+                            key="Allocation"
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Volume"
+                            dataIndex="Volume"
+                            key="Volume"
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                      <a-tab-pane tab="Keywords" key="2">
+                        <a-table
+                          :rowKey="record => record.Keyword"
+                          :dataSource="brandPlannerResult.en_keyword"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Ad Group"
+                            dataIndex="adgroup"
+                            key="adgroup"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Keyword"
+                            dataIndex="Keyword"
+                            key="Keyword"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column title="Bid" dataIndex="Bid" key="Bid">
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Traffic"
+                            dataIndex="Traffic"
+                            key="Traffic"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                    </a-tabs>
+                  </template>
+                </a-col>
+                <a-col
+                  :span="24"
+                  style="padding: 0 16px"
+                  v-if="Object.entries(brandPlannerResult).length === 0"
+                >
+                  <div style="width: 100%">
+                    <a-button
+                      type="primary"
+                      style="display: block; margin: 40px auto;"
+                      :loading="sendRequestBrandLoading"
+                      @click="sendRequestBrand"
+                      >Send Request</a-button
+                    >
+                  </div>
+                </a-col>
+              </a-row>
+            </a-tab-pane>
+            <!-- Core -->
+            <a-tab-pane tab="Core Keywords" key="2">
+              <a-row :gutter="32">
+                <a-col :span="12" style="padding: 0 16px">
+                  <h3 style="margin-left: 5px">Core Keywords (Japanese)</h3>
+                  <a-input
+                    style="margin: 5px"
+                    placeholder="Insert additional keywords"
+                    v-model="additionalKeyword.coreJA"
+                  >
+                    <a-icon
+                      slot="addonAfter"
+                      type="plus"
+                      @click="additionalKeywordAdd('coreKeywordsJA')"
+                    />
+                  </a-input>
+                  <template v-for="(tag, index) in keywords.coreKeywordsJA">
+                    <a-tag
+                      :key="tag"
+                      :closable="index !== 0"
+                      :afterClose="
+                        () =>
+                          removeKeyword({ tag: tag, type: 'coreKeywordsJA' })
+                      "
+                    >
+                      {{ tag }}
+                    </a-tag>
+                  </template>
+                </a-col>
+                <a-col :span="12" style="padding: 0 16px">
+                  <h3 style="margin-left: 5px">Core Keywords (English)</h3>
+                  <a-input
+                    style="margin: 5px"
+                    placeholder="Insert additional keywords"
+                    v-model="additionalKeyword.coreEN"
+                  >
+                    <a-icon
+                      slot="addonAfter"
+                      type="plus"
+                      @click="additionalKeywordAdd('coreKeywordsEN')"
+                    />
+                  </a-input>
+                  <template v-for="(tag, index) in keywords.coreKeywordsEN">
+                    <a-tag
+                      :key="tag"
+                      :closable="index !== 0"
+                      :afterClose="
+                        () =>
+                          removeKeyword({ tag: tag, type: 'coreKeywordsEN' })
+                      "
+                    >
+                      {{ tag }}
+                    </a-tag>
+                  </template>
+                </a-col>
+              </a-row>
+              <a-row>
+                <a-col :span="12">
+                  <template
+                    v-if="Object.entries(corePlannerResult).length !== 0"
+                  >
+                    <a-tabs
+                      defaultActiveKey="1"
+                      style="padding-top: 15px; margin: 5px;"
+                    >
+                      <a-tab-pane tab="Campaigns" key="1">
+                        <a-table
+                          :rowKey="record => record.Campaign_Name"
+                          :dataSource="corePlannerResult.ja_campaign"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Allocation"
+                            dataIndex="Allocation"
+                            key="Allocation"
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Volume"
+                            dataIndex="Volume"
+                            key="Volume"
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                      <a-tab-pane tab="Keywords" key="2">
+                        <a-table
+                          :rowKey="record => record.Keyword"
+                          :dataSource="corePlannerResult.ja_keyword"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Ad Group"
+                            dataIndex="adgroup"
+                            key="adgroup"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Keyword"
+                            dataIndex="Keyword"
+                            key="Keyword"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column title="Bid" dataIndex="Bid" key="Bid">
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Traffic"
+                            dataIndex="Traffic"
+                            key="Traffic"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                    </a-tabs>
+                  </template>
+                </a-col>
+                <a-col :span="12">
+                  <template
+                    v-if="Object.entries(corePlannerResult).length !== 0"
+                  >
+                    <a-tabs
+                      defaultActiveKey="1"
+                      style="padding-top: 15px; margin: 5px;"
+                    >
+                      <a-tab-pane tab="Campaigns" key="1">
+                        <a-table
+                          :rowKey="record => record.Campaign_Name"
+                          :dataSource="corePlannerResult.en_campaign"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Allocation"
+                            dataIndex="Allocation"
+                            key="Allocation"
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Volume"
+                            dataIndex="Volume"
+                            key="Volume"
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                      <a-tab-pane tab="Keywords" key="2">
+                        <a-table
+                          :rowKey="record => record.Keyword"
+                          :dataSource="corePlannerResult.en_keyword"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Ad Group"
+                            dataIndex="adgroup"
+                            key="adgroup"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Keyword"
+                            dataIndex="Keyword"
+                            key="Keyword"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column title="Bid" dataIndex="Bid" key="Bid">
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Traffic"
+                            dataIndex="Traffic"
+                            key="Traffic"
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                    </a-tabs>
+                  </template>
+                </a-col>
+                <a-col
+                  :span="24"
+                  style="padding: 0 16px"
+                  v-if="Object.entries(corePlannerResult).length === 0"
+                >
+                  <div style="width: 100%">
+                    <a-button
+                      type="primary"
+                      style="display: block; margin: 40px auto;"
+                      :loading="sendRequestCoreLoading"
+                      @click="sendRequestCore"
+                      >Send Request</a-button
+                    >
+                  </div>
+                </a-col>
+              </a-row>
+            </a-tab-pane>
+          </a-tabs>
+        </a-col>
+      </a-row>
+    </div>
     <div class="steps-action" style="padding-top: 20px;">
-      <a-button v-if="current < steps.length - 1" type="primary" @click="next">
+      <a-button
+        v-if="current < steps.length - 1"
+        type="primary"
+        @click="sendKeywords"
+        :loading="confirmNext"
+      >
         Next
       </a-button>
-      <a-button
-        v-if="current == steps.length - 1"
-        type="primary"
-        @click="$message.success('Processing complete!')"
-      >
-        Done
-      </a-button>
       <a-button v-if="current > 0" style="margin-left: 8px" @click="prev">
-        Previous
+        Start Again
       </a-button>
     </div>
   </div>
 </template>
 <script>
 import categoryData from "@/assets/data/result.json";
+import { keywordPlanner, brandPlanner, corePlanner } from "@/api";
 export default {
   data() {
     return {
@@ -269,7 +829,8 @@ export default {
         budget: "",
         languageSwitch: false,
         productName: "",
-        productNameEN: ""
+        productNameEN: "",
+        landingURL: ""
       },
       categorySelected: {
         level_1: "",
@@ -277,15 +838,59 @@ export default {
         level_3: "",
         level_4: "",
         level_5: ""
-      }
+      },
+      keywords: {
+        brandKeywordsJA: [],
+        brandKeywordsEN: [],
+        coreKeywordsJA: [],
+        coreKeywordsEN: []
+      },
+      confirmNext: false,
+      additionalKeyword: {
+        brandJA: "",
+        brandEN: "",
+        coreJA: "",
+        coreEN: ""
+      },
+      sendRequestBrandLoading: false,
+      sendRequestCoreLoading: false,
+      brandPlannerResult: {},
+      corePlannerResult: {},
+      tableLoading: false
     };
   },
   methods: {
-    next() {
-      this.current++;
+    sendKeywords() {
+      this.confirmNext = true;
+      keywordPlanner({
+        brand: this.CampaignInformation.brandName,
+        brand_en: this.CampaignInformation.brandNameEN,
+        budget: this.CampaignInformation.budget,
+        categories: this.CampaignInformation.selectedCategories,
+        english_switch: this.CampaignInformation.languageSwitch,
+        product: this.CampaignInformation.productName,
+        product_en: this.CampaignInformation.productNameEN
+      })
+        .then(response => {
+          this.confirmNext = false;
+          this.keywords.brandKeywordsJA = response.data.ja_keywords;
+          this.keywords.brandKeywordsEN = response.data.en_keywords;
+          this.keywords.coreKeywordsJA = response.data.ja_core_keywords;
+          this.keywords.coreKeywordsEN = response.data.en_core_keywords;
+          this.current++;
+        })
+        .catch(() => {
+          this.confirmNext = false;
+          this.$message.error("Please fill all fields");
+        });
     },
     prev() {
       this.current--;
+      (this.brandPlannerResult = {}),
+        (this.corePlannerResult = {}),
+        (this.keywords = {}),
+        (this.CampaignInformation.selectedCategories = {}),
+        (this.categorySelected = {});
     },
     onLanguageSwitch(checked) {
       this.CampaignInformation.languageSwitch = checked;
@@ -308,6 +913,111 @@ export default {
         );
         self.CampaignInformation.selectedCategories.splice(index, 1);
       }
+    },
+    removeKeyword(value) {
+      if (value.type == "brandKeywordsJA") {
+        let index = this.keywords.brandKeywordsJA.indexOf(value.tag);
+        this.keywords.brandKeywordsJA.splice(index, 1);
+      }
+      if (value.type == "brandKeywordsEN") {
+        let index = this.keywords.brandKeywordsEN.indexOf(value.tag);
+        this.keywords.brandKeywordsEN.splice(index, 1);
+      }
+      if (value.type == "coreKeywordsJA") {
+        let index = this.keywords.coreKeywordsJA.indexOf(value.tag);
+        this.keywords.coreKeywordsJA.splice(index, 1);
+      }
+      if (value.type == "coreKeywordsEN") {
+        let index = this.keywords.coreKeywordsEN.indexOf(value.tag);
+        this.keywords.coreKeywordsEN.splice(index, 1);
+      }
+    },
+    additionalKeywordAdd(type) {
+      if (type == "brandKeywordsJA") {
+        if (
+          !this.keywords.brandKeywordsJA.includes(
+            this.additionalKeyword.brandJA
+          )
+        ) {
+          this.keywords.brandKeywordsJA.push(this.additionalKeyword.brandJA);
+          this.additionalKeyword.brandJA = "";
+          this.$message.success("Keyword successfully added!");
+        } else {
+          this.$message.error("Keyword is duplicated!");
+        }
+      }
+      if (type == "brandKeywordsEN") {
+        if (
+          !this.keywords.brandKeywordsEN.includes(
+            this.additionalKeyword.brandEN
+          )
+        ) {
+          this.keywords.brandKeywordsEN.push(this.additionalKeyword.brandEN);
+          this.additionalKeyword.brandEN = "";
+          this.$message.success("Keyword successfully added!");
+        } else {
+          this.$message.error("Keyword is duplicated!");
+        }
+      }
+      if (type == "coreKeywordsJA") {
+        if (
+          !this.keywords.coreKeywordsJA.includes(this.additionalKeyword.coreJA)
+        ) {
+          this.keywords.coreKeywordsJA.push(this.additionalKeyword.coreJA);
+          this.additionalKeyword.coreJA = "";
+          this.$message.success("Keyword successfully added!");
+        } else {
+          this.$message.error("Keyword is duplicated!");
+        }
+      }
+      if (type == "coreKeywordsEN") {
+        if (
+          !this.keywords.coreKeywordsEN.includes(this.additionalKeyword.coreEN)
+        ) {
+          this.keywords.coreKeywordsEN.push(this.additionalKeyword.coreEN);
+          this.additionalKeyword.coreEN = "";
+          this.$message.success("Keyword successfully added!");
+        } else {
+          this.$message.error("Keyword is duplicated!");
+        }
+      }
+    },
+    sendRequestBrand() {
+      this.sendRequestBrandLoading = true;
+      brandPlanner({
+        categories: this.CampaignInformation.selectedCategories,
+        brand: this.CampaignInformation.brandName,
+        product: this.CampaignInformation.productName,
+        en_keywords: this.keywords.brandKeywordsEN,
+        ja_keywords: this.keywords.brandKeywordsJA,
+        budget: this.CampaignInformation.budget,
+        url: this.CampaignInformation.landingURL,
+        brand_en: this.CampaignInformation.brandNameEN,
+        product_en: this.CampaignInformation.productNameEN
+      })
+        .then(response => {
+          this.sendRequestBrandLoading = false;
+          this.brandPlannerResult = response.data;
+        })
+        .catch(() => {
+          this.$message.error("Error");
+        });
+    },
+    sendRequestCore() {
+      this.sendRequestCoreLoading = true;
+      corePlanner({
+        core_en: this.keywords.coreKeywordsEN,
+        core_ja: this.keywords.coreKeywordsJA,
+        budget: this.CampaignInformation.budget,
+        english_switch: this.CampaignInformation.languageSwitch
+      }).then(response => {
+        this.sendRequestCoreLoading = false;
+        this.corePlannerResult = response.data;
+      });
+    },
+    truncate_float(value) {
+      if (value == null) return "INF";
+      else return value.toFixed(2);
     }
   }
 };
@@ -332,5 +1042,8 @@ export default {
   padding-top: 20px;
   padding-left: 8px !important;
   padding-right: 8px !important;
+}
+.ant-tag {
+  margin: 5px 5px;
 }
 </style>

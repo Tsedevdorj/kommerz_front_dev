@@ -14,7 +14,12 @@
           </a-input>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" html-type="submit" @click="authenticate">
+          <a-button
+            type="primary"
+            html-type="submit"
+            @click="authenticate"
+            :loading="confirmLoading"
+          >
             Login
           </a-button>
         </a-form-item>
@@ -39,21 +44,25 @@ export default {
     return {
       email: "",
       password: "",
+      confirmLoading: false,
       responseError: {}
     };
   },
   methods: {
     authenticate() {
+      this.confirmLoading = true;
       this.$store
         .dispatch("login", {
           email: this.email,
           password: this.password
         })
         .then(() => {
+          this.confirmLoading = false;
           this.$router.push({ name: "dashboard" });
           this.$message.success(`Welcome back ${this.email}!`);
         })
         .catch(error => {
+          this.confirmLoading = false;
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
         });

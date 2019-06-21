@@ -37,6 +37,18 @@ export function newPassword(userData) {
   return HTTP.post(`${API_URL}/auth/newpassword`, userData);
 }
 
+export function keywordPlanner(userData) {
+  return HTTP.post(`${API_URL}/keywords`, userData);
+}
+
+export function brandPlanner(userData) {
+  return HTTP.post(`${API_URL}/planner`, userData);
+}
+
+export function corePlanner(userData) {
+  return HTTP.post(`${API_URL}/core_planner`, userData);
+}
+
 export function keywordChurner() {
   return HTTP.get(`${KEYWORD_URL}/ping`);
 }

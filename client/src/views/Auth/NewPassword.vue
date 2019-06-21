@@ -9,7 +9,12 @@
           </a-input>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" html-type="submit" @click="newPassword">
+          <a-button
+            type="primary"
+            html-type="submit"
+            @click="newPassword"
+            :loading="confirmLoading"
+          >
             Request New Password
           </a-button>
         </a-form-item>
@@ -28,16 +33,19 @@ export default {
   data() {
     return {
       email: "",
+      confirmLoading: false,
       responseError: {}
     };
   },
   methods: {
     newPassword() {
+      this.confirmLoading = true;
       this.$store
         .dispatch("newPassword", {
           email: this.email
         })
         .then(() => {
+          this.confirmLoading = false;
           this.$router.push({ name: "login" });
           this.$message.success(
             `Successfully sent new password to ${this.email}!`
