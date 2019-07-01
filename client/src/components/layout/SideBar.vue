@@ -24,13 +24,24 @@
             ><a-icon type="layout" />Google Planner</router-link
           ></a-menu-item
         >
+        <a-divider
+          v-if="
+            this.$store.getters.isSuperAdmin == true ||
+              this.$store.getters.isAdmin == true
+          "
+          >Admin Pages</a-divider
+        >
+        <a-menu-item
+          ><router-link :to="{ name: 'usermanagement' }"
+            ><a-icon type="user" />User Management</router-link
+          ></a-menu-item
+        >
+        <a-menu-item v-if="this.$store.getters.isSuperAdmin == true"
+          ><router-link :to="{ name: 'domainmanagement' }"
+            ><a-icon type="user" />Domain Management</router-link
+          ></a-menu-item
+        >
       </a-menu>
-      <a-divider v-if="this.$store.getters.isAdmin == true"
-        >Administrator</a-divider
-      >
-      <a-divider v-if="this.$store.getters.isSuperAdmin == true"
-        >Super Admin</a-divider
-      >
     </a-layout-sider>
   </div>
 </template>

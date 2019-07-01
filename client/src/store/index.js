@@ -9,15 +9,15 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     token: localStorage.getItem("auth_token") || "",
-    is_role: localStorage.getItem("is_role") || ""
+    role: localStorage.getItem("role") || ""
   },
   actions: {
     login(context, userData) {
       return new Promise((resolve, reject) => {
         authenticate(userData)
           .then(response => {
-            localStorage.setItem("auth_token", response.data.auth_token);
-            localStorage.setItem("is_role", response.data.is_role);
+            localStorage.setItem("auth_token", response.data.access_token);
+            localStorage.setItem("role", response.data.role);
             context.commit("clientLogin", { login: response.data });
             resolve(response);
           })
@@ -60,8 +60,8 @@ const store = new Vuex.Store({
   },
   mutations: {
     clientLogin(state, payload) {
-      state.token = payload.login.auth_token;
-      state.is_admin = payload.login.is_role;
+      state.token = payload.login.access_token;
+      state.role = payload.login.role;
     },
     clientLogout(state) {
       state.token = null;
@@ -81,10 +81,10 @@ const store = new Vuex.Store({
       return state.token;
     },
     isAdmin: state => {
-      return isAdmin(state.is_role);
+      return isAdmin(state.role);
     },
     isSuperAdmin: state => {
-      return isSuperAdmin(state.is_role);
+      return isSuperAdmin(state.role);
     }
   }
 });

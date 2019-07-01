@@ -96,3 +96,10 @@ export default {
   float: left;
 }
 </style>
+
+<style>
+.grecaptcha-badge {
+  visibility: collapse !important;
+  display: none !important;
+}
+</style>

@@ -11,7 +11,7 @@ export function isValidJwt(jwt) {
 
 // global administrator check for getters & router
 export function isAdmin(data) {
-  if (data == 2) {
+  if (data == 2 || data == 3) {
     return true;
   } else return false;
 }

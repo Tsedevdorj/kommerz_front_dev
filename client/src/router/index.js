@@ -11,6 +11,7 @@ import NewPassword from "@/views/Auth/NewPassword";
 import NotFound from "@/views/Error/404";
 import AccessDenied from "@/views/Error/403";
 import UserManagement from "@/views/Admin/User";
+import domainManagement from "@/views/Admin/AddDomain";
 
 Vue.use(Router);
 
@@ -69,6 +70,11 @@ const router = new Router({
       meta: {
         isAuthenticated: true
       },
+      // eslint-disable-next-line no-unused-vars
+      beforeEnter(to, from, next) {
+        window.location =
+          "https://www.amazon.com/ap/oa?client_id=amzn1.application-oa2-client.c6019ac95ca845a59c02c3bd4314c8c2&scope=cpc_advertising:campaign_management&response_type=code&redirect_uri=http://35.200.54.33/api/keyword_churner/callback";
+      },
       component: KeywordChurner
     },
     {
@@ -115,12 +121,19 @@ const router = new Router({
     // admin pages
     {
       path: "/admin/users",
-      name: "UserManagement",
+      name: "usermanagement",
       meta: {
-        isAdmin: true,
-        isSuperAdmin: true
+        isAdmin: true
       },
       component: UserManagement
+    },
+    {
+      path: "/admin/domain",
+      name: "domainmanagement",
+      meta: {
+        isSuperAdmin: true
+      },
+      component: domainManagement
     }
   ]
 });

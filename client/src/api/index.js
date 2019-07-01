@@ -49,6 +49,26 @@ export function corePlanner(userData) {
   return HTTP.post(`${API_URL}/core_planner`, userData);
 }
 
+export function userList() {
+  return HTTP.post(`${API_URL}/admin/user/list`);
+}
+
+export function adminUserUpdate(userData) {
+  return HTTP.post(`${API_URL}/admin/user/update`, userData);
+}
+
+export function domainList() {
+  return HTTP.post(`${API_URL}/superadmin/domain/list`);
+}
+
+export function domainDelete(userData) {
+  return HTTP.post(`${API_URL}/superadmin/domain/delete`, userData);
+}
+
+export function domainAdd(userData) {
+  return HTTP.post(`${API_URL}/superadmin/domain/add`, userData);
+}
+
 export function keywordChurner() {
   return HTTP.get(`${KEYWORD_URL}/ping`);
 }
