@@ -8,3 +8,17 @@ export function isValidJwt(jwt) {
   const now = new Date();
   return now < exp;
 }
+
+// global administrator check for getters & router
+export function isAdmin(data) {
+  if (data == 2) {
+    return true;
+  } else return false;
+}
+
+// global administrator check for getters & router
+export function isSuperAdmin(data) {
+  if (data == 3) {
+    return true;
+  } else return false;
+}

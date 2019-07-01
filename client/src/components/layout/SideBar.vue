@@ -25,6 +25,12 @@
           ></a-menu-item
         >
       </a-menu>
+      <a-divider v-if="this.$store.getters.isAdmin == true"
+        >Administrator</a-divider
+      >
+      <a-divider v-if="this.$store.getters.isSuperAdmin == true"
+        >Super Admin</a-divider
+      >
     </a-layout-sider>
   </div>
 </template>

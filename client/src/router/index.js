@@ -10,6 +10,7 @@ import Register from "@/views/Auth/Register";
 import NewPassword from "@/views/Auth/NewPassword";
 import NotFound from "@/views/Error/404";
 import AccessDenied from "@/views/Error/403";
+import UserManagement from "@/views/Admin/User";
 
 Vue.use(Router);
 
@@ -110,12 +111,36 @@ const router = new Router({
         public: true
       },
       component: NewPassword
+    },
+    // admin pages
+    {
+      path: "/admin/users",
+      name: "UserManagement",
+      meta: {
+        isAdmin: true,
+        isSuperAdmin: true
+      },
+      component: UserManagement
     }
   ]
 });
 
 // global router guard
 router.beforeEach((to, from, next) => {
+  if (to.meta.isAdmin) {
+    if (store.getters.isAdmin == true) {
+      next();
+    } else {
+      next("/dashboard");
+    }
+  }
+  if (to.meta.isSuperAdmin) {
+    if (store.getters.isSuperAdmin == true) {
+      next();
+    } else {
+      next("/dashboard");
+    }
+  }
   if (to.meta.isAuthenticated) {
     if (store.getters.isAuthenticated == true) {
       next();

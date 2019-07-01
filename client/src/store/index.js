@@ -2,13 +2,14 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from "@/router";
 import { authenticate, userRegister, newPassword } from "@/api";
-import { isValidJwt } from "@/utils";
+import { isValidJwt, isAdmin, isSuperAdmin } from "@/utils";
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    token: localStorage.getItem("auth_token") || ""
+    token: localStorage.getItem("auth_token") || "",
+    is_role: localStorage.getItem("is_role") || ""
   },
   actions: {
     login(context, userData) {
@@ -16,6 +17,7 @@ const store = new Vuex.Store({
         authenticate(userData)
           .then(response => {
             localStorage.setItem("auth_token", response.data.auth_token);
+            localStorage.setItem("is_role", response.data.is_role);
             context.commit("clientLogin", { login: response.data });
             resolve(response);
           })
@@ -59,6 +61,7 @@ const store = new Vuex.Store({
   mutations: {
     clientLogin(state, payload) {
       state.token = payload.login.auth_token;
+      state.is_admin = payload.login.is_role;
     },
     clientLogout(state) {
       state.token = null;
@@ -76,6 +79,12 @@ const store = new Vuex.Store({
     },
     authToken: state => {
       return state.token;
+    },
+    isAdmin: state => {
+      return isAdmin(state.is_role);
+    },
+    isSuperAdmin: state => {
+      return isSuperAdmin(state.is_role);
     }
   }
 });

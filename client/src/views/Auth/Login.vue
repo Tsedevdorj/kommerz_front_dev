@@ -14,14 +14,21 @@
           </a-input>
         </a-form-item>
         <a-form-item>
-          <a-button
-            type="primary"
-            html-type="submit"
-            @click="authenticate"
-            :loading="confirmLoading"
-          >
-            Login
-          </a-button>
+          <template>
+            <vue-recaptcha
+              sitekey="6LcnaqsUAAAAAP8T_ORD1dk7G9U0jLoP2YSRrv01"
+              :loadRecaptchaScript="true"
+              @verify="onVerify"
+            >
+              <a-button
+                type="primary"
+                html-type="submit"
+                :loading="confirmLoading"
+              >
+                Login
+              </a-button>
+            </vue-recaptcha>
+          </template>
         </a-form-item>
         <router-link :to="{ name: 'register' }">
           <span class="login-form-register">
@@ -37,9 +44,10 @@
     >
   </a-row>
 </template>
-
 <script>
+import VueRecaptcha from "vue-recaptcha";
 export default {
+  components: { VueRecaptcha },
   data() {
     return {
       email: "",
@@ -50,7 +58,6 @@ export default {
   },
   methods: {
     authenticate() {
-      this.confirmLoading = true;
       this.$store
         .dispatch("login", {
           email: this.email,
@@ -66,6 +73,12 @@ export default {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
         });
+    },
+    onVerify(response) {
+      this.confirmLoading = true;
+      if (response) {
+        this.authenticate();
+      }
     }
   }
 };
