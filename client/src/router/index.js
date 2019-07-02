@@ -68,7 +68,7 @@ const router = new Router({
       path: "/keyword",
       name: "keywordchurner",
       meta: {
-        isAuthenticated: true
+        isAuthenticated: false
       },
       // eslint-disable-next-line no-unused-vars
       beforeEnter(to, from, next) {
