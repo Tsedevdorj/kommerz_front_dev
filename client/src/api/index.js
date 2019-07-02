@@ -43,15 +43,15 @@ export function newPassword(userData) {
 }
 
 export function keywordPlanner(userData) {
-  return HTTP.post(`${API_URL}/keywords`, userData);
+  return HTTP.post(`${API_URL}/api/planner/keywords`, userData);
 }
 
 export function brandPlanner(userData) {
-  return HTTP.post(`${API_URL}/planner`, userData);
+  return HTTP.post(`${API_URL}/api/planner/planner`, userData);
 }
 
 export function corePlanner(userData) {
-  return HTTP.post(`${API_URL}/core_planner`, userData);
+  return HTTP.post(`${API_URL}/api/planner/core_planner`, userData);
 }
 
 export function userList() {
