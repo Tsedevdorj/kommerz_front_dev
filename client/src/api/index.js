@@ -11,7 +11,6 @@ export const HTTP = axios
 //     rejectUnauthorized: false
 //   })
 // });
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // default API_URL
 export const API_URL =
