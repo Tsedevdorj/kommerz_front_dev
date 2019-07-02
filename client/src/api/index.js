@@ -3,23 +3,29 @@
 
 import axios from "axios";
 import store from "@/store";
-
+// import https from "https";
 // axios new variable
-export const HTTP = axios;
+export const HTTP = axios
+// .create({
+//   httpsAgent: new https.Agent({  
+//     rejectUnauthorized: false
+//   })
+// });
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // default API_URL
 export const API_URL =
   window.location.href.indexOf("localhost") >= 0
-    ? "http://35.200.54.33/api"
-    : "http://35.200.54.33/api";
+    ? "https://35.200.54.33/api"
+    : "https://35.200.54.33/api";
 HTTP.defaults.headers.common[
   "Authorization"
 ] = `Bearer ${store.getters.authToken}`;
 
 export const KEYWORD_URL =
   window.location.href.indexOf("localhost") >= 0
-    ? "http://13.231.137.102:5000/api"
-    : "http://13.231.137.102:5000/api";
+    ? "https://13.231.137.102:5000/api"
+    : "https://13.231.137.102:5000/api";
 HTTP.defaults.headers.common[
   "Authorization"
 ] = `Bearer ${store.getters.authToken}`;

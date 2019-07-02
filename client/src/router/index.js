@@ -73,7 +73,7 @@ const router = new Router({
       // eslint-disable-next-line no-unused-vars
       beforeEnter(to, from, next) {
         window.location =
-          "https://www.amazon.com/ap/oa?client_id=amzn1.application-oa2-client.c6019ac95ca845a59c02c3bd4314c8c2&scope=cpc_advertising:campaign_management&response_type=code&redirect_uri=http://35.200.54.33/api/keyword_churner/callback";
+          "https://www.amazon.com/ap/oa?client_id=amzn1.application-oa2-client.5ea9783915b54e3284277593abed4e14&scope=cpc_advertising:campaign_management&response_type=code&redirect_uri=https://35.200.54.33/api/keyword_churner/callback";
       },
       component: KeywordChurner
     },
