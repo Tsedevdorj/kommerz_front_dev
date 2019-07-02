@@ -16,7 +16,7 @@
         <a-form-item>
           <template>
             <vue-recaptcha
-              sitekey="6LcnaqsUAAAAAP8T_ORD1dk7G9U0jLoP2YSRrv01"
+              sitekey="6LecnasUAAAAAOJfaVR23ANpwqymHIGMMAW07eFO"
               :loadRecaptchaScript="true"
               @verify="onVerify"
             >
