@@ -75,19 +75,19 @@ export function domainAdd(userData) {
 }
 
 export function keywordChurner() {
-  return HTTP.get(`${KEYWORD_URL}/ping`);
+  return HTTP.get(`${API_URL}/keyword_churner/campaigns`);
 }
 
 export function keywordReport(userData) {
-  return HTTP.post(`${KEYWORD_URL}/report`, userData);
+  return HTTP.post(`${API_URL}/keyword_churner/keywords`, userData);
 }
 
 export function recommendedKeyword(userData) {
-  return HTTP.post(`${KEYWORD_URL}/recommend_keyword`, userData);
+  return HTTP.post(`${API_URL}/keyword_churner/recommend_keyword`, userData);
 }
 
 export function recommendObjective(userData) {
-  return HTTP.post(`${KEYWORD_URL}/recommend_objective`, userData);
+  return HTTP.post(`${API_URL}/keyword_churner/recommended_objective`, userData);
 }
 
 // global interceptor for catch http status and error
