@@ -26,12 +26,12 @@
         >
         <a-divider
           v-if="
-            this.$store.getters.isSuperAdmin == true ||
+            this.$store.getters.isAdmin == true ||
               this.$store.getters.isAdmin == true
           "
           >Admin Pages</a-divider
         >
-        <a-menu-item
+        <a-menu-item v-if="this.$store.getters.isAdmin == true"
           ><router-link :to="{ name: 'usermanagement' }"
             ><a-icon type="user" />User Management</router-link
           ></a-menu-item
