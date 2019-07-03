@@ -52,7 +52,7 @@ export default {
           );
         })
         .catch(error => {
-          this.responseError = error.response.data.message;
+          this.responseError = error.response.data.msg;
           this.$message.error("Error: " + this.responseError);
         });
     }

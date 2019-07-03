@@ -70,7 +70,7 @@ export default {
         })
         .catch(error => {
           this.confirmLoading = false;
-          this.responseError = error.response.data.message;
+          this.responseError = error.response.data.msg;
           this.$message.error("Error: " + this.responseError);
         });
     },
