@@ -15,7 +15,7 @@ export const HTTP = axios
 // default API_URL
 export const API_URL =
   window.location.href.indexOf("localhost") >= 0
-    ? "https://test.kommerz.digidon.net/api"
+    ? "https://34.85.54.191/api"
     : "https://test.kommerz.digidon.net/api";
 HTTP.defaults.headers.common[
   "Authorization"
@@ -84,6 +84,10 @@ export function keywordReport(userData) {
 
 export function recommendedKeyword(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/recommend_keyword`, userData);
+}
+
+export function recommendedKeywordFromSimilarCampaign(userData) {
+  return HTTP.post(`${API_URL}/keyword_churner/recommend_keyword_similar_campaign`, userData);
 }
 
 export function recommendObjective(userData) {
