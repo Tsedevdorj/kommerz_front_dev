@@ -126,6 +126,18 @@
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
+          <a-table-column title="Trend" dataIndex="trend" key="trend">
+            <template slot-scope="text">
+              <a-tag v-if="text === null" >
+                N/A
+              </a-tag>
+              <template v-else>
+                <a-icon v-if="text > 0" type="caret-up" style="color:green"/>
+                <a-icon v-else type="caret-down" style="color:red"/>
+                {{ text.toFixed(1) }}
+              </template>
+            </template>
+          </a-table-column>
           <a-table-column title="Bid" dataIndex="bid" key="bid">
           </a-table-column>
           <a-table-column
@@ -137,6 +149,21 @@
               <a-tag v-if="text == true">
                 RP
               </a-tag>
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="suggestedBid"
+            dataIndex="suggestedBid"
+            key="suggestedBid"
+          >
+            <template slot-scope="text">
+              <a-tag v-if="text === undefined || text.length == 0">
+                No suggestion
+              </a-tag>
+
+              <a-select v-else style="width: 100px" @change="handleChange">
+                <a-select-option v-for="item in text" :key="item" :value="item">{{item}}</a-select-option>
+              </a-select>
             </template>
           </a-table-column>
           <a-table-column
@@ -215,6 +242,18 @@
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
+          <a-table-column title="Trend" dataIndex="trend" key="trend">
+            <template slot-scope="text">
+              <a-tag v-if="text === null" >
+                N/A
+              </a-tag>
+              <template v-else>
+                <a-icon v-if="text > 0" type="caret-up" style="color:green"/>
+                <a-icon v-else type="caret-down" style="color:red"/>
+                {{ text.toFixed(1) }}
+              </template>
+            </template>
+          </a-table-column>
           <a-table-column title="Bid" dataIndex="bid" key="bid">
           </a-table-column>
           <a-table-column
@@ -229,6 +268,21 @@
               <a-tag v-else>
                 P
               </a-tag>
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="suggestedBid"
+            dataIndex="suggestedBid"
+            key="suggestedBid"
+          >
+            <template slot-scope="text">
+              <a-tag v-if="text === undefined || text.length == 0">
+                No suggestion
+              </a-tag>
+
+              <a-select v-else style="width: 100px" @change="handleChange">
+                <a-select-option v-for="item in text" :key="item" :value="item">{{item}}</a-select-option>
+              </a-select>
             </template>
           </a-table-column>
           <a-table-column
@@ -307,7 +361,34 @@
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
+          <a-table-column title="Trend" dataIndex="trend" key="trend">
+            <template slot-scope="text">
+              <a-tag v-if="text === null" >
+                N/A
+              </a-tag>
+              <template v-else>
+                <a-icon v-if="text > 0" type="caret-up" style="color:green"/>
+                <a-icon v-else type="caret-down" style="color:red"/>
+                {{ text.toFixed(1) }}
+              </template>
+            </template>
+          </a-table-column>
           <a-table-column title="Bid" dataIndex="bid" key="bid">
+          </a-table-column>
+          <a-table-column
+            title="suggestedBid"
+            dataIndex="suggestedBid"
+            key="suggestedBid"
+          >
+            <template slot-scope="text">
+              <a-tag v-if="text === undefined || text.length == 0">
+                No suggestion
+              </a-tag>
+
+              <a-select v-else style="width: 100px" @change="handleChange">
+                <a-select-option v-for="item in text" :key="item" :value="item">{{item}}</a-select-option>
+              </a-select>
+            </template>
           </a-table-column>
           <a-table-column
             title="Actions"
@@ -387,6 +468,7 @@
           </a-table-column>
           <a-table-column title="Bid" dataIndex="bid" key="bid">
           </a-table-column>
+          
           <a-table-column
             title="Actions"
             dataIndex="actions"
@@ -433,6 +515,32 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
+      <a-collapse-panel header="Recommended Keywords from similar campaigns" key="6">
+        <a-table
+          :rowKey="record => record.keywordId"
+          :dataSource="campaignDetail.recommendedKeywordsFromSimilarCampaign.data"
+          size="small"
+          :loading="loading"
+        >
+          <a-table-column
+            title="Keyword Text"
+            dataIndex="keywordText"
+            key="keywordText"
+          >
+            <template slot-scope="text">
+              {{ truncate_str(text, 6) }}
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Match Type"
+            dataIndex="matchType"
+            key="matchType"
+          >
+          </a-table-column>
+          <a-table-column title="Bid" dataIndex="suggestedBid.suggested" key="suggestedBid.suggested">
+          </a-table-column>
+        </a-table>
+      </a-collapse-panel>
     </a-collapse>
   </div>
 </template>
@@ -440,7 +548,7 @@
 <script>
 // @ is an alias to /src
 
-import { keywordReport, recommendedKeyword, recommendObjective } from "@/api";
+import { keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign } from "@/api";
 
 export default {
   name: "keywordcampaigndetail",
@@ -458,7 +566,8 @@ export default {
         Immature: [],
         Unfavourable: [],
         Watchlist: [],
-        recommendedKeywords: []
+        recommendedKeywords: [],
+        recommendedKeywordsFromSimilarCampaign: []
       },
       loading: true,
       responseError: {}
@@ -498,6 +607,15 @@ export default {
         this.campaignDetail.recommendedKeywords = response;
       });
     },
+    getRecommendedKeywordFromSimilarCampaigns(){
+      recommendedKeywordFromSimilarCampaign({
+        campaignId: this.campaignID,
+        CPA: this.campaignCPA,
+        dateRange: this.dateRange || 7
+      }).then(response => {
+        this.campaignDetail.recommendedKeywordsFromSimilarCampaign = response;
+      });
+    },
     addCampaignTargetEvent() {
       this.addCampaignTarget = true;
     },
@@ -534,6 +652,7 @@ export default {
     this.campaignID = this.$route.params.id;
     this.getCampaignDetail();
     this.getRecommendedKeyword();
+    this.getRecommendedKeywordFromSimilarCampaigns();
   }
 };
 </script>
