@@ -5,12 +5,8 @@ import axios from "axios";
 import store from "@/store";
 // import https from "https";
 // axios new variable
-export const HTTP = axios
-// .create({
-//   httpsAgent: new https.Agent({  
-//     rejectUnauthorized: false
-//   })
-// });
+export const HTTP = axios;
+
 
 // default API_URL
 export const API_URL =
@@ -88,6 +84,10 @@ export function recommendedKeyword(userData) {
 
 export function recommendedKeywordFromSimilarCampaign(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/recommend_keyword_similar_campaign`, userData);
+}
+
+export function competitorKeyword(userData) {
+  return HTTP.post(`${API_URL}/keyword_churner/competitor_keyword`, userData);
 }
 
 export function recommendObjective(userData) {

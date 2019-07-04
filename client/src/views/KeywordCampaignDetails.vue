@@ -82,8 +82,16 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text">
-              {{ truncate_str(text, 6) }}
+            <template slot-scope="text" style="width: 60px">
+              <a-popover title="Full text">
+                <template slot="content">
+                  <p>{{text}}</p>
+                </template>
+                <a> 
+                {{truncate_str(text, 10)}}</a
+              
+                >
+              </a-popover>
             </template>
           </a-table-column>
           <a-table-column title="Cost" dataIndex="cost" key="cost">
@@ -205,8 +213,16 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text">
-              {{ truncate_str(text, 6) }}
+            <template slot-scope="text" style="width: 60px">
+              <a-popover title="Full text">
+                <template slot="content">
+                  <p>{{text}}</p>
+                </template>
+                <a> 
+                {{truncate_str(text, 10)}}</a
+              
+                >
+              </a-popover>
             </template>
           </a-table-column>
           <a-table-column title="Cost" dataIndex="cost" key="cost">
@@ -330,8 +346,16 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text">
-              {{ truncate_str(text, 6) }}
+            <template slot-scope="text" style="width: 60px">
+              <a-popover title="Full text">
+                <template slot="content">
+                  <p>{{text}}</p>
+                </template>
+                <a> 
+                {{truncate_str(text, 10)}}</a
+              
+                >
+              </a-popover>
             </template>
           </a-table-column>
           <a-table-column title="Cost" dataIndex="cost" key="cost">
@@ -441,8 +465,16 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text">
-              {{ truncate_str(text, 6) }}
+            <template slot-scope="text" style="width: 60px">
+              <a-popover title="Full text">
+                <template slot="content">
+                  <p>{{text}}</p>
+                </template>
+                <a> 
+                {{truncate_str(text, 10)}}</a
+              
+                >
+              </a-popover>
             </template>
           </a-table-column>
           <a-table-column title="Cost" dataIndex="cost" key="cost">
@@ -512,15 +544,23 @@
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.recommendedKeywords.data"
           size="small"
-          :loading="loading"
+          :loading="recommendedloading"
         >
           <a-table-column
             title="Keyword Text"
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text">
-              {{ truncate_str(text, 6) }}
+            <template slot-scope="text" style="width: 60px">
+              <a-popover title="Full text">
+                <template slot="content">
+                  <p>{{text}}</p>
+                </template>
+                <a> 
+                {{truncate_str(text, 10)}}</a
+              
+                >
+              </a-popover>
             </template>
           </a-table-column>
           <a-table-column
@@ -538,15 +578,23 @@
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.recommendedKeywordsFromSimilarCampaign.data"
           size="small"
-          :loading="loading"
+          :loading="recommendedloading"
         >
           <a-table-column
             title="Keyword Text"
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text">
-              {{ truncate_str(text, 6) }}
+            <template slot-scope="text" style="width: 60px">
+              <a-popover title="Full text">
+                <template slot="content">
+                  <p>{{text}}</p>
+                </template>
+                <a> 
+                {{truncate_str(text, 10)}}</a
+              
+                >
+              </a-popover>
             </template>
           </a-table-column>
           <a-table-column
@@ -559,6 +607,40 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
+      <a-collapse-panel header="Competitor keywords" key="7">
+        <a-table
+          :rowKey="record => record.keywordId"
+          :dataSource="campaignDetail.competitorKeywords.data"
+          size="small"
+          :loading="competitorloading"
+        >
+          <a-table-column
+            title="Keyword Text"
+            dataIndex="keywordText"
+            key="keywordText"
+          >
+            <template slot-scope="text" style="width: 60px">
+              <a-popover title="Full text">
+                <template slot="content">
+                  <p>{{text}}</p>
+                </template>
+                <a> 
+                {{truncate_str(text, 10)}}</a
+              
+                >
+              </a-popover>
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Match Type"
+            dataIndex="matchType"
+            key="matchType"
+          >
+          </a-table-column>
+          <a-table-column title="Bid" dataIndex="suggestedBid" key="suggestedBid">
+          </a-table-column>
+        </a-table>
+      </a-collapse-panel>
     </a-collapse>
   </div>
 </template>
@@ -566,7 +648,7 @@
 <script>
 // @ is an alias to /src
 
-import { keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign } from "@/api";
+import { keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword } from "@/api";
 
 export default {
   name: "keywordcampaigndetail",
@@ -585,10 +667,15 @@ export default {
         Unfavourable: [],
         Watchlist: [],
         recommendedKeywords: [],
-        recommendedKeywordsFromSimilarCampaign: []
+        recommendedKeywordsFromSimilarCampaign: [],
+        competitorKeywords: []
       },
       loading: true,
-      responseError: {}
+      responseError: {},
+      competitorloading: true,
+      objectiveloading:false,
+      recommendedloading:true,
+
     };
   },
   methods: {
@@ -619,19 +706,33 @@ export default {
       else return value.toFixed(2);
     },
     getRecommendedKeyword() {
+      this.recommendedloading = true;
       recommendedKeyword({
+        
         campaignId: this.campaignID
       }).then(response => {
         this.campaignDetail.recommendedKeywords = response;
+        this.recommendedloading = false;
       });
     },
+    getCompetitorKeyword(){
+      this.competitorloading = true;
+      competitorKeyword({
+        campaignId: this.campaignID,
+      }).then(response => {
+        this.campaignDetail.competitorKeywords =response;
+        this.competitorloading = false;
+      })
+    },
     getRecommendedKeywordFromSimilarCampaigns(){
+      this.recommendedloading = true;
       recommendedKeywordFromSimilarCampaign({
         campaignId: this.campaignID,
         CPA: this.campaignCPA,
         dateRange: this.dateRange || 7
       }).then(response => {
         this.campaignDetail.recommendedKeywordsFromSimilarCampaign = response;
+        this.recommendedloading = false;
       });
     },
     addCampaignTargetEvent() {
@@ -642,24 +743,16 @@ export default {
     },
     requestRecommenendObjective() {
       this.confirmSend = true;
+      this.objectiveloading = true;
       recommendObjective({
         campaignId: this.campaignID,
         targetOrder: this.targetOrder
       }).then(response => {
         this.confirmSend = false;
-        this.loading = true;
+        this.objectiveloading = false;
         this.addCampaignTarget = false;
         this.campaignCPA = response.data;
-        keywordReport({
-          campaignId: this.campaignID,
-          CPA: this.campaignCPA,
-          dateRange: this.dateRange || 7
-        }).then(() => {
-          this.loading = false;
-          this.$message.success(
-            "Successfully set recommended objective to: " + this.campaignCPA
-          );
-        });
+      
       });
     },
     setCampaignCPA(value) {
@@ -671,6 +764,7 @@ export default {
     this.getCampaignDetail();
     this.getRecommendedKeyword();
     this.getRecommendedKeywordFromSimilarCampaigns();
+    this.getCompetitorKeyword();
   }
 };
 </script>
