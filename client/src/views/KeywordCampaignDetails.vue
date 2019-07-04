@@ -181,7 +181,14 @@
                   ghost
                   icon="forward"
                 ></a-button>
+                <a-button
+                  type="danger"
+                  size="small"
+                  ghost
+                  icon="delete"
+                ></a-button>
               </div>
+                
             </template>
           </a-table-column>
         </a-table>
@@ -300,6 +307,12 @@
                   ghost
                   icon="forward"
                 ></a-button>
+                <a-button
+                  type="danger"
+                  size="small"
+                  ghost
+                  icon="delete"
+                ></a-button>
               </div>
             </template>
           </a-table-column>
@@ -405,6 +418,12 @@
                   ghost
                   icon="forward"
                 ></a-button>
+                <a-button
+                  type="danger"
+                  size="small"
+                  ghost
+                  icon="delete"
+                ></a-button>
               </div>
             </template>
           </a-table-column>
@@ -478,11 +497,10 @@
             <template slot-scope="text, record">
               <div>
                 <a-button
-                  type="primary"
+                  type="danger"
                   size="small"
-                  @click="goCampaignRecord(record.campaignId)"
                   ghost
-                  icon="forward"
+                  icon="delete"
                 ></a-button>
               </div>
             </template>
