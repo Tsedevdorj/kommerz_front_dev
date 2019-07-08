@@ -1,7 +1,12 @@
 <template>
   <div class="keywordcampaigndetail">
     <a-row style="padding: 16px">
-      <h2>Campaign ID: {{ campaignID }}</h2>
+      <h2>Campaign ID: {{ campaignID }} <a-button type="dashed" style="margin-top: 20px;"
+        >
+        <router-link :to="{ name: 'keywordchurnerin' }"
+            ><a-icon type="rollback" />Back</router-link>
+        </a-button
+      ></h2>
       <a-col :span="4">
         <a-popover title="Title">
           <template slot="content">
@@ -44,27 +49,57 @@
         <a-button shape="circle" icon="reload" @click="getCampaignDetail" />
       </a-col>
     </a-row>
+    <template v-if="addCampaignTarget">
     <a-row
-      v-if="addCampaignTarget"
       :gutter="32"
       style="padding: 0 16px 16px 16px"
     >
-      <a-col :span="12">
-        <a-input placeholder="Target Order" v-model="targetOrder"></a-input>
+      <a-col :span="8">
+        <label>Target Volume: </label>
+        <a-input placeholder="Order volumne" v-model="targetOrder"></a-input>
+        
+      </a-col>
+      <a-col :span="8">
+        <label>Target CPA: </label>
+        <a-input placeholder="Target CPO" v-model="targetCPO"></a-input>
+      </a-col>
+      <a-col :span="8">
+        <label>Target Date range: </label>
+        <a-range-picker @change="onChangeDatePicker" 
+        v-model="keepDateRange"
+        >
+          <template slot="renderExtraFooter">
+            extra footer
+          </template>
+        </a-range-picker>
+      </a-col>
+      
+    </a-row>
+    <a-row
+      :gutter="32"
+      style="padding: 0 16px 16px 16px"
+    >
+      <a-col :span="8">
+        <label>Budget: </label>
+        <a-input placeholder="Budget" ></a-input>
+        
+      </a-col>
+      <a-col :span="8">
         <a-button
           type="primary"
-          style="margin-top: 16px;"
+          style="margin-top: 20px; width: 150px"
           @click="requestRecommenendObjective"
           :loading="confirmSend"
           >Send</a-button
         >
       </a-col>
-      <a-col :span="12">
-        <a-button type="dashed" color="red" @click="closeCampaignTargetEvent"
+      <a-col :span="8">
+        <a-button color="red" @click="closeCampaignTargetEvent" style="margin-top: 20px; width: 150px"
           ><a-icon type="close"
-        /></a-button>
+        />Close</a-button>
       </a-col>
     </a-row>
+    </template>
     <a-collapse
       defaultActiveKey="1"
       :bordered="false"
@@ -82,10 +117,11 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text" style="width: 60px">
-              <a-popover title="Full text">
+            <template slot-scope="text,record" style="width: 60px">
+              <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
+                  <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
                 {{truncate_str(text, 10)}}</a
@@ -140,8 +176,8 @@
                 N/A
               </a-tag>
               <template v-else>
-                <a-icon v-if="text > 0" type="caret-up" style="color:green"/>
-                <a-icon v-else type="caret-down" style="color:red"/>
+                <a-icon v-if="text > 0" type="caret-up" style="color:red"/>
+                <a-icon v-else type="caret-down" style="color:green"/>
                 {{ text.toFixed(1) }}
               </template>
             </template>
@@ -153,10 +189,11 @@
             dataIndex="recommendPause"
             key="recommendPause"
           >
-            <template slot-scope="text">
+            <template slot-scope="text, record">
               <a-tag v-if="text == true">
                 RP
               </a-tag>
+                <a-icon v-if="(optimizeaction==2 || optimizeaction==3) && record.flag==true" type="frown" style="color:red"/>
             </template>
           </a-table-column>
           <a-table-column
@@ -213,10 +250,11 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text" style="width: 60px">
-              <a-popover title="Full text">
+            <template slot-scope="text, record" style="width: 60px">
+              <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
+                  <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
                 {{truncate_str(text, 10)}}</a
@@ -271,8 +309,8 @@
                 N/A
               </a-tag>
               <template v-else>
-                <a-icon v-if="text > 0" type="caret-up" style="color:green"/>
-                <a-icon v-else type="caret-down" style="color:red"/>
+                <a-icon v-if="text > 0" type="caret-up" style="color:red"/>
+                <a-icon v-else type="caret-down" style="color:green"/>
                 {{ text.toFixed(1) }}
               </template>
             </template>
@@ -284,13 +322,14 @@
             dataIndex="coefficientVariance"
             key="coefficientVariance"
           >
-            <template slot-scope="text">
+            <template slot-scope="text, record">
               <a-tag v-if="text > 1" color="red">
                 A
               </a-tag>
               <a-tag v-else>
                 P
               </a-tag>
+              <a-icon v-if="(optimizeaction==2 || optimizeaction==3) && record.flag==true" type="frown" style="color:red"/>
             </template>
           </a-table-column>
           <a-table-column
@@ -346,10 +385,11 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text" style="width: 60px">
-              <a-popover title="Full text">
+            <template slot-scope="text, record" style="width: 60px">
+              <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
+                  <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
                 {{truncate_str(text, 10)}}</a
@@ -404,13 +444,23 @@
                 N/A
               </a-tag>
               <template v-else>
-                <a-icon v-if="text > 0" type="caret-up" style="color:green"/>
-                <a-icon v-else type="caret-down" style="color:red"/>
+                <a-icon v-if="text > 0" type="caret-up" style="color:red"/>
+                <a-icon v-else type="caret-down" style="color:green"/>
                 {{ text.toFixed(1) }}
               </template>
             </template>
           </a-table-column>
           <a-table-column title="Bid" dataIndex="bid" key="bid">
+          </a-table-column>
+          <a-table-column
+          v-if="(optimizeaction==2 || optimizeaction==3)"
+            title="Flag"
+            dataIndex="flag"
+            key="flag"
+          >
+            <template slot-scope="text, record">
+                <a-icon v-if="(optimizeaction==2 || optimizeaction==3) && record.flag==true" type="frown" style="color:red"/>
+            </template>
           </a-table-column>
           <a-table-column
             title="suggestedBid"
@@ -465,10 +515,11 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text" style="width: 60px">
-              <a-popover title="Full text">
+            <template slot-scope="text, record" style="width: 60px">
+              <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
+                  <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
                 {{truncate_str(text, 10)}}</a
@@ -551,10 +602,11 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text" style="width: 60px">
-              <a-popover title="Full text">
+            <template slot-scope="text, record" style="width: 60px">
+              <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
+                  <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
                 {{truncate_str(text, 10)}}</a
@@ -571,6 +623,28 @@
           </a-table-column>
           <a-table-column title="Bid" dataIndex="bid" key="bid">
           </a-table-column>
+          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag">
+            <template slot-scope="text">
+              <a-icon v-if="text !== undefined && text===true" type="smile" theme="outlined" />
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Actions"
+            dataIndex="actions"
+            key="actions"
+            align="center"
+          >
+            <template slot-scope="text, record">
+              <div>
+                <a-button
+                  type="primary"
+                  size="small"
+                  ghost
+                  icon="plus-square"
+                ></a-button>
+              </div>
+            </template>
+          </a-table-column>
         </a-table>
       </a-collapse-panel>
       <a-collapse-panel header="Recommended Keywords from similar campaigns" key="6">
@@ -585,10 +659,11 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text" style="width: 60px">
-              <a-popover title="Full text">
+            <template slot-scope="text, record" style="width: 60px">
+              <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
+                  <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
                 {{truncate_str(text, 10)}}</a
@@ -603,11 +678,33 @@
             key="matchType"
           >
           </a-table-column>
-          <a-table-column title="Bid" dataIndex="suggestedBid.suggested" key="suggestedBid.suggested">
+          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          </a-table-column>
+          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag">
+            <template slot-scope="text">
+              <a-icon v-if="text !== undefined && text===true" type="smile" theme="outlined" />
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Actions"
+            dataIndex="actions"
+            key="actions"
+            align="center"
+          >
+            <template slot-scope="text, record">
+              <div>
+                <a-button
+                  type="primary"
+                  size="small"
+                  ghost
+                  icon="plus-square"
+                ></a-button>
+              </div>
+            </template>
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel header="Competitor keywords" key="7">
+      <a-collapse-panel header="Relevant keywords" key="7">
         <a-table
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.competitorKeywords.data"
@@ -619,10 +716,11 @@
             dataIndex="keywordText"
             key="keywordText"
           >
-            <template slot-scope="text" style="width: 60px">
-              <a-popover title="Full text">
+            <template slot-scope="text,record" style="width: 60px">
+              <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
+                  <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
                 {{truncate_str(text, 10)}}</a
@@ -637,7 +735,29 @@
             key="matchType"
           >
           </a-table-column>
-          <a-table-column title="Bid" dataIndex="suggestedBid" key="suggestedBid">
+          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          </a-table-column>
+          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag">
+            <template slot-scope="text">
+              <a-icon v-if="text !== undefined && text===true" type="smile" theme="outlined" />
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Actions"
+            dataIndex="actions"
+            key="actions"
+            align="center"
+          >
+            <template slot-scope="text, record">
+              <div>
+                <a-button
+                  type="primary"
+                  size="small"
+                  ghost
+                  icon="plus-square"
+                ></a-button>
+              </div>
+            </template>
           </a-table-column>
         </a-table>
       </a-collapse-panel>
@@ -648,7 +768,7 @@
 <script>
 // @ is an alias to /src
 
-import { keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword } from "@/api";
+import { keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization } from "@/api";
 
 export default {
   name: "keywordcampaigndetail",
@@ -659,6 +779,9 @@ export default {
       campaignCPASelect: "CPO",
       dateRange: "7",
       targetOrder: "",
+      targetCPO: "",
+      targetDateRange: "",
+      keepDateRange: null,
       addCampaignTarget: false,
       confirmSend: false,
       campaignDetail: {
@@ -675,10 +798,17 @@ export default {
       competitorloading: true,
       objectiveloading:false,
       recommendedloading:true,
-
+      optimizeaction: 0,
+      optimizeRecommend:[],
     };
   },
   methods: {
+    handleChange(){
+
+    },
+    onChangeDatePicker(date, dateString) {
+      this.targetDateRange = dateString;
+    },
     getCampaignDetail() {
       this.loading = true;
       keywordReport({
@@ -753,6 +883,116 @@ export default {
         this.addCampaignTarget = false;
         this.campaignCPA = response.data;
       
+      });
+      requestOptimization({
+        campaignId: this.campaignID,
+        targetOrder: this.targetOrder,
+        targetCPO: this.targetCPO,
+        targetDateRange: this.targetDateRange,
+        CPA: this.campaignCPA
+
+      }).then(response =>{
+        console.log(response);
+        let met_opt = response.data.metricOp;
+        let obj_opt = response.data.objectiveOpt;
+        if (met_opt && !obj_opt){
+          this.optimizeaction = 1;
+          this.optimizeRecommend = this.optimizeRecommend.concat(this.campaignDetail.recommendedKeywords.data, this.campaignDetail.recommendedKeywordsFromSimilarCampaign.data, this.campaignDetail.competitorKeywords.data);
+          this.optimizeRecommend.sort(function(a,b) 
+          {
+            return a.bid - b.bid;
+          });
+          this.optimizeRecommend = this.optimizeRecommend.slice(0,10);
+          this.campaignDetail.recommendedKeywords.data.forEach(element => {
+            element.flag = false;
+            if (this.optimizeRecommend.includes(element)) {
+              element.flag=true;
+            }
+          });
+          this.campaignDetail.recommendedKeywordsFromSimilarCampaign.data.forEach(element => {
+            element.flag = false;
+            if (this.optimizeRecommend.includes(element)) {
+              element.flag=true;
+            }
+          });
+          this.campaignDetail.competitorKeywords.data.forEach(element => {
+            element.flag = false;
+            if (this.optimizeRecommend.includes(element)) {
+              element.flag=true;
+            }
+          });
+        }
+        else if(!met_opt && obj_opt){
+          this.optimizeaction = 2;
+          let optimizearray=[];
+          optimizearray = optimizearray.concat(this.campaignDetail.Favourable, this.campaignDetail.Watchlist, this.campaignDetail.Unfavourable);
+          optimizearray.sort(function(a,b) 
+          {
+            if(a.CPO === "" || a.CPO === null) return -1;
+            if(b.CPO === "" || b.CPO === null) return 1;
+            if(a.CPO === b.CPO) return 0;
+            return a.CPO < b.CPO ? 1 : -1;
+          });
+          console.log(optimizearray)
+          optimizearray = optimizearray.slice(0,10);
+
+          this.campaignDetail.Favourable.forEach(element => {
+            element.flag = false;
+            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+              element.flag=true;
+            }
+          });
+          this.campaignDetail.Watchlist.forEach(element => {
+            element.flag = false;
+            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+              element.flag=true;
+            }
+          });
+          this.campaignDetail.Unfavourable.forEach(element => {
+            element.flag = false;
+            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+              element.flag=true;
+            }
+          });
+        }
+        else if(met_opt && obj_opt){
+          this.optimizeaction = 3;
+          let optimizearray=[];
+          optimizearray = optimizearray.concat(this.campaignDetail.Favourable, this.campaignDetail.Watchlist, this.campaignDetail.Unfavourable);
+          optimizearray.sort(function(a,b) 
+          {
+            if(a.CPO === "" || a.CPO === null) return -1;
+            if(b.CPO === "" || b.CPO === null) return 1;
+            if(a.CPO === b.CPO) return 0;
+            return a.CPO < b.CPO ? 1 : -1;
+          });
+          optimizearray = optimizearray.slice(0,10);
+          console.log(optimizearray)
+          this.campaignDetail.Favourable.forEach(element => {
+            element.flag = false;
+            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+              element.flag=true;
+            }
+          });
+          this.campaignDetail.Watchlist.forEach(element => {
+            element.flag = false;
+            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+              element.flag=true;
+            }
+          });
+          this.campaignDetail.Unfavourable.forEach(element => {
+            element.flag = false;
+            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+              element.flag=true;
+            }
+            this.campaignDetail.Unfavourable.forEach(element => {
+            if (element.attributedUnitsOrdered1d === 0) {
+              element.flag=true;
+            }
+          });
+          });
+        }
+        console.log(this.optimizeaction)
       });
     },
     setCampaignCPA(value) {

@@ -94,6 +94,10 @@ export function recommendObjective(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/recommended_objective`, userData);
 }
 
+export function requestOptimization(userData) {
+  return HTTP.post(`${API_URL}/keyword_churner/optimization`, userData);
+}
+
 // global interceptor for catch http status and error
 export function interceptors(cb) {
   HTTP.interceptors.response.use(
