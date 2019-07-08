@@ -889,7 +889,7 @@ export default {
       (this.brandPlannerResult = {}),
         (this.corePlannerResult = {}),
         (this.keywords = {}),
-        (this.CampaignInformation.selectedCategories = {}),
+        (this.CampaignInformation.selectedCategories = []),
         (this.categorySelected = {});
     },
     onLanguageSwitch(checked) {
