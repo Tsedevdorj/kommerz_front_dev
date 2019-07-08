@@ -78,7 +78,7 @@ const router = new Router({
     },
     {
       path: "/keywordin",
-      name: "keywordchurner",
+      name: "keywordchurnerin",
       meta: {
         isAuthenticated: true
       },
