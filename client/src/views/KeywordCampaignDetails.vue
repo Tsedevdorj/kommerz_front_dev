@@ -1,21 +1,28 @@
 <template>
   <div class="keywordcampaigndetail">
-    <a-row style="padding: 16px">
-      <h2>Campaign ID: {{ campaignID }} <a-button type="dashed" style="margin-top: 20px;"
-        >
-        <router-link :to="{ name: 'keywordchurnerin' }"
-            ><a-icon type="rollback" />Back</router-link>
-        </a-button
-      ></h2>
+    <h2>Campaign Name: {{ campaignName }} </h2>
+    <a-row :gutter="48" style="padding-bottom: 10px;">
+      <a-col :lg="{ span: 12 }" :xl="{ span: 12 }">
+        <h5>Campaign ID: {{ campaignID }} </h5>
+      </a-col>
+      <a-col :lg="{ span: 12 }" :xl="{ span: 12 }">
+        <div style="float:right; margin-bottom: 0.5em;">
+          <a-button type="dashed" style="margin-top: 20px;"
+          >
+          <router-link :to="{ name: 'keywordchurnerin' }"
+              ><a-icon type="rollback" />Back</router-link>
+          </a-button
+          >
+          
+        </div>
+      </a-col>
+    </a-row>
+    <a-row style="padding-bottom: 10px;">
       <a-col :span="4">
-        <a-popover title="Title">
-          <template slot="content">
-            <p>Content</p>
-          </template>
+      
           <a-button type="primary" @click="addCampaignTargetEvent"
             >Add Campaign Targets</a-button
           >
-        </a-popover>
       </a-col>
       <a-col :span="6">
         <a-button type="dashed" @click="setCampaignCPA(campaignCPA)"
@@ -768,14 +775,15 @@
 <script>
 // @ is an alias to /src
 
-import { keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization } from "@/api";
+import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization } from "@/api";
 
 export default {
   name: "keywordcampaigndetail",
   data() {
     return {
+      campaignName:"",
       campaignID: "",
-      campaignCPA: "CPO",
+      campaignCPA: "",
       campaignCPASelect: "CPO",
       dateRange: "7",
       targetOrder: "",
@@ -858,7 +866,7 @@ export default {
       this.recommendedloading = true;
       recommendedKeywordFromSimilarCampaign({
         campaignId: this.campaignID,
-        CPA: this.campaignCPA,
+        CPA: this.campaignCPASelect,
         dateRange: this.dateRange || 7
       }).then(response => {
         this.campaignDetail.recommendedKeywordsFromSimilarCampaign = response;
@@ -889,7 +897,7 @@ export default {
         targetOrder: this.targetOrder,
         targetCPO: this.targetCPO,
         targetDateRange: this.targetDateRange,
-        CPA: this.campaignCPA
+        CPA: this.campaignCPASelect
 
       }).then(response =>{
         console.log(response);
@@ -996,15 +1004,29 @@ export default {
       });
     },
     setCampaignCPA(value) {
+      if (value !== ""){
       this.campaignCPASelect = value;
+      }
+    },
+    getCampaignInfo(){
+      
+      campaignInfo({
+        campaignId: this.campaignID,
+      }).then(response => {
+        this.campaignName = response.data;
+      
+      });
     }
   },
+
   mounted() {
     this.campaignID = this.$route.params.id;
+    this.getCampaignInfo();
     this.getCampaignDetail();
     this.getRecommendedKeyword();
     this.getRecommendedKeywordFromSimilarCampaigns();
     this.getCompetitorKeyword();
+    
   }
 };
 </script>
