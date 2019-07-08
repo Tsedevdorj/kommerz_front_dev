@@ -74,6 +74,11 @@ export function keywordChurner() {
   return HTTP.get(`${API_URL}/keyword_churner/campaigns`);
 }
 
+export function campaignInfo(userData) {
+  return HTTP.post(`${API_URL}/keyword_churner/campaign_info`, userData);
+}
+
+
 export function keywordReport(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/keywords`, userData);
 }
