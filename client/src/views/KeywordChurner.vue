@@ -12,9 +12,9 @@
         key="campaignId"
       >
       </a-table-column>
-      <a-table-column title="Name" dataIndex="name" key="name">
+      <a-table-column title="Name" dataIndex="name" key="name" width="200px">
       </a-table-column>
-      <a-table-column title="Start Date" dataIndex="startDate" key="startDate">
+      <a-table-column title="Start Date" dataIndex="startDate" key="startDate" width="100px">
       </a-table-column>
       <a-table-column title="State" dataIndex="state" key="state">
         <template slot-scope="text">
