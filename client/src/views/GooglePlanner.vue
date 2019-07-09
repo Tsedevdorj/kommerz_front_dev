@@ -886,10 +886,12 @@ export default {
     },
     prev() {
       this.current--;
-      (this.brandPlannerResult = {}),
-        (this.corePlannerResult = {}),
-        (this.keywords = {}),
-        (this.categorySelected = {});
+      let self = this;
+      (self.brandPlannerResult = {}),
+        (self.corePlannerResult = {}),
+        (self.keywords = {}),
+        (self.CampaignInformation.selectedCategories = new Array()),
+        (self.categorySelected = {});
     },
     onLanguageSwitch(checked) {
       this.CampaignInformation.languageSwitch = checked;
