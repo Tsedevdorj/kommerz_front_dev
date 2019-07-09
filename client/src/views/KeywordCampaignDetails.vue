@@ -63,17 +63,18 @@
     >
       <a-col :span="8">
         <label>Target Volume: </label>
-        <a-input placeholder="Order volumne" v-model="targetOrder"></a-input>
+        <a-input placeholder="Order volumne" v-model="campaignTargetDetail.targetOrder"></a-input>
         
       </a-col>
       <a-col :span="8">
         <label>Target CPA: </label>
-        <a-input placeholder="Target CPO" v-model="targetCPO"></a-input>
+        <a-input placeholder="Target CPO" v-model="campaignTargetDetail.targetCPO"></a-input>
       </a-col>
       <a-col :span="8">
         <label>Target Date range: </label>
-        <a-range-picker @change="onChangeDatePicker" 
-        v-model="keepDateRange"
+        <a-range-picker
+        v-model="campaignTargetDetail.targetDateRange"
+        :format="YYYY-MM-DD"
         >
           <template slot="renderExtraFooter">
             extra footer
@@ -88,7 +89,7 @@
     >
       <a-col :span="8">
         <label>Budget: </label>
-        <a-input placeholder="Budget" ></a-input>
+        <a-input placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
         
       </a-col>
       <a-col :span="8">
@@ -773,9 +774,17 @@
 </template>
 
 <script>
-// @ is an alias to /src
+// Danish provided tracking script START
+window.__lo_site_id = 162488;
 
-import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization } from "@/api";
+    (function() {
+        var wa = document.createElement('script'); wa.type = 'text/javascript'; wa.async = true;
+        wa.src = 'https://d10lpsik1i8c69.cloudfront.net/w.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(wa, s);
+      })();
+// Danish provided tracking script END
+
+import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization , campaignTargetGet} from "@/api";
 
 export default {
   name: "keywordcampaigndetail",
@@ -786,10 +795,13 @@ export default {
       campaignCPA: "",
       campaignCPASelect: "CPO",
       dateRange: "7",
-      targetOrder: "",
-      targetCPO: "",
-      targetDateRange: "",
-      keepDateRange: null,
+      campaignTargetDetail:{
+        targetBudget:"",
+        targetOrder: "",
+        targetCPO: "",
+        targetDateRange: "",
+ 
+      },
       addCampaignTarget: false,
       confirmSend: false,
       campaignDetail: {
@@ -815,7 +827,9 @@ export default {
 
     },
     onChangeDatePicker(date, dateString) {
-      this.targetDateRange = dateString;
+      this.campaignTargetDetail.targetDateRange = dateString;
+      console.log(this.campaignTargetDetail.keepDateRange[0].format('YYYY-MM-DD'))
+      console.log(this.campaignTargetDetail.keepDateRange[1].format('YYYY-MM-DD'))
     },
     getCampaignDetail() {
       this.loading = true;
@@ -896,7 +910,7 @@ export default {
         campaignId: this.campaignID,
         targetOrder: this.targetOrder,
         targetCPO: this.targetCPO,
-        targetDateRange: this.targetDateRange,
+        targetDateRange: this.campaignTargetDetail.targetDateRange,
         CPA: this.campaignCPASelect
 
       }).then(response =>{
@@ -1016,6 +1030,19 @@ export default {
         this.campaignName = response.data;
       
       });
+    },
+    getCampaignTarget(){
+      campaignTargetGet(this.campaignID
+      ).then(response => {
+        console.log(response)
+        if (response.data != null && response.data !== undefined){
+          // this.targetOrder = response.data.,
+          // this.targetCPO,
+          // this.campaignTargetDetail.targetDateRange,
+          // CPA: this.campaignCPASelect
+        }
+        
+      })
     }
   },
 
@@ -1026,7 +1053,7 @@ export default {
     this.getRecommendedKeyword();
     this.getRecommendedKeywordFromSimilarCampaigns();
     this.getCompetitorKeyword();
-    
+    this.getCampaignTarget()
   }
 };
 </script>
