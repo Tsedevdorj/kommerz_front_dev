@@ -37,10 +37,9 @@
           </div>
         </template>
       </a-table-column>
-      <a-table-column title="Action kw" dataIndex="inactionkw" key="inactionkw">
+      <a-table-column title="Active keywords count" dataIndex="inactionkw" key="inactionkw">
       </a-table-column>
-      <a-table-column title="Total kw" dataIndex="totalkw" key="totalkw">
-      </a-table-column>
+     
       <a-table-column
         title="Actions"
         dataIndex="actions"
