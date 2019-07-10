@@ -20,8 +20,8 @@
     <a-row style="padding-bottom: 10px;">
       <a-col :span="4">
       
-          <a-button type="primary" @click="addCampaignTargetEvent"
-            >Add Campaign Targets</a-button
+          <a-button type="primary" @click="showCampaignTargetEvent"
+            >Show Campaign Targets</a-button
           >
       </a-col>
       <a-col :span="6">
@@ -56,7 +56,7 @@
         <a-button shape="circle" icon="reload" @click="getCampaignDetail" />
       </a-col>
     </a-row>
-    <template v-if="addCampaignTarget">
+    <template v-if="showCampaignTarget">
     <a-row
       :gutter="32"
       style="padding: 0 16px 16px 16px"
@@ -74,7 +74,7 @@
         <label>Target Date range: </label>
         <a-range-picker
         v-model="campaignTargetDetail.targetDateRange"
-        :format="YYYY-MM-DD"
+        :format="campaignTargetDetail.targetDateFormat"
         >
           <template slot="renderExtraFooter">
             extra footer
@@ -93,18 +93,26 @@
         
       </a-col>
       <a-col :span="8">
-        <a-button
+        <a-button v-if="campaignTargetAvail"
           type="primary"
           style="margin-top: 20px; width: 150px"
-          @click="requestRecommenendObjective"
+          @click="modifyTarget"
           :loading="confirmSend"
-          >Send</a-button
+          >Confirm edit</a-button
+        >
+
+        <a-button v-else
+          type="primary"
+          style="margin-top: 20px; width: 150px"
+          @click="createNewTarget"
+          :loading="confirmSend"
+          >Create New</a-button
         >
       </a-col>
       <a-col :span="8">
-        <a-button color="red" @click="closeCampaignTargetEvent" style="margin-top: 20px; width: 150px"
+        <a-button v-if="campaignTargetAvail" type="danger" @click="deleteTarget" style="margin-top: 20px; width: 150px"
           ><a-icon type="close"
-        />Close</a-button>
+        />Delete</a-button>
       </a-col>
     </a-row>
     </template>
@@ -784,7 +792,10 @@ window.__lo_site_id = 162488;
       })();
 // Danish provided tracking script END
 
-import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization , campaignTargetGet} from "@/api";
+import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization , campaignTargetGet, campaignTargetCreate, campaignTargetEdit, campaignTargetDelete} from "@/api";
+import moment from 'moment';
+moment.locale('ja')
+
 
 export default {
   name: "keywordcampaigndetail",
@@ -800,9 +811,11 @@ export default {
         targetOrder: "",
         targetCPO: "",
         targetDateRange: "",
+        targetDateFormat: "YYYY-MM-DD"
  
       },
-      addCampaignTarget: false,
+      campaignTargetAvail: false,
+      showCampaignTarget: false,
       confirmSend: false,
       campaignDetail: {
         Favourable: [],
@@ -825,11 +838,6 @@ export default {
   methods: {
     handleChange(){
 
-    },
-    onChangeDatePicker(date, dateString) {
-      this.campaignTargetDetail.targetDateRange = dateString;
-      console.log(this.campaignTargetDetail.keepDateRange[0].format('YYYY-MM-DD'))
-      console.log(this.campaignTargetDetail.keepDateRange[1].format('YYYY-MM-DD'))
     },
     getCampaignDetail() {
       this.loading = true;
@@ -887,12 +895,10 @@ export default {
         this.recommendedloading = false;
       });
     },
-    addCampaignTargetEvent() {
-      this.addCampaignTarget = true;
+    showCampaignTargetEvent() {
+      this.showCampaignTarget = !this.showCampaignTarget;
     },
-    closeCampaignTargetEvent() {
-      this.addCampaignTarget = false;
-    },
+
     requestRecommenendObjective() {
       this.confirmSend = true;
       this.objectiveloading = true;
@@ -902,7 +908,7 @@ export default {
       }).then(response => {
         this.confirmSend = false;
         this.objectiveloading = false;
-        this.addCampaignTarget = false;
+        this.showCampaignTarget = false;
         this.campaignCPA = response.data;
       
       });
@@ -1031,16 +1037,63 @@ export default {
       
       });
     },
+    createNewTarget(){
+      campaignTargetCreate({
+        campaignId: this.campaignID,
+        campaignTargetVolume: this.campaignTargetDetail.targetOrder,
+        campaignTargetBudget: this.campaignTargetDetail.targetBudget,
+        campaignTargetCPO: this.campaignTargetDetail.targetCPO,
+        campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
+        campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
+      }).then(response =>{
+        this.getCampaignTarget();
+      }).catch(error => {
+          this.responseError = error.response.data.message;
+          this.$message.error("Error: " + this.responseError);
+        });
+
+    },
+    modifyTarget(){
+      campaignTargetEdit({
+        campaignId: this.campaignID,
+        campaignTargetVolume: this.campaignTargetDetail.targetOrder,
+        campaignTargetBudget: this.campaignTargetDetail.targetBudget,
+        campaignTargetCPO: this.campaignTargetDetail.targetCPO,
+        campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
+        campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
+      }).then(response => {
+        this.getCampaignTarget();
+      }).catch(error =>{
+        this.responseError = error.response.data.message;
+        this.$message.error("Error: " + this.responseError);
+      })
+    },
+    deleteTarget(){
+      campaignTargetDelete(this.campaignID
+      ).then(response => {
+        this.getCampaignTarget();
+      })
+    },
     getCampaignTarget(){
       campaignTargetGet(this.campaignID
       ).then(response => {
         console.log(response)
         if (response.data != null && response.data !== undefined){
-          // this.targetOrder = response.data.,
-          // this.targetCPO,
-          // this.campaignTargetDetail.targetDateRange,
-          // CPA: this.campaignCPASelect
+
+          this.campaignTargetDetail.targetOrder = response.data.targetVolume;
+          this.campaignTargetDetail.targetCPO = response.data.targetCPO;
+          this.campaignTargetDetail.targetDateRange = [moment(response.data.targetStartDate, "YYYY-MM-DD"), moment(response.data.targetEndDate, "YYYY-MM-DD")];
+          this.campaignTargetDetail.targetBudget = response.data.targetBudget;
+          this.campaignTargetAvail = true;
         }
+        else{
+          this.campaignTargetAvail = false;
+          this.campaignTargetDetail.targetOrder = '';
+          this.campaignTargetDetail.targetCPO = '';
+          this.campaignTargetDetail.targetDateRange = null;
+          this.campaignTargetDetail.targetBudget = '';
+        }
+        console.log(this.campaignTargetDetail.targetDateRange)
         
       })
     }
