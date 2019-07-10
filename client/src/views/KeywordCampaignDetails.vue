@@ -839,7 +839,6 @@ export default {
     handleChange(){
 
     },
-
     getCampaignDetail() {
       this.loading = true;
       keywordReport({
