@@ -78,6 +78,22 @@ export function campaignInfo(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/campaign_info`, userData);
 }
 
+export function campaignTargetGet(userData) {
+  return HTTP.get(`${API_URL}/keyword_churner/campaign_target/${userData}`);
+}
+
+export function campaignTargetCreate(userData) {
+  return HTTP.post(`${API_URL}/keyword_churner/campaign_target`, userData);
+}
+
+export function campaignTargetDelete(userData) {
+  return HTTP.delete(`${API_URL}/keyword_churner/campaign_target/${userData}`);
+}
+
+export function campaignTargetEdit(userData) {
+  return HTTP.put(`${API_URL}/keyword_churner/campaign_target`, userData);
+}
+
 
 export function keywordReport(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/keywords`, userData);
