@@ -1047,6 +1047,7 @@ export default {
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response =>{
         this.getCampaignTarget();
+        this.requestRecommenendObjective();
       }).catch(error => {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
@@ -1063,6 +1064,7 @@ export default {
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response => {
         this.getCampaignTarget();
+        this.requestRecommenendObjective();
       }).catch(error =>{
         this.responseError = error.response.data.message;
         this.$message.error("Error: " + this.responseError);
