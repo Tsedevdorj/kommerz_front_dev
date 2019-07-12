@@ -1107,7 +1107,8 @@ export default {
     this.getRecommendedKeyword();
     this.getRecommendedKeywordFromSimilarCampaigns();
     this.getCompetitorKeyword();
-    this.getCampaignTarget()
+    this.getCampaignTarget();
+    this.requestRecommenendObjective();
   }
 };
 </script>
