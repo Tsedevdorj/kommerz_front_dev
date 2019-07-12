@@ -904,7 +904,6 @@ export default {
       this.objectiveloading = true;
       recommendObjective({
         campaignId: this.campaignID,
-        targetOrder: this.targetOrder
       }).then(response => {
         this.confirmSend = false;
         this.objectiveloading = false;
