@@ -56,6 +56,13 @@
         <a-button shape="circle" icon="reload" @click="getCampaignDetail" />
       </a-col>
     </a-row>
+    <a-row style="padding-bottom: 10px;">
+      <a-col :span="12">
+        <a-button type="dashed"
+          >Recommended Action: {{ recommendActionMessage }}</a-button
+        >
+      </a-col>
+    </a-row>
     <template v-if="showCampaignTarget">
     <a-row
       :gutter="32"
@@ -856,6 +863,7 @@ export default {
       recommendedloading:true,
       optimizeaction: 0,
       optimizeRecommend:[],
+      recommendActionMessage:"",
     };
   },
   methods: {
@@ -936,113 +944,123 @@ export default {
       });
       requestOptimization({
         campaignId: this.campaignID,
-        targetOrder: this.targetOrder,
-        targetCPO: this.targetCPO,
-        targetDateRange: this.campaignTargetDetail.targetDateRange,
         CPA: this.campaignCPASelect
 
       }).then(response =>{
         console.log(response);
         let met_opt = response.data.metricOp;
         let obj_opt = response.data.objectiveOpt;
-        if (met_opt && !obj_opt){
-          this.optimizeaction = 1;
-          this.optimizeRecommend = this.optimizeRecommend.concat(this.campaignDetail.recommendedKeywords.data, this.campaignDetail.recommendedKeywordsFromSimilarCampaign.data, this.campaignDetail.competitorKeywords.data);
-          this.optimizeRecommend.sort(function(a,b) 
-          {
-            return a.bid - b.bid;
-          });
-          this.optimizeRecommend = this.optimizeRecommend.slice(0,10);
-          this.campaignDetail.recommendedKeywords.data.forEach(element => {
-            element.flag = false;
-            if (this.optimizeRecommend.includes(element)) {
-              element.flag=true;
-            }
-          });
-          this.campaignDetail.recommendedKeywordsFromSimilarCampaign.data.forEach(element => {
-            element.flag = false;
-            if (this.optimizeRecommend.includes(element)) {
-              element.flag=true;
-            }
-          });
-          this.campaignDetail.competitorKeywords.data.forEach(element => {
-            element.flag = false;
-            if (this.optimizeRecommend.includes(element)) {
-              element.flag=true;
-            }
-          });
-        }
-        else if(!met_opt && obj_opt){
-          this.optimizeaction = 2;
-          let optimizearray=[];
-          optimizearray = optimizearray.concat(this.campaignDetail.Favourable, this.campaignDetail.Watchlist, this.campaignDetail.Unfavourable);
-          optimizearray.sort(function(a,b) 
-          {
-            if(a.CPO === "" || a.CPO === null) return -1;
-            if(b.CPO === "" || b.CPO === null) return 1;
-            if(a.CPO === b.CPO) return 0;
-            return a.CPO < b.CPO ? 1 : -1;
-          });
-          console.log(optimizearray)
-          optimizearray = optimizearray.slice(0,10);
+      //   if (met_opt && !obj_opt){
+      //     this.optimizeaction = 1;
+      //     this.optimizeRecommend = this.optimizeRecommend.concat(this.campaignDetail.recommendedKeywords.data, this.campaignDetail.recommendedKeywordsFromSimilarCampaign.data, this.campaignDetail.competitorKeywords.data);
+      //     this.optimizeRecommend.sort(function(a,b) 
+      //     {
+      //       return a.bid - b.bid;
+      //     });
+      //     this.optimizeRecommend = this.optimizeRecommend.slice(0,10);
+      //     this.campaignDetail.recommendedKeywords.data.forEach(element => {
+      //       element.flag = false;
+      //       if (this.optimizeRecommend.includes(element)) {
+      //         element.flag=true;
+      //       }
+      //     });
+      //     this.campaignDetail.recommendedKeywordsFromSimilarCampaign.data.forEach(element => {
+      //       element.flag = false;
+      //       if (this.optimizeRecommend.includes(element)) {
+      //         element.flag=true;
+      //       }
+      //     });
+      //     this.campaignDetail.competitorKeywords.data.forEach(element => {
+      //       element.flag = false;
+      //       if (this.optimizeRecommend.includes(element)) {
+      //         element.flag=true;
+      //       }
+      //     });
+      //   }
+      //   else if(!met_opt && obj_opt){
+      //     this.optimizeaction = 2;
+      //     let optimizearray=[];
+      //     optimizearray = optimizearray.concat(this.campaignDetail.Favourable, this.campaignDetail.Watchlist, this.campaignDetail.Unfavourable);
+      //     optimizearray.sort(function(a,b) 
+      //     {
+      //       if(a.CPO === "" || a.CPO === null) return -1;
+      //       if(b.CPO === "" || b.CPO === null) return 1;
+      //       if(a.CPO === b.CPO) return 0;
+      //       return a.CPO < b.CPO ? 1 : -1;
+      //     });
+      //     console.log(optimizearray)
+      //     optimizearray = optimizearray.slice(0,10);
 
-          this.campaignDetail.Favourable.forEach(element => {
-            element.flag = false;
-            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-              element.flag=true;
-            }
-          });
-          this.campaignDetail.Watchlist.forEach(element => {
-            element.flag = false;
-            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-              element.flag=true;
-            }
-          });
-          this.campaignDetail.Unfavourable.forEach(element => {
-            element.flag = false;
-            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-              element.flag=true;
-            }
-          });
-        }
-        else if(met_opt && obj_opt){
-          this.optimizeaction = 3;
-          let optimizearray=[];
-          optimizearray = optimizearray.concat(this.campaignDetail.Favourable, this.campaignDetail.Watchlist, this.campaignDetail.Unfavourable);
-          optimizearray.sort(function(a,b) 
-          {
-            if(a.CPO === "" || a.CPO === null) return -1;
-            if(b.CPO === "" || b.CPO === null) return 1;
-            if(a.CPO === b.CPO) return 0;
-            return a.CPO < b.CPO ? 1 : -1;
-          });
-          optimizearray = optimizearray.slice(0,10);
-          console.log(optimizearray)
-          this.campaignDetail.Favourable.forEach(element => {
-            element.flag = false;
-            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-              element.flag=true;
-            }
-          });
-          this.campaignDetail.Watchlist.forEach(element => {
-            element.flag = false;
-            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-              element.flag=true;
-            }
-          });
-          this.campaignDetail.Unfavourable.forEach(element => {
-            element.flag = false;
-            if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-              element.flag=true;
-            }
-            this.campaignDetail.Unfavourable.forEach(element => {
-            if (element.attributedUnitsOrdered1d === 0) {
-              element.flag=true;
-            }
-          });
-          });
-        }
-        console.log(this.optimizeaction)
+      //     this.campaignDetail.Favourable.forEach(element => {
+      //       element.flag = false;
+      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+      //         element.flag=true;
+      //       }
+      //     });
+      //     this.campaignDetail.Watchlist.forEach(element => {
+      //       element.flag = false;
+      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+      //         element.flag=true;
+      //       }
+      //     });
+      //     this.campaignDetail.Unfavourable.forEach(element => {
+      //       element.flag = false;
+      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+      //         element.flag=true;
+      //       }
+      //     });
+      //   }
+      //   else if(met_opt && obj_opt){
+      //     this.optimizeaction = 3;
+      //     let optimizearray=[];
+      //     optimizearray = optimizearray.concat(this.campaignDetail.Favourable, this.campaignDetail.Watchlist, this.campaignDetail.Unfavourable);
+      //     optimizearray.sort(function(a,b) 
+      //     {
+      //       if(a.CPO === "" || a.CPO === null) return -1;
+      //       if(b.CPO === "" || b.CPO === null) return 1;
+      //       if(a.CPO === b.CPO) return 0;
+      //       return a.CPO < b.CPO ? 1 : -1;
+      //     });
+      //     optimizearray = optimizearray.slice(0,10);
+      //     console.log(optimizearray)
+      //     this.campaignDetail.Favourable.forEach(element => {
+      //       element.flag = false;
+      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+      //         element.flag=true;
+      //       }
+      //     });
+      //     this.campaignDetail.Watchlist.forEach(element => {
+      //       element.flag = false;
+      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+      //         element.flag=true;
+      //       }
+      //     });
+      //     this.campaignDetail.Unfavourable.forEach(element => {
+      //       element.flag = false;
+      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
+      //         element.flag=true;
+      //       }
+      //       this.campaignDetail.Unfavourable.forEach(element => {
+      //       if (element.attributedUnitsOrdered1d === 0) {
+      //         element.flag=true;
+      //       }
+      //     });
+      //     });
+      //   }
+      //   console.log(this.optimizeaction)]
+      if (!met_opt && !obj_opt){
+        this.recommendActionMessage = "No Action required"
+      }
+      else if(met_opt && !obj_opt){
+        this.recommendActionMessage = "Add new keywords to optimize for Volume"
+
+      }
+      else if(!met_opt && obj_opt){
+        this.recommendActionMessage = "Remove high CPO keywords"
+      }
+      else if(met_opt && obj_opt){
+        this.recommendActionMessage = "Optimize for CPO and Volume"
+      }
       });
     },
     setCampaignCPA(value) {
