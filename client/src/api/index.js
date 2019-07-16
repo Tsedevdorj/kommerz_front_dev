@@ -11,7 +11,7 @@ export const HTTP = axios;
 // default API_URL
 export const API_URL =
   window.location.href.indexOf("localhost") >= 0
-    ? "https://34.85.54.191/api"
+    ? "http://localhost:5000/api"
     : "https://test.kommerz.digidon.net/api";
 HTTP.defaults.headers.common[
   "Authorization"
@@ -72,6 +72,10 @@ export function domainAdd(userData) {
 
 export function keywordChurner() {
   return HTTP.get(`${API_URL}/keyword_churner/campaigns`);
+}
+
+export function  keywordChurnerProfile() {
+  return HTTP.get(`${API_URL}/keyword_churner/profiles`);
 }
 
 export function campaignInfo(userData) {

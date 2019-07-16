@@ -72,7 +72,7 @@ window.__lo_site_id = 162488;
       })();
 // Danish provided tracking script END
 
-import { keywordChurner } from "@/api";
+import { keywordChurner, keywordChurnerProfile } from "@/api";
 
 export default {
   name: "keywordchurner",
@@ -96,12 +96,25 @@ export default {
           this.$router.push({ name: "keywordchurner"});
         });
     },
+    getProfilesList(){
+      keywordChurnerProfile()
+      .then(response => {
+          console.log(response.data);
+          this.loading = false;
+        })
+        .catch(error => {
+          this.responseError = error.response.data.message;
+          this.$message.error("Error: " + this.responseError);
+          this.$router.push({ name: "keywordchurner"});
+        });
+    },
     goCampaignRecord(id) {
       this.$router.push({ name: "keywordcampaigndetails", params: { id } });
     }
   },
   mounted() {
     this.getList();
+    this.getProfilesList();
   }
 };
 </script>
