@@ -1,63 +1,69 @@
 <template>
   <div class="keywordchurner">
-    <a-table
-      :rowKey="record => record.campaignId"
-      :dataSource="campaignList"
-      :loading="loading"
-      style="padding-bottom: 20px;"
-    >
-      <a-table-column
-        title="Campaign ID"
-        dataIndex="campaignId"
-        key="campaignId"
+    <a-row :gutter="48" style="padding-bottom: 10px;">
+      <a-select style="width: 100px" v-module="selectProfile">
+          <a-select-option v-for="item in availableProfiles" :key="item.profileId" :value="item.profileId">{{item.accountName}}</a-select-option>
+    </a-row>
+    <a-row :gutter="48" style="padding-bottom: 10px;">
+      <a-table
+        :rowKey="record => record.campaignId"
+        :dataSource="campaignList"
+        :loading="loading"
+        style="padding-bottom: 20px;"
       >
-      </a-table-column>
-      <a-table-column title="Name" dataIndex="name" key="name" width="200px">
-      </a-table-column>
-      <a-table-column title="Start Date" dataIndex="startDate" key="startDate" width="100px">
-      </a-table-column>
-      <a-table-column title="State" dataIndex="state" key="state">
-        <template slot-scope="text">
-          <div>
-            <a-tag v-if="text == 'archived'">{{ text }}</a-tag>
-            <a-tag v-if="text == 'enabled'" color="green">{{ text }}</a-tag>
-            <a-tag v-if="text == 'paused'" color="orange">{{ text }}</a-tag>
-          </div>
-        </template>
-      </a-table-column>
-      <a-table-column
-        title="Targeting Type"
-        dataIndex="targetingType"
-        key="targetingType"
-      >
-        <template slot-scope="text">
-          <div>
-            <a-tag v-if="text == 'manual'" color="orange">{{ text }}</a-tag>
-            <a-tag v-if="text == 'auto'" color="green">{{ text }}</a-tag>
-          </div>
-        </template>
-      </a-table-column>
-      <a-table-column title="Active keywords count" dataIndex="inactionkw" key="inactionkw">
-      </a-table-column>
-     
-      <a-table-column
-        title="Actions"
-        dataIndex="actions"
-        key="actions"
-        align="center"
-      >
-        <template slot-scope="text, record">
-          <div>
-            <a-button
-              type="primary"
-              @click="goCampaignRecord(record.campaignId)"
-              ghost
-              icon="eye"
-            ></a-button>
-          </div>
-        </template>
-      </a-table-column>
-    </a-table>
+        <a-table-column
+          title="Campaign ID"
+          dataIndex="campaignId"
+          key="campaignId"
+        >
+        </a-table-column>
+        <a-table-column title="Name" dataIndex="name" key="name" width="200px">
+        </a-table-column>
+        <a-table-column title="Start Date" dataIndex="startDate" key="startDate" width="100px">
+        </a-table-column>
+        <a-table-column title="State" dataIndex="state" key="state">
+          <template slot-scope="text">
+            <div>
+              <a-tag v-if="text == 'archived'">{{ text }}</a-tag>
+              <a-tag v-if="text == 'enabled'" color="green">{{ text }}</a-tag>
+              <a-tag v-if="text == 'paused'" color="orange">{{ text }}</a-tag>
+            </div>
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="Targeting Type"
+          dataIndex="targetingType"
+          key="targetingType"
+        >
+          <template slot-scope="text">
+            <div>
+              <a-tag v-if="text == 'manual'" color="orange">{{ text }}</a-tag>
+              <a-tag v-if="text == 'auto'" color="green">{{ text }}</a-tag>
+            </div>
+          </template>
+        </a-table-column>
+        <a-table-column title="Active keywords count" dataIndex="inactionkw" key="inactionkw">
+        </a-table-column>
+      
+        <a-table-column
+          title="Actions"
+          dataIndex="actions"
+          key="actions"
+          align="center"
+        >
+          <template slot-scope="text, record">
+            <div>
+              <a-button
+                type="primary"
+                @click="goCampaignRecord(record.campaignId)"
+                ghost
+                icon="eye"
+              ></a-button>
+            </div>
+          </template>
+        </a-table-column>
+      </a-table>
+    </a-row>
   </div>
 </template>
 
@@ -80,7 +86,9 @@ export default {
     return {
       campaignList: [],
       loading: true,
-      responseError: {}
+      responseError: {},
+      selectProfile:"",
+      availableProfiles:[],
     };
   },
   methods: {
@@ -100,6 +108,7 @@ export default {
       keywordChurnerProfile()
       .then(response => {
           console.log(response.data);
+          this.availableProfiles.response.data;
           this.loading = false;
         })
         .catch(error => {
