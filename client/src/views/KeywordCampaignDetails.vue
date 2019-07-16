@@ -983,8 +983,9 @@ export default {
 
       }).then(response =>{
         console.log(response);
-        let met_opt = response.data.metricOp;
-        let obj_opt = response.data.objectiveOpt;
+        if (response.data != null && response.data !== undefined){
+          let met_opt = response.data.metricOp;
+          let obj_opt = response.data.objectiveOpt;
       //   if (met_opt && !obj_opt){
       //     this.optimizeaction = 1;
       //     this.optimizeRecommend = this.optimizeRecommend.concat(this.campaignDetail.recommendedKeywords.data, this.campaignDetail.recommendedKeywordsFromSimilarCampaign.data, this.campaignDetail.competitorKeywords.data);
@@ -1083,19 +1084,23 @@ export default {
       //     });
       //   }
       //   console.log(this.optimizeaction)]
-      if (!met_opt && !obj_opt){
-        this.recommendActionMessage = "No Action required"
-      }
-      else if(met_opt && !obj_opt){
-        this.recommendActionMessage = "Add new keywords to optimize for Volume"
+          if (!met_opt && !obj_opt){
+            this.recommendActionMessage = "No Action required"
+          }
+          else if(met_opt && !obj_opt){
+            this.recommendActionMessage = "Add new keywords to optimize for Volume"
 
-      }
-      else if(!met_opt && obj_opt){
-        this.recommendActionMessage = "Remove high CPO keywords"
-      }
-      else if(met_opt && obj_opt){
-        this.recommendActionMessage = "Optimize for CPO and Volume"
-      }
+          }
+          else if(!met_opt && obj_opt){
+            this.recommendActionMessage = "Remove high CPO keywords"
+          }
+          else if(met_opt && obj_opt){
+            this.recommendActionMessage = "Optimize for CPO and Volume"
+          }
+        }
+        else{
+          this.recommendActionMessage = ""
+        }
       });
     },
     setCampaignCPA(value) {
