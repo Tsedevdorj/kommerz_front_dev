@@ -142,16 +142,23 @@
     </a-row>
     </template>
     <a-collapse
-      defaultActiveKey="1"
+      v-model="collapseActiveKey" 
       :bordered="false"
       style="padding-bottom: 40px;"
     >
-      <a-collapse-panel header="Unfavourable" key="1">
+      <a-collapse-panel key="1">
+        <template slot="header" >
+          <h3 style="font-weight: bold; color:red;">
+          Unfavourable
+          </h3>
+        </template>
         <a-table
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.Unfavourable"
           size="small"
           :loading="loading"
+          :scroll="{ y: 300}"
+          :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
@@ -279,12 +286,19 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel header="Watchlist" key="2">
+      <a-collapse-panel key="2">
+        <template slot="header" >
+          <h3 style="font-weight: bold; color:orange;">
+          Watchlist
+          </h3>
+        </template>
         <a-table
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.Watchlist"
           size="small"
           :loading="loading"
+          :scroll="{ y: 300}"
+          :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
@@ -414,12 +428,19 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel header="Favourable" key="3">
+      <a-collapse-panel key="3">
+        <template slot="header" >
+          <h3 style="font-weight: bold; color:green;">
+          Favourable
+          </h3>
+        </template>
         <a-table
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.Favourable"
           size="small"
           :loading="loading"
+          :scroll="{ y: 300}"
+          :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
@@ -544,12 +565,19 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel header="Immature" key="4">
+      <a-collapse-panel key="4">
+        <template slot="header" >
+          <h3 style="font-weight: bold; color:blue;">
+          Immature
+          </h3>
+        </template>
         <a-table
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.Immature"
           size="small"
           :loading="loading"
+          :scroll="{ y: 300}"
+          :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
@@ -637,6 +665,8 @@
           :dataSource="campaignDetail.recommendedKeywords.data"
           size="small"
           :loading="recommendedloading"
+          :scroll="{ y: 300}"
+          :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
@@ -694,6 +724,8 @@
           :dataSource="campaignDetail.recommendedKeywordsFromSimilarCampaign.data"
           size="small"
           :loading="recommendedloading"
+          :scroll="{ y: 300}"
+          :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
@@ -751,6 +783,8 @@
           :dataSource="campaignDetail.competitorKeywords.data"
           size="small"
           :loading="competitorloading"
+          :scroll="{ y: 300}"
+          :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
@@ -864,6 +898,7 @@ export default {
       optimizeaction: 0,
       optimizeRecommend:[],
       recommendActionMessage:"",
+      collapseActiveKey:["1","2","3"],
     };
   },
   methods: {
