@@ -104,7 +104,7 @@
 
       <a-col :span="8">
         <label>Yesterdays CPA: </label>
-        <a-input v-model="campaignInformation.campaignYesterdayCPA" placeholder="Not found" disabled />
+        <a-input v-model="campaignInformation.campaignYesterdayCPA" placeholder="Infinite" disabled />
       </a-col>
 
       <a-col :span="8">
