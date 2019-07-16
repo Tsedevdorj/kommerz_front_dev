@@ -1057,7 +1057,7 @@ export default {
       }).then(response => {
         this.campaignInformation.campaignName = response.data.campaign_name;
         this.campaignInformation.campaignYesterdayVolume = response.data.campaign_yesterday_volume;
-        this.campaignInformation.campaignYesterdayCPA = response.data.campaign_yesterday_order;
+        this.campaignInformation.campaignYesterdayCPA = response.data.campaign_yesterday_cpa;
       
       });
     },
