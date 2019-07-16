@@ -157,13 +157,14 @@
           :dataSource="campaignDetail.Unfavourable"
           size="small"
           :loading="loading"
-          :scroll="{ y: 300}"
+          :scroll="{ y: 300, x: 1000}"
           :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
             dataIndex="keywordText"
             key="keywordText"
+            :width=120
           >
             <template slot-scope="text,record" style="width: 60px">
               <a-popover title="Keyword more info">
@@ -178,18 +179,18 @@
               </a-popover>
             </template>
           </a-table-column>
-          <a-table-column title="Cost" dataIndex="cost" key="cost">
+          <a-table-column title="Cost" dataIndex="cost" key="cost" :width=80>
           </a-table-column>
-          <a-table-column title="Imp" dataIndex="impressions" key="impressions">
+          <a-table-column title="Imp" dataIndex="impressions" key="impressions" :width=80>
           </a-table-column>
-          <a-table-column title="CPM" dataIndex="CPM" key="CPM">
+          <a-table-column title="CPM" dataIndex="CPM" key="CPM" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
-          <a-table-column title="Clicks" dataIndex="clicks" key="clicks">
+          <a-table-column title="Clicks" dataIndex="clicks" key="clicks" :width=80>
           </a-table-column>
-          <a-table-column title="CPC" dataIndex="CPC" key="CPC">
+          <a-table-column title="CPC" dataIndex="CPC" key="CPC" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
@@ -198,9 +199,10 @@
             title="Order"
             dataIndex="attributedUnitsOrdered1d"
             key="attributedUnitsOrdered1d"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="CPO" dataIndex="CPO" key="CPO">
+          <a-table-column title="CPO" dataIndex="CPO" key="CPO" :width=80>
             <template slot-scope="text">
               <div else>
                 {{ truncate_float(text) }}
@@ -211,14 +213,15 @@
             title="Sales"
             dataIndex="attributedSales1d"
             key="attributedSales1d"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="ROAS" dataIndex="ROS" key="ROS">
+          <a-table-column title="ROAS" dataIndex="ROS" key="ROS" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
-          <a-table-column title="Trend" dataIndex="trend" key="trend">
+          <a-table-column title="Trend" dataIndex="trend" key="trend" :width=80>
             <template slot-scope="text">
               <a-tag v-if="text === null" >
                 N/A
@@ -230,12 +233,13 @@
               </template>
             </template>
           </a-table-column>
-          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
           <a-table-column
             title="Flag"
             dataIndex="recommendPause"
             key="recommendPause"
+            :width=80
           >
             <template slot-scope="text, record">
               <a-tag v-if="text == true">
@@ -248,6 +252,7 @@
             title="suggestedBid"
             dataIndex="suggestedBid"
             key="suggestedBid"
+            :width=80
           >
             <template slot-scope="text">
               <a-tag v-if="text === undefined || text.length == 0">
@@ -264,6 +269,7 @@
             dataIndex="actions"
             key="actions"
             align="center"
+            :width=100
           >
             <template slot-scope="text, record">
               <div>
@@ -297,13 +303,14 @@
           :dataSource="campaignDetail.Watchlist"
           size="small"
           :loading="loading"
-          :scroll="{ y: 300}"
+          :scroll="{ y: 300, x: 1000}"
           :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
             dataIndex="keywordText"
             key="keywordText"
+            :width=120
           >
             <template slot-scope="text, record" style="width: 60px">
               <a-popover title="Keyword more info">
@@ -318,18 +325,18 @@
               </a-popover>
             </template>
           </a-table-column>
-          <a-table-column title="Cost" dataIndex="cost" key="cost">
+          <a-table-column title="Cost" dataIndex="cost" key="cost" :width=80>
           </a-table-column>
-          <a-table-column title="Imp" dataIndex="impressions" key="impressions">
+          <a-table-column title="Imp" dataIndex="impressions" key="impressions" :width=80>
           </a-table-column>
-          <a-table-column title="CPM" dataIndex="CPM" key="CPM">
+          <a-table-column title="CPM" dataIndex="CPM" key="CPM" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
-          <a-table-column title="Clicks" dataIndex="clicks" key="clicks">
+          <a-table-column title="Clicks" dataIndex="clicks" key="clicks" :width=80>
           </a-table-column>
-          <a-table-column title="CPC" dataIndex="CPC" key="CPC">
+          <a-table-column title="CPC" dataIndex="CPC" key="CPC" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
@@ -338,9 +345,10 @@
             title="Order"
             dataIndex="attributedUnitsOrdered1d"
             key="attributedUnitsOrdered1d"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="CPO" dataIndex="CPO" key="CPO">
+          <a-table-column title="CPO" dataIndex="CPO" key="CPO" :width=80>
             <template slot-scope="text">
               <div else>
                 {{ truncate_float(text) }}
@@ -351,14 +359,15 @@
             title="Sales"
             dataIndex="attributedSales1d"
             key="attributedSales1d"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="ROAS" dataIndex="ROS" key="ROS">
+          <a-table-column title="ROAS" dataIndex="ROS" key="ROS" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
-          <a-table-column title="Trend" dataIndex="trend" key="trend">
+          <a-table-column title="Trend" dataIndex="trend" key="trend" :width=80>
             <template slot-scope="text">
               <a-tag v-if="text === null" >
                 N/A
@@ -370,12 +379,13 @@
               </template>
             </template>
           </a-table-column>
-          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
           <a-table-column
             title="Flag"
             dataIndex="coefficientVariance"
             key="coefficientVariance"
+            :width=80
           >
             <template slot-scope="text, record">
               <a-tag v-if="text > 1" color="red">
@@ -391,6 +401,7 @@
             title="suggestedBid"
             dataIndex="suggestedBid"
             key="suggestedBid"
+            :width=80
           >
             <template slot-scope="text">
               <a-tag v-if="text === undefined || text.length == 0">
@@ -407,6 +418,7 @@
             dataIndex="actions"
             key="actions"
             align="center"
+            :width=100
           >
             <template slot-scope="text, record">
               <div>
@@ -439,13 +451,14 @@
           :dataSource="campaignDetail.Favourable"
           size="small"
           :loading="loading"
-          :scroll="{ y: 300}"
+          :scroll="{ y: 300, x: 1000}"
           :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
             dataIndex="keywordText"
             key="keywordText"
+            :width=120
           >
             <template slot-scope="text, record" style="width: 60px">
               <a-popover title="Keyword more info">
@@ -460,18 +473,18 @@
               </a-popover>
             </template>
           </a-table-column>
-          <a-table-column title="Cost" dataIndex="cost" key="cost">
+          <a-table-column title="Cost" dataIndex="cost" key="cost" :width=80>
           </a-table-column>
-          <a-table-column title="Imp" dataIndex="impressions" key="impressions">
+          <a-table-column title="Imp" dataIndex="impressions" key="impressions" :width=80>
           </a-table-column>
-          <a-table-column title="CPM" dataIndex="CPM" key="CPM">
+          <a-table-column title="CPM" dataIndex="CPM" key="CPM" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
-          <a-table-column title="Clicks" dataIndex="clicks" key="clicks">
+          <a-table-column title="Clicks" dataIndex="clicks" key="clicks" :width=80>
           </a-table-column>
-          <a-table-column title="CPC" dataIndex="CPC" key="CPC">
+          <a-table-column title="CPC" dataIndex="CPC" key="CPC" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
@@ -480,9 +493,10 @@
             title="Order"
             dataIndex="attributedUnitsOrdered1d"
             key="attributedUnitsOrdered1d"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="CPO" dataIndex="CPO" key="CPO">
+          <a-table-column title="CPO" dataIndex="CPO" key="CPO" :width=80>
             <template slot-scope="text">
               <div else>
                 {{ truncate_float(text) }}
@@ -493,14 +507,15 @@
             title="Sales"
             dataIndex="attributedSales1d"
             key="attributedSales1d"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="ROAS" dataIndex="ROS" key="ROS">
+          <a-table-column title="ROAS" dataIndex="ROS" key="ROS" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
-          <a-table-column title="Trend" dataIndex="trend" key="trend">
+          <a-table-column title="Trend" dataIndex="trend" key="trend" :width=80>
             <template slot-scope="text">
               <a-tag v-if="text === null" >
                 N/A
@@ -512,7 +527,7 @@
               </template>
             </template>
           </a-table-column>
-          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
           <a-table-column
           v-if="(optimizeaction==2 || optimizeaction==3)"
@@ -528,6 +543,7 @@
             title="suggestedBid"
             dataIndex="suggestedBid"
             key="suggestedBid"
+            :width=80
           >
             <template slot-scope="text">
               <a-tag v-if="text === undefined || text.length == 0">
@@ -544,6 +560,7 @@
             dataIndex="actions"
             key="actions"
             align="center"
+            :width=100
           >
             <template slot-scope="text, record">
               <div>
@@ -576,13 +593,14 @@
           :dataSource="campaignDetail.Immature"
           size="small"
           :loading="loading"
-          :scroll="{ y: 300}"
+          :scroll="{ y: 300, x: 1000}"
           :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
             dataIndex="keywordText"
             key="keywordText"
+            :width=150
           >
             <template slot-scope="text, record" style="width: 60px">
               <a-popover title="Keyword more info">
@@ -597,18 +615,18 @@
               </a-popover>
             </template>
           </a-table-column>
-          <a-table-column title="Cost" dataIndex="cost" key="cost">
+          <a-table-column title="Cost" dataIndex="cost" key="cost" :width=80>
           </a-table-column>
-          <a-table-column title="Imp" dataIndex="impressions" key="impressions">
+          <a-table-column title="Imp" dataIndex="impressions" key="impressions" :width=80>
           </a-table-column>
-          <a-table-column title="CPM" dataIndex="CPM" key="CPM">
+          <a-table-column title="CPM" dataIndex="CPM" key="CPM" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
-          <a-table-column title="Clicks" dataIndex="clicks" key="clicks">
+          <a-table-column title="Clicks" dataIndex="clicks" key="clicks" :width=80>
           </a-table-column>
-          <a-table-column title="CPC" dataIndex="CPC" key="CPC">
+          <a-table-column title="CPC" dataIndex="CPC" key="CPC" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
@@ -617,9 +635,10 @@
             title="Order"
             dataIndex="attributedUnitsOrdered1d"
             key="attributedUnitsOrdered1d"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="CPO" dataIndex="CPO" key="CPO">
+          <a-table-column title="CPO" dataIndex="CPO" key="CPO" :width=80>
             <template slot-scope="text">
               <div else>
                 {{ truncate_float(text) }}
@@ -630,14 +649,15 @@
             title="Sales"
             dataIndex="attributedSales1d"
             key="attributedSales1d"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="ROAS" dataIndex="ROS" key="ROS">
+          <a-table-column title="ROAS" dataIndex="ROS" key="ROS" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
           </a-table-column>
-          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
           
           <a-table-column
@@ -645,6 +665,7 @@
             dataIndex="actions"
             key="actions"
             align="center"
+            :width=100
           >
             <template slot-scope="text, record">
               <div>
@@ -665,13 +686,14 @@
           :dataSource="campaignDetail.recommendedKeywords.data"
           size="small"
           :loading="recommendedloading"
-          :scroll="{ y: 300}"
+          :scroll="{ y: 300, x: 1000}"
           :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
             dataIndex="keywordText"
             key="keywordText"
+            :width=150
           >
             <template slot-scope="text, record" style="width: 60px">
               <a-popover title="Keyword more info">
@@ -690,11 +712,12 @@
             title="Match Type"
             dataIndex="matchType"
             key="matchType"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
-          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag">
+          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag" :width=80>
             <template slot-scope="text">
               <a-icon v-if="text !== undefined && text===true" type="smile" theme="outlined" />
             </template>
@@ -704,6 +727,7 @@
             dataIndex="actions"
             key="actions"
             align="center"
+            :width=100
           >
             <template slot-scope="text, record">
               <div>
@@ -724,13 +748,14 @@
           :dataSource="campaignDetail.recommendedKeywordsFromSimilarCampaign.data"
           size="small"
           :loading="recommendedloading"
-          :scroll="{ y: 300}"
+          :scroll="{ y: 300, x: 1000}"
           :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
             dataIndex="keywordText"
             key="keywordText"
+            :width=150
           >
             <template slot-scope="text, record" style="width: 60px">
               <a-popover title="Keyword more info">
@@ -749,11 +774,12 @@
             title="Match Type"
             dataIndex="matchType"
             key="matchType"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
-          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag">
+          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag" :width=80>
             <template slot-scope="text">
               <a-icon v-if="text !== undefined && text===true" type="smile" theme="outlined" />
             </template>
@@ -763,6 +789,7 @@
             dataIndex="actions"
             key="actions"
             align="center"
+            :width=100
           >
             <template slot-scope="text, record">
               <div>
@@ -783,13 +810,14 @@
           :dataSource="campaignDetail.competitorKeywords.data"
           size="small"
           :loading="competitorloading"
-          :scroll="{ y: 300}"
+          :scroll="{ y: 300, x: 1000}"
           :pagination="false"
         >
           <a-table-column
             title="Keyword Text"
             dataIndex="keywordText"
             key="keywordText"
+            :width=150
           >
             <template slot-scope="text,record" style="width: 60px">
               <a-popover title="Keyword more info">
@@ -808,11 +836,12 @@
             title="Match Type"
             dataIndex="matchType"
             key="matchType"
+            :width=80
           >
           </a-table-column>
-          <a-table-column title="Bid" dataIndex="bid" key="bid">
+          <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
-          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag">
+          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag" :width=80>
             <template slot-scope="text">
               <a-icon v-if="text !== undefined && text===true" type="smile" theme="outlined" />
             </template>
@@ -822,6 +851,7 @@
             dataIndex="actions"
             key="actions"
             align="center"
+            :width=100
           >
             <template slot-scope="text, record">
               <div>
@@ -929,7 +959,7 @@ export default {
     },
     truncate_float(value) {
       if (value == null) return "INF";
-      else return value.toFixed(2);
+      else return value.toFixed(1);
     },
     getRecommendedKeyword() {
       this.recommendedloading = true;
