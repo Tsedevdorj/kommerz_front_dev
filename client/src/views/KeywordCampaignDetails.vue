@@ -1,6 +1,6 @@
 <template>
   <div class="keywordcampaigndetail">
-    <h2>Campaign Name: {{ campaignName }} </h2>
+    <h2>Campaign Name: {{ campaignInformation.campaignName }} </h2>
     <a-row :gutter="48" style="padding-bottom: 10px;">
       <a-col :lg="{ span: 12 }" :xl="{ span: 12 }">
         <h5>Campaign ID: {{ campaignID }} </h5>
@@ -87,11 +87,29 @@
       :gutter="32"
       style="padding: 0 16px 16px 16px"
     >
+      
+
+      <a-col :span="8">
+        <label>Yesterdays Volume: </label>
+        <a-input v-model="campaignInformation.campaignYesterdayVolume" placeholder="Not found" disabled />
+        
+      </a-col>
+
+      <a-col :span="8">
+        <label>Yesterdays CPA: </label>
+        <a-input v-model="campaignInformation.campaignYesterdayCPA" placeholder="Not found" disabled />
+      </a-col>
+
       <a-col :span="8">
         <label>Budget: </label>
         <a-input placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
-        
       </a-col>
+      
+    </a-row>
+    <a-row
+      :gutter="32"
+      style="padding: 0 16px 16px 16px"
+    >
       <a-col :span="8">
         <a-button v-if="campaignTargetAvail"
           type="primary"
@@ -801,7 +819,12 @@ export default {
   name: "keywordcampaigndetail",
   data() {
     return {
-      campaignName:"",
+      campaignInformation: {
+        campaignName: "",
+        campaignYesterdayVolume : "",
+        campaignYesterdayCPO: "",
+      },
+      
       campaignID: "",
       campaignCPA: "",
       campaignCPASelect: "CPO",
@@ -1032,7 +1055,9 @@ export default {
       campaignInfo({
         campaignId: this.campaignID,
       }).then(response => {
-        this.campaignName = response.data;
+        this.campaignInformation.campaignName = response.data.campaign_name;
+        this.campaignInformation.campaignYesterdayVolume = response.data.campaign_yesterday_volume;
+        this.campaignInformation.campaignYesterdayCPA = response.data.campaign_yesterday_order;
       
       });
     },
