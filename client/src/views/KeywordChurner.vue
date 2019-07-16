@@ -105,7 +105,7 @@ export default {
         .catch(error => {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
-          this.$router.push({ name: "keywordchurner"});
+          // this.$router.push({ name: "keywordchurner"});
         });
     },
     goCampaignRecord(id) {
