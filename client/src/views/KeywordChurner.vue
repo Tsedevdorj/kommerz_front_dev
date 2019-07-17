@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     getList() {
-      keywordChurner(null)
+      keywordChurner('')
         .then(response => {
           this.campaignList = response.data;
           this.loading = false;
