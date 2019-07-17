@@ -3,6 +3,7 @@
     <a-row :gutter="48" style="padding-bottom: 10px;">
       <a-select style="width: 100px" v-module="selectProfile" @change="handleChange">
           <a-select-option v-for="item in availableProfiles" :key="item.profileId" :value="item.profileId">{{item.accountName}}</a-select-option>
+        </a-select>
     </a-row>
     <a-row :gutter="48" style="padding-bottom: 10px;">
       <a-table
@@ -93,7 +94,7 @@ export default {
   },
   methods: {
     getList() {
-      keywordChurner()
+      keywordChurner(null)
         .then(response => {
           this.campaignList = response.data;
           this.loading = false;
