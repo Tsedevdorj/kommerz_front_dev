@@ -118,8 +118,9 @@ export default {
           // this.$router.push({ name: "keywordchurner"});
         });
     },
-    handleChange(){
-      keywordChurner(this.selectProfile)
+    handleChange(value){
+      console.log(value)
+      keywordChurner(value.key)
         .then(response => {
           this.campaignList = response.data;
           this.loading = false;
