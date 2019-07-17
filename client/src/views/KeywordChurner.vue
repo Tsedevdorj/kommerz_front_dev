@@ -1,7 +1,7 @@
 <template>
   <div class="keywordchurner">
     <a-row :gutter="48" style="padding-bottom: 10px;">
-      <a-select style="width: 100px" v-module="selectProfile">
+      <a-select style="width: 100px" v-module="selectProfile" @change="handleChange">
           <a-select-option v-for="item in availableProfiles" :key="item.profileId" :value="item.profileId">{{item.accountName}}</a-select-option>
     </a-row>
     <a-row :gutter="48" style="padding-bottom: 10px;">
@@ -108,7 +108,7 @@ export default {
       keywordChurnerProfile()
       .then(response => {
           console.log(response.data);
-          this.availableProfiles.response.data;
+          this.availableProfiles = response.data;
           this.loading = false;
         })
         .catch(error => {
@@ -117,6 +117,19 @@ export default {
           // this.$router.push({ name: "keywordchurner"});
         });
     },
+    handleChange(){
+      keywordChurner(this.selectProfile)
+        .then(response => {
+          this.campaignList = response.data;
+          this.loading = false;
+        })
+        .catch(error => {
+          this.responseError = error.response.data.message;
+          this.$message.error("Error: " + this.responseError);
+          this.$router.push({ name: "keywordchurner"});
+        });
+    },
+
     goCampaignRecord(id) {
       this.$router.push({ name: "keywordcampaigndetails", params: { id } });
     }

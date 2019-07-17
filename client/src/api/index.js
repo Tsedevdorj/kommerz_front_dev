@@ -70,8 +70,8 @@ export function domainAdd(userData) {
   return HTTP.post(`${API_URL}/superadmin/domain/add`, userData);
 }
 
-export function keywordChurner() {
-  return HTTP.get(`${API_URL}/keyword_churner/campaigns`);
+export function keywordChurner(userData) {
+  return HTTP.get(`${API_URL}/keyword_churner/campaigns/${userData}`);
 }
 
 export function  keywordChurnerProfile() {
