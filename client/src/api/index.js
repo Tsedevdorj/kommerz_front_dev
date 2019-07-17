@@ -71,7 +71,12 @@ export function domainAdd(userData) {
 }
 
 export function keywordChurner(userData) {
-  return HTTP.get(`${API_URL}/keyword_churner/campaigns/${userData}`);
+  if(userData != null && userData !== undefined){
+    return HTTP.get(`${API_URL}/keyword_churner/campaigns/${userData}`);
+  }
+  else{
+    return HTTP.get(`${API_URL}/keyword_churner/campaigns`);
+  }
 }
 
 export function  keywordChurnerProfile() {
