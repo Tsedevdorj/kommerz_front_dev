@@ -120,7 +120,7 @@ export default {
     },
     handleChange(value){
       console.log(value)
-      keywordChurner(value.key)
+      keywordChurner(value)
         .then(response => {
           this.campaignList = response.data;
           this.loading = false;
