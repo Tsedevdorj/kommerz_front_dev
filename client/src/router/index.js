@@ -169,6 +169,13 @@ router.beforeEach((to, from, next) => {
       next("/login");
     }
   }
+  if (store.getters.isAuthenticated) {
+    if (to.name == 'login') {
+      next("/dashboard");
+    } else {
+      next();
+    }
+  }
   next();
 });
 
