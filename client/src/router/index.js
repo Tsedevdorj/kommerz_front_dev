@@ -165,17 +165,18 @@ router.beforeEach((to, from, next) => {
   if (to.meta.isAuthenticated) {
     if (store.getters.isAuthenticated == true) {
       next();
-    } else {
+    }
+    else {
       next("/login");
     }
   }
-  if (store.getters.isAuthenticated) {
-    if (to.name == 'login') {
-      next("/dashboard");
-    } else {
-      next();
-    }
-  }
+  // if (store.getters.isAuthenticated) {
+  //   if (to.name == 'login') {
+  //     next("/dashboard");
+  //   } else {
+  //     next();
+  //   }
+  // }
   next();
 });
 

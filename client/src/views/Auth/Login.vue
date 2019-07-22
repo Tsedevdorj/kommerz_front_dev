@@ -80,6 +80,11 @@ export default {
         this.authenticate();
       }
     }
+  },
+  mounted() {
+    if(this.$store.getters.isAuthenticated == true) {
+      this.$router.push({ name: "dashboard" });
+    }
   }
 };
 </script>

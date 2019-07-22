@@ -121,7 +121,7 @@
                   >
                     <a-select-option value="1">User</a-select-option>
                     <a-select-option value="2">Admin</a-select-option>
-                    <a-select-option value="3">Super Admin</a-select-option>
+                    <a-select-option v-if="isSuperAdmin == true" value="3">Super Admin</a-select-option>
                   </a-select>
                 </template>
                 <a-button type="primary" ghost>Change Role</a-button>
@@ -137,6 +137,7 @@
 <script>
 // @ is an alias to /src
 import { userList, adminUserUpdate } from "@/api";
+import store from "@/store";
 
 export default {
   name: "usermanagement",
@@ -145,7 +146,8 @@ export default {
       userList: [],
       loading: false,
       userRole: "",
-      responseError: {}
+      responseError: {},
+      isSuperAdmin: store.getters.isSuperAdmin == true
     };
   },
   methods: {
