@@ -29,7 +29,7 @@ const store = new Vuex.Store({
     logout(context) {
       if (context.getters.isAuthenticated) {
         localStorage.removeItem("auth_token");
-        router.go({ name: "login" });
+        router.push({ name: "login" });
         context.commit("clientLogout");
       }
     },
