@@ -109,6 +109,41 @@
         <label>Budget: </label>
         <a-input placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
       </a-col>
+
+      <a-col :span="8">
+        <label>Target Daily Volume: </label>
+        <a-input v-model="campaignTargetDetail.dailyVolume" placeholder="Not found" disabled />
+
+      </a-col>
+
+      
+    </a-row>
+    <a-row
+      :gutter="32"
+      style="padding: 0 16px 16px 16px"
+    >
+      <a-col :span="6">
+        <label>Required Vol: </label>
+        <a-input v-model="campaignTargetDetail.reqVol" placeholder="Not found" disabled ></a-input>
+      </a-col>
+
+      <a-col :span="6">
+        <label>Required CPA: </label>
+        <a-input v-model="campaignTargetDetail.reqCPA" placeholder="Not found" disabled />
+
+      </a-col>
+
+      <a-col :span="6">
+        <label>Threshold Vol: </label>
+        <a-input v-model="campaignTargetDetail.thresholdVol" placeholder="Not found" disabled />
+
+      </a-col>
+
+      <a-col :span="6">
+        <label>Threshold CPA: </label>
+        <a-input v-model="campaignTargetDetail.thresholdCPA" placeholder="Not found" disabled />
+
+      </a-col>
       
     </a-row>
     <a-row
@@ -905,7 +940,13 @@ export default {
         targetOrder: "",
         targetCPO: "",
         targetDateRange: "",
-        targetDateFormat: "YYYY-MM-DD"
+        targetDateFormat: "YYYY-MM-DD",
+        dailyVolume:"",
+        reqVol: "",
+        reqCPA: "",
+        thresholdCPA: "",
+        thresholdVol:"",
+
  
       },
       campaignTargetAvail: false,
@@ -1021,6 +1062,11 @@ export default {
         this.optimizeMsg = response.data.msg
         this.CPAMsg = response.data.CPA_msg
         this.VolumeMsg = response.data.volume_msg
+        this.campaignTargetDetail.dailyVolume = response.data.daily_vol.toFixed(1) 
+        this.campaignTargetDetail.reqVol = response.data.req_vol.toFixed(1) 
+        this.campaignTargetDetail.reqCPA = response.data.req_CPA.toFixed(1) 
+        this.campaignTargetDetail.thresholdCPA = response.data.threshold_CPA.toFixed(1) 
+        this.campaignTargetDetail.thresholdVol = response.data.threshold_vol.toFixed(1) 
       }).catch((error) => {
         this.responseError = error.response.data
       })
