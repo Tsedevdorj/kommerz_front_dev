@@ -116,6 +116,12 @@
 
       </a-col>
 
+      <a-col :span="8">
+        <label>Cost runrate: </label>
+        <a-input v-model="campaignTargetDetail.costRunrate" placeholder="Not found" disabled />
+
+      </a-col>
+
       
     </a-row>
     <a-row
@@ -289,14 +295,15 @@
             key="suggestedBid"
             :width=80
           >
-            <template slot-scope="text">
-              <a-tag v-if="text === undefined || text.length == 0">
-                No suggestion
-              </a-tag>
+            <template slot-scope="text, record">
+              <template v-if="showReduce && !record.pause">
+                <a-tag v-if="text === undefined || text === null">
+                  N/A
+                </a-tag>
 
-              <a-select v-else style="width: 100px" @change="handleChange">
-                <a-select-option v-for="item in text" :key="item" :value="item">{{item}}</a-select-option>
-              </a-select>
+
+                <a-input-number v-else :min="1" :max="100000" :defaultValue="text" @change="handleChange" />
+              </template>
             </template>
           </a-table-column>
           <a-table-column
@@ -440,7 +447,7 @@
           >
             <template slot-scope="text">
               <a-tag v-if="text === undefined || text.length == 0">
-                No suggestion
+                N/A
               </a-tag>
 
               <a-select v-else style="width: 100px" @change="handleChange">
@@ -565,13 +572,14 @@
           <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
           <a-table-column
-          v-if="(optimizeaction==2 || optimizeaction==3)"
             title="Flag"
             dataIndex="flag"
             key="flag"
           >
-            <template slot-scope="text, record">
-                <a-icon v-if="(optimizeaction==2 || optimizeaction==3) && record.flag==true" type="frown" style="color:red"/>
+             <template slot-scope="text, record">
+              <a-tag v-if="showIncrease">
+                  Increase
+                </a-tag>
             </template>
           </a-table-column>
           <a-table-column
@@ -581,13 +589,13 @@
             :width=80
           >
             <template slot-scope="text">
-              <a-tag v-if="text === undefined || text.length == 0">
-                No suggestion
-              </a-tag>
+              <template  v-if="showIncrease">
+                <a-tag v-if="text === undefined || text === null">
+                  N/A
+                </a-tag>
 
-              <a-select v-else style="width: 100px" @change="handleChange">
-                <a-select-option v-for="item in text" :key="item" :value="item">{{item}}</a-select-option>
-              </a-select>
+                <a-input-number v-else :min="1" :max="100000" :defaultValue="text"  @change="handleChange" />
+              </template>
             </template>
           </a-table-column>
           <a-table-column
@@ -715,7 +723,16 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel header="Recommended Keywords" key="5">
+      <a-collapse-panel key="5">
+        <template slot="header" >
+          <h3 >
+          Recommended Keywords
+          <a-tag v-if="showAdd" >
+                Add
+              </a-tag>
+          </h3>
+          
+        </template>
         <a-table
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.recommendedKeywords.data"
@@ -777,7 +794,16 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel header="Recommended Keywords from similar campaigns" key="6">
+      <a-collapse-panel  key="6">
+        <template slot="header" >
+          <h3 >
+          Recommended Keywords from similar campaigns
+          <a-tag v-if="showAdd" >
+                Add
+              </a-tag>
+          </h3>
+          
+        </template>
         <a-table
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.recommendedKeywordsFromSimilarCampaign.data"
@@ -839,7 +865,16 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel header="Relevant keywords" key="7">
+      <a-collapse-panel key="7">
+        <template slot="header" >
+          <h3 >
+          Relevant keywords
+          <a-tag v-if="showAdd" >
+                Add
+              </a-tag>
+          </h3>
+
+        </template>
         <a-table
           :rowKey="record => record.keywordId"
           :dataSource="campaignDetail.competitorKeywords.data"
@@ -946,6 +981,7 @@ export default {
         reqCPA: "",
         thresholdCPA: "",
         thresholdVol:"",
+        costRunrate: ""
 
  
       },
@@ -972,6 +1008,8 @@ export default {
       collapseActiveKey:["1","2","3"],
       showPause: false,
       showReduce: false,
+      showAdd: true,
+      showIncrease: false,
       optimizeMsg: "",
       CPAMsg: "",
       VolumeMsg: ""
@@ -1059,9 +1097,12 @@ export default {
       }).then((response) => {
         this.showPause = response.data.showPause
         this.showReduce = response.data.showReduce
+        this.showAdd = response.data.showAdd
+        this.showIncrease = response.data.showIncrease
         this.optimizeMsg = response.data.msg
         this.CPAMsg = response.data.CPA_msg
         this.VolumeMsg = response.data.volume_msg
+        this.campaignTargetDetail.costRunrate = response.data.cost_runrate.toFixed(1) 
         this.campaignTargetDetail.dailyVolume = response.data.daily_vol.toFixed(1) 
         this.campaignTargetDetail.reqVol = response.data.req_vol.toFixed(1) 
         this.campaignTargetDetail.reqCPA = response.data.req_CPA.toFixed(1) 
