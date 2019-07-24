@@ -1,19 +1,16 @@
 <template>
   <div class="keywordcampaigndetail">
-    <h2>Campaign Name: {{ campaignInformation.campaignName }} </h2>
     <a-row :gutter="48" style="padding-bottom: 10px;">
       <a-col :lg="{ span: 12 }" :xl="{ span: 12 }">
+        <h2>Campaign Name: {{ campaignInformation.campaignName }} </h2>
         <h5>Campaign ID: {{ campaignID }} </h5>
       </a-col>
       <a-col :lg="{ span: 12 }" :xl="{ span: 12 }">
         <div style="float:right; margin-bottom: 0.5em;">
-          <a-button type="dashed" style="margin-top: 20px;"
-          >
+          <a-button type="dashed">
           <router-link :to="{ name: 'keywordchurnerin' }"
               ><a-icon type="rollback" />Back</router-link>
-          </a-button
-          >
-          
+          </a-button>
         </div>
       </a-col>
     </a-row>
@@ -59,7 +56,21 @@
     <a-row style="padding-bottom: 10px;">
       <a-col :span="12">
         <a-button type="dashed"
-          >Recommended Action: {{ recommendActionMessage }}</a-button
+          >Recommended Action: {{ optimizeMsg }}</a-button
+        >
+      </a-col>
+    </a-row>
+    <a-row style="padding-bottom: 10px;">
+      <a-col :span="12">
+        <a-button type="dashed"
+          >CPA Historically: {{ CPAMsg }}</a-button
+        >
+      </a-col>
+    </a-row>
+    <a-row style="padding-bottom: 10px;">
+      <a-col :span="12">
+        <a-button type="dashed"
+          >Volume Historically: {{ VolumeMsg }}</a-button
         >
       </a-col>
     </a-row>
@@ -94,19 +105,6 @@
       :gutter="32"
       style="padding: 0 16px 16px 16px"
     >
-      
-
-      <a-col :span="8">
-        <label>Yesterdays Volume: </label>
-        <a-input v-model="campaignInformation.campaignYesterdayVolume" placeholder="Not found" disabled />
-        
-      </a-col>
-
-      <a-col :span="8">
-        <label>Yesterdays CPA: </label>
-        <a-input v-model="campaignInformation.campaignYesterdayCPA" placeholder="Infinite" disabled />
-      </a-col>
-
       <a-col :span="8">
         <label>Budget: </label>
         <a-input placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
@@ -242,10 +240,12 @@
             :width=80
           >
             <template slot-scope="text, record">
-              <a-tag v-if="text == true">
-                RP
+              <a-tag v-if="showPause && record.pause">
+                Pause
               </a-tag>
-                <a-icon v-if="(optimizeaction==2 || optimizeaction==3) && record.flag==true" type="frown" style="color:red"/>
+              <a-tag v-if="showReduce && !record.pause">
+                Reduce
+              </a-tag>
             </template>
           </a-table-column>
           <a-table-column
@@ -667,7 +667,7 @@
             align="center"
             :width=100
           >
-            <template slot-scope="text, record">
+            <template>
               <div>
                 <a-button
                   type="danger"
@@ -729,7 +729,7 @@
             align="center"
             :width=100
           >
-            <template slot-scope="text, record">
+            <template>
               <div>
                 <a-button
                   type="primary"
@@ -791,7 +791,7 @@
             align="center"
             :width=100
           >
-            <template slot-scope="text, record">
+            <template>
               <div>
                 <a-button
                   type="primary"
@@ -853,7 +853,7 @@
             align="center"
             :width=100
           >
-            <template slot-scope="text, record">
+            <template>
               <div>
                 <a-button
                   type="primary"
@@ -929,6 +929,11 @@ export default {
       optimizeRecommend:[],
       recommendActionMessage:"",
       collapseActiveKey:["1","2","3"],
+      showPause: false,
+      showReduce: false,
+      optimizeMsg: "",
+      CPAMsg: "",
+      VolumeMsg: ""
     };
   },
   methods: {
@@ -1010,128 +1015,15 @@ export default {
       requestOptimization({
         campaignId: this.campaignID,
         CPA: this.campaignCPASelect
-
-      }).then(response =>{
-        console.log(response);
-        if (response.data != null && response.data !== undefined){
-          let met_opt = response.data.metricOp;
-          let obj_opt = response.data.objectiveOpt;
-      //   if (met_opt && !obj_opt){
-      //     this.optimizeaction = 1;
-      //     this.optimizeRecommend = this.optimizeRecommend.concat(this.campaignDetail.recommendedKeywords.data, this.campaignDetail.recommendedKeywordsFromSimilarCampaign.data, this.campaignDetail.competitorKeywords.data);
-      //     this.optimizeRecommend.sort(function(a,b) 
-      //     {
-      //       return a.bid - b.bid;
-      //     });
-      //     this.optimizeRecommend = this.optimizeRecommend.slice(0,10);
-      //     this.campaignDetail.recommendedKeywords.data.forEach(element => {
-      //       element.flag = false;
-      //       if (this.optimizeRecommend.includes(element)) {
-      //         element.flag=true;
-      //       }
-      //     });
-      //     this.campaignDetail.recommendedKeywordsFromSimilarCampaign.data.forEach(element => {
-      //       element.flag = false;
-      //       if (this.optimizeRecommend.includes(element)) {
-      //         element.flag=true;
-      //       }
-      //     });
-      //     this.campaignDetail.competitorKeywords.data.forEach(element => {
-      //       element.flag = false;
-      //       if (this.optimizeRecommend.includes(element)) {
-      //         element.flag=true;
-      //       }
-      //     });
-      //   }
-      //   else if(!met_opt && obj_opt){
-      //     this.optimizeaction = 2;
-      //     let optimizearray=[];
-      //     optimizearray = optimizearray.concat(this.campaignDetail.Favourable, this.campaignDetail.Watchlist, this.campaignDetail.Unfavourable);
-      //     optimizearray.sort(function(a,b) 
-      //     {
-      //       if(a.CPO === "" || a.CPO === null) return -1;
-      //       if(b.CPO === "" || b.CPO === null) return 1;
-      //       if(a.CPO === b.CPO) return 0;
-      //       return a.CPO < b.CPO ? 1 : -1;
-      //     });
-      //     console.log(optimizearray)
-      //     optimizearray = optimizearray.slice(0,10);
-
-      //     this.campaignDetail.Favourable.forEach(element => {
-      //       element.flag = false;
-      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-      //         element.flag=true;
-      //       }
-      //     });
-      //     this.campaignDetail.Watchlist.forEach(element => {
-      //       element.flag = false;
-      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-      //         element.flag=true;
-      //       }
-      //     });
-      //     this.campaignDetail.Unfavourable.forEach(element => {
-      //       element.flag = false;
-      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-      //         element.flag=true;
-      //       }
-      //     });
-      //   }
-      //   else if(met_opt && obj_opt){
-      //     this.optimizeaction = 3;
-      //     let optimizearray=[];
-      //     optimizearray = optimizearray.concat(this.campaignDetail.Favourable, this.campaignDetail.Watchlist, this.campaignDetail.Unfavourable);
-      //     optimizearray.sort(function(a,b) 
-      //     {
-      //       if(a.CPO === "" || a.CPO === null) return -1;
-      //       if(b.CPO === "" || b.CPO === null) return 1;
-      //       if(a.CPO === b.CPO) return 0;
-      //       return a.CPO < b.CPO ? 1 : -1;
-      //     });
-      //     optimizearray = optimizearray.slice(0,10);
-      //     console.log(optimizearray)
-      //     this.campaignDetail.Favourable.forEach(element => {
-      //       element.flag = false;
-      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-      //         element.flag=true;
-      //       }
-      //     });
-      //     this.campaignDetail.Watchlist.forEach(element => {
-      //       element.flag = false;
-      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-      //         element.flag=true;
-      //       }
-      //     });
-      //     this.campaignDetail.Unfavourable.forEach(element => {
-      //       element.flag = false;
-      //       if (optimizearray.includes(element) && (element.CPO > this.targetCPO || element.CPO === null)) {
-      //         element.flag=true;
-      //       }
-      //       this.campaignDetail.Unfavourable.forEach(element => {
-      //       if (element.attributedUnitsOrdered1d === 0) {
-      //         element.flag=true;
-      //       }
-      //     });
-      //     });
-      //   }
-      //   console.log(this.optimizeaction)]
-          if (!met_opt && !obj_opt){
-            this.recommendActionMessage = "No Action required"
-          }
-          else if(met_opt && !obj_opt){
-            this.recommendActionMessage = "Add new keywords to optimize for Volume"
-
-          }
-          else if(!met_opt && obj_opt){
-            this.recommendActionMessage = "Remove high CPO keywords"
-          }
-          else if(met_opt && obj_opt){
-            this.recommendActionMessage = "Optimize for CPO and Volume"
-          }
-        }
-        else{
-          this.recommendActionMessage = ""
-        }
-      });
+      }).then((response) => {
+        this.showPause = response.data.showPause
+        this.showReduce = response.data.showReduce
+        this.optimizeMsg = response.data.msg
+        this.CPAMsg = response.data.CPA_msg
+        this.VolumeMsg = response.data.volume_msg
+      }).catch((error) => {
+        this.responseError = error.response.data
+      })
     },
     setCampaignCPA(value) {
       if (value !== ""){
@@ -1159,6 +1051,7 @@ export default {
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response =>{
         this.getCampaignTarget();
+        this.getCampaignDetail();
         this.requestRecommenendObjective();
       }).catch(error => {
           this.responseError = error.response.data.message;
@@ -1176,6 +1069,7 @@ export default {
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response => {
         this.getCampaignTarget();
+        this.getCampaignDetail();
         this.requestRecommenendObjective();
       }).catch(error =>{
         this.responseError = error.response.data.message;
@@ -1218,10 +1112,12 @@ export default {
     this.getCampaignInfo();
     this.getCampaignDetail();
     this.getRecommendedKeyword();
-    this.getRecommendedKeywordFromSimilarCampaigns();
-    this.getCompetitorKeyword();
     this.getCampaignTarget();
     this.requestRecommenendObjective();
+    this.getRecommendedKeywordFromSimilarCampaigns();
+    this.getCompetitorKeyword();
+    
+    
   }
 };
 </script>
