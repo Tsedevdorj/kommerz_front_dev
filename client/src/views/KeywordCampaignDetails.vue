@@ -290,6 +290,7 @@
             </template>
           </a-table-column>
           <a-table-column
+            v-if="showReduce"
             title="suggestedBid"
             dataIndex="suggestedBid"
             key="suggestedBid"
@@ -583,6 +584,7 @@
             </template>
           </a-table-column>
           <a-table-column
+            v-if="showIncrease"
             title="suggestedBid"
             dataIndex="suggestedBid"
             key="suggestedBid"
