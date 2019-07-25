@@ -1196,22 +1196,25 @@ export default {
         campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response =>{
-        campaignTargetCreateO({
-        campaignId: this.campaignID,
-        campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-        campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-        campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-        campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-        campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-        }).then(response =>{});
 
-        this.getCampaignTarget();
-        this.getCampaignDetail();
-        this.requestRecommenendObjective();
       }).catch(error => {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
-        });
+      });
+      campaignTargetCreateO({
+      campaignId: this.campaignID,
+      campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
+      campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
+      campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+      campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
+      campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
+      }).then(response =>{}).catch(error => {
+        this.responseError = error.response.data.message;
+        this.$message.error("Error: " + this.responseError);
+      });;
+      this.getCampaignTarget();
+      this.getCampaignDetail();
+      this.requestRecommenendObjective();
 
     },
     modifyTarget(){
@@ -1223,31 +1226,34 @@ export default {
         campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response => {
-        campaignTargetEditO({
-          campaignId: this.campaignID,
-          campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-          campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-          campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-          campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-          campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-        }).then(response =>{}).catch(error => {
-          this.responseError = error.response.data.message;
-          this.$message.error("Error: " + this.responseError);
-        });
-        this.getCampaignTarget();
-        this.getCampaignDetail();
-        this.requestRecommenendObjective();
+        
+        
       }).catch(error => {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
-        });
+      });
+      campaignTargetEditO({
+        campaignId: this.campaignID,
+        campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
+        campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
+        campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+        campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
+        campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
+      }).then(response =>{}).catch(error => {
+        this.responseError = error.response.data.message;
+        this.$message.error("Error: " + this.responseError);
+      });
+      this.getCampaignTarget();
+      this.getCampaignDetail();
+      this.requestRecommenendObjective();
     },
     deleteTarget(){
       campaignTargetDelete(this.campaignID
       ).then(response => {
-        campaignTargetDeleteO(this.campaignID).then(response => {});
-        this.getCampaignTarget();
-      })
+        
+      });
+      campaignTargetDeleteO(this.campaignID).then(response => {});
+      this.getCampaignTarget();
     },
     getCampaignTarget(){
       campaignTargetGet(this.campaignID
