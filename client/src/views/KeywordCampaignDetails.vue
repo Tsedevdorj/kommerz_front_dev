@@ -284,7 +284,7 @@
               <a-tag v-if="showPause && record.pause">
                 Pause
               </a-tag>
-              <a-tag v-if="showReduce && !record.pause">
+              <a-tag v-if="showReduce && (!record.pause || !showPause)">
                 Reduce
               </a-tag>
             </template>
