@@ -1196,7 +1196,7 @@ export default {
         campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response =>{
-
+        console.log(response.data.msg)
       }).catch(error => {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
@@ -1288,10 +1288,8 @@ export default {
           this.campaignTargetDetailO.targetCPO = response.data.targetCPO;
           this.campaignTargetDetailO.targetDateRange = [moment(response.data.targetStartDate, "YYYY-MM-DD"), moment(response.data.targetEndDate, "YYYY-MM-DD")];
           this.campaignTargetDetailO.targetBudget = response.data.targetBudget;
-          this.campaignTargetAvail = true;
         }
         else{
-          this.campaignTargetAvail = false;
           this.campaignTargetDetailO.targetOrder = ''; 
           this.campaignTargetDetailO.targetCPO = '';
           this.campaignTargetDetailO.targetDateRange = null;
