@@ -103,6 +103,21 @@ export function campaignTargetEdit(userData) {
   return HTTP.put(`${API_URL}/keyword_churner/campaign_target`, userData);
 }
 
+export function campaignTargetGetO(userData) {
+  return HTTP.get(`${API_URL}/keyword_churner/campaign_target_ongoing/${userData}`);
+}
+
+export function campaignTargetCreateO(userData) {
+  return HTTP.post(`${API_URL}/keyword_churner/campaign_target_ongoing`, userData);
+}
+
+export function campaignTargetDeleteO(userData) {
+  return HTTP.delete(`${API_URL}/keyword_churner/campaign_target_ongoing/${userData}`);
+}
+
+export function campaignTargetEditO(userData) {
+  return HTTP.put(`${API_URL}/keyword_churner/campaign_target_ongoing`, userData);
+}
 
 export function keywordReport(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/keywords`, userData);

@@ -164,6 +164,44 @@
       style="padding: 0 16px 16px 16px"
     >
       <a-col :span="8">
+        <label>Ongoing Target Volume: </label>
+        <a-input placeholder="Order volumne" v-model="campaignTargetDetailO.targetOrder"></a-input>
+        
+      </a-col>
+      <a-col :span="8">
+        <label>Ongoing Target CPA: </label>
+        <a-input placeholder="Target CPO" v-model="campaignTargetDetailO.targetCPO"></a-input>
+      </a-col>
+      <a-col :span="8">
+        <label> Ongoing Target Date range: </label>
+        <a-range-picker
+        v-model="campaignTargetDetailO.targetDateRange"
+        :format="campaignTargetDetailO.targetDateFormat"
+        >
+          <template slot="renderExtraFooter">
+            extra footer
+          </template>
+        </a-range-picker>
+      </a-col>
+      
+    </a-row>
+    <a-row
+      :gutter="32"
+      style="padding: 0 16px 16px 16px"
+    >
+      <a-col :span="8">
+        <label>Ongoing Budget: </label>
+        <a-input placeholder="Budget" v-model="campaignTargetDetailO.targetBudget"></a-input>
+      </a-col>
+
+
+
+    </a-row>
+    <a-row
+      :gutter="32"
+      style="padding: 0 16px 16px 16px"
+    >
+      <a-col :span="8">
         <a-button v-if="campaignTargetAvail"
           type="primary"
           style="margin-top: 20px; width: 150px"
@@ -960,7 +998,7 @@ window.__lo_site_id = 162488;
       })();
 // Danish provided tracking script END
 
-import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization , campaignTargetGet, campaignTargetCreate, campaignTargetEdit, campaignTargetDelete} from "@/api";
+import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization , campaignTargetGet, campaignTargetCreate, campaignTargetEdit, campaignTargetDelete, campaignTargetGetO, campaignTargetCreateO, campaignTargetEditO, campaignTargetDeleteO} from "@/api";
 import moment from 'moment';
 moment.locale('ja')
 
@@ -992,6 +1030,15 @@ export default {
         thresholdVol:"",
         costRunrate: "",
         CPAstd:""
+
+ 
+      },
+      campaignTargetDetailO:{
+        targetBudget:"",
+        targetOrder: "",
+        targetCPO: "",
+        targetDateRange: "",
+        targetDateFormat: "YYYY-MM-DD"
 
  
       },
@@ -1148,6 +1195,15 @@ export default {
         campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response =>{
+        campaignTargetCreateO({
+        campaignId: this.campaignID,
+        campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
+        campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
+        campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+        campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
+        campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
+        }).then(response =>{});
+
         this.getCampaignTarget();
         this.getCampaignDetail();
         this.requestRecommenendObjective();
@@ -1166,6 +1222,14 @@ export default {
         campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response => {
+        campaignTargetEditO({
+          campaignId: this.campaignID,
+          campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
+          campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
+          campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+          campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
+          campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
+        }).then(response =>{});
         this.getCampaignTarget();
         this.getCampaignDetail();
         this.requestRecommenendObjective();
@@ -1177,6 +1241,7 @@ export default {
     deleteTarget(){
       campaignTargetDelete(this.campaignID
       ).then(response => {
+        campaignTargetDeleteO(this.campaignID).then(response => {});
         this.getCampaignTarget();
       })
     },
@@ -1201,7 +1266,28 @@ export default {
         }
         console.log(this.campaignTargetDetail.targetDateRange)
         
-      })
+      });
+      campaignTargetGetO(this.campaignID
+      ).then(response => {
+        console.log(response)
+        if (response.data != null && response.data !== undefined){
+
+          this.campaignTargetDetailO.targetOrder = response.data.targetVolume;
+          this.campaignTargetDetailO.targetCPO = response.data.targetCPO;
+          this.campaignTargetDetailO.targetDateRange = [moment(response.data.targetStartDate, "YYYY-MM-DD"), moment(response.data.targetEndDate, "YYYY-MM-DD")];
+          this.campaignTargetDetailO.targetBudget = response.data.targetBudget;
+          this.campaignTargetAvail = true;
+        }
+        else{
+          this.campaignTargetAvail = false;
+          this.campaignTargetDetailO.targetOrder = ''; 
+          this.campaignTargetDetailO.targetCPO = '';
+          this.campaignTargetDetailO.targetDateRange = null;
+          this.campaignTargetDetailO.targetBudget = '';
+        }
+        console.log(this.campaignTargetDetailO.targetDateRange)
+        
+      });
     }
   },
 
