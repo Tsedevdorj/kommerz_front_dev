@@ -159,44 +159,44 @@
       </a-col>
       
     </a-row>
-    <a-row
-      :gutter="32"
-      style="padding: 0 16px 16px 16px"
-    >
-      <a-col :span="8">
-        <label>Ongoing Target Volume: </label>
-        <a-input placeholder="Order volumne" v-model="campaignTargetDetailO.targetOrder"></a-input>
+      <a-row
+        :gutter="32"
+        style="padding: 0 16px 16px 16px"
+      >
+        <a-col :span="8">
+          <label>Ongoing Target Volume: </label>
+          <a-input placeholder="Order volumne" v-model="campaignTargetDetailO.targetOrder"></a-input>
+          
+        </a-col>
+        <a-col :span="8">
+          <label>Ongoing Target CPA: </label>
+          <a-input placeholder="Target CPO" v-model="campaignTargetDetailO.targetCPO"></a-input>
+        </a-col>
+        <a-col :span="8">
+          <label> Ongoing Target Date range: </label>
+          <a-range-picker
+          v-model="campaignTargetDetailO.targetDateRange"
+          :format="campaignTargetDetailO.targetDateFormat"
+          >
+            <template slot="renderExtraFooter">
+              extra footer
+            </template>
+          </a-range-picker>
+        </a-col>
         
-      </a-col>
-      <a-col :span="8">
-        <label>Ongoing Target CPA: </label>
-        <a-input placeholder="Target CPO" v-model="campaignTargetDetailO.targetCPO"></a-input>
-      </a-col>
-      <a-col :span="8">
-        <label> Ongoing Target Date range: </label>
-        <a-range-picker
-        v-model="campaignTargetDetailO.targetDateRange"
-        :format="campaignTargetDetailO.targetDateFormat"
-        >
-          <template slot="renderExtraFooter">
-            extra footer
-          </template>
-        </a-range-picker>
-      </a-col>
-      
-    </a-row>
-    <a-row
-      :gutter="32"
-      style="padding: 0 16px 16px 16px"
-    >
-      <a-col :span="8">
-        <label>Ongoing Budget: </label>
-        <a-input placeholder="Budget" v-model="campaignTargetDetailO.targetBudget"></a-input>
-      </a-col>
+      </a-row>
+      <a-row
+        :gutter="32"
+        style="padding: 0 16px 16px 16px"
+      >
+        <a-col :span="8">
+          <label>Ongoing Budget: </label>
+          <a-input placeholder="Budget" v-model="campaignTargetDetailO.targetBudget"></a-input>
+        </a-col>
 
 
 
-    </a-row>
+      </a-row>
     <a-row
       :gutter="32"
       style="padding: 0 16px 16px 16px"
@@ -1021,7 +1021,7 @@ export default {
         targetBudget:"",
         targetOrder: "",
         targetCPO: "",
-        targetDateRange: "",
+        targetDateRange: [],
         targetDateFormat: "YYYY-MM-DD",
         dailyVolume:"",
         reqVol: "",
@@ -1037,7 +1037,7 @@ export default {
         targetBudget:"",
         targetOrder: "",
         targetCPO: "",
-        targetDateRange: "",
+        targetDateRange: [],
         targetDateFormat: "YYYY-MM-DD"
 
  
@@ -1201,6 +1201,7 @@ export default {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
       });
+      if(this.campaignTargetDetailO.targetDateRange.length === 2)
       campaignTargetCreateO({
       campaignId: this.campaignID,
       campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
@@ -1232,6 +1233,7 @@ export default {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
       });
+      if(this.campaignTargetDetailO.targetDateRange.length === 2)
       campaignTargetEditO({
         campaignId: this.campaignID,
         campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
