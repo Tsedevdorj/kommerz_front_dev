@@ -1201,7 +1201,7 @@ export default {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
       });
-      if(this.campaignTargetDetailO.targetDateRange.isArray() && this.campaignTargetDetailO.targetDateRange.length === 2)
+      if(this.campaignTargetDetailO.targetDateRange.constructor === Array && this.campaignTargetDetailO.targetDateRange.length === 2)
       campaignTargetCreateO({
       campaignId: this.campaignID,
       campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
@@ -1233,7 +1233,7 @@ export default {
           this.responseError = error.response.data.message;
           this.$message.error("Error: " + this.responseError);
       });
-      if(this.campaignTargetDetailO.targetDateRange.isArray() && this.campaignTargetDetailO.targetDateRange.length === 2)
+      if(this.campaignTargetDetailO.targetDateRange.constructor === Array && this.campaignTargetDetailO.targetDateRange.length === 2)
       campaignTargetEditO({
         campaignId: this.campaignID,
         campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
