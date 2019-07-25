@@ -1229,7 +1229,10 @@ export default {
           campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
           campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
           campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-        }).then(response =>{});
+        }).then(response =>{}).catch(error =>{
+        this.responseError = error.response.data.message;
+        this.$message.error("Error: " + this.responseError);
+      });
         this.getCampaignTarget();
         this.getCampaignDetail();
         this.requestRecommenendObjective();
