@@ -1152,13 +1152,14 @@ export default {
         campaignId: this.campaignID,
         CPA: this.campaignCPASelect
       }).then((response) => {
+        
+        this.optimizeMsg = response.data.msg
+        this.CPAMsg = response.data.CPA_msg
+        this.VolumeMsg = response.data.volume_msg
         this.showPause = response.data.showPause
         this.showReduce = response.data.showReduce
         this.showAdd = response.data.showAdd
         this.showIncrease = response.data.showIncrease
-        this.optimizeMsg = response.data.msg
-        this.CPAMsg = response.data.CPA_msg
-        this.VolumeMsg = response.data.volume_msg
         this.campaignTargetDetail.costRunrate = response.data.cost_runrate.toFixed(1) 
         this.campaignTargetDetail.dailyVolume = response.data.daily_vol.toFixed(1) 
         this.campaignTargetDetail.reqVol = response.data.req_vol.toFixed(1) 
@@ -1167,7 +1168,7 @@ export default {
         this.campaignTargetDetail.thresholdVol = response.data.threshold_vol.toFixed(1) 
         this.campaignTargetDetail.CPAstd = response.data.CPA_std.toFixed(1) 
       }).catch(error => {
-          this.responseError = error.response.data.message;
+          this.responseError = error.response.data.msg;
           this.$message.error("Error: " + this.responseError);
         });
     },
