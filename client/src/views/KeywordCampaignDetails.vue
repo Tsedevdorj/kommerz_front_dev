@@ -110,17 +110,24 @@
         <a-input placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
       </a-col>
 
-      <a-col :span="8">
+      <a-col :span="5">
         <label>Target Daily Volume: </label>
         <a-input v-model="campaignTargetDetail.dailyVolume" placeholder="Not found" disabled />
 
       </a-col>
 
-      <a-col :span="8">
+      <a-col :span="5">
         <label>Cost runrate: </label>
         <a-input v-model="campaignTargetDetail.costRunrate" placeholder="Not found" disabled />
 
       </a-col>
+
+      <a-col :span="6">
+        <label>CPA STD: </label>
+        <a-input v-model="campaignTargetDetail.CPAstd" placeholder="Not found" disabled />
+
+      </a-col>
+
 
       
     </a-row>
@@ -983,7 +990,8 @@ export default {
         reqCPA: "",
         thresholdCPA: "",
         thresholdVol:"",
-        costRunrate: ""
+        costRunrate: "",
+        CPAstd:""
 
  
       },
@@ -1110,6 +1118,7 @@ export default {
         this.campaignTargetDetail.reqCPA = response.data.req_CPA.toFixed(1) 
         this.campaignTargetDetail.thresholdCPA = response.data.threshold_CPA.toFixed(1) 
         this.campaignTargetDetail.thresholdVol = response.data.threshold_vol.toFixed(1) 
+        this.campaignTargetDetail.CPAstd = response.data.CPA_std.toFixed(1) 
       }).catch((error) => {
         this.responseError = error.response.data
       })
