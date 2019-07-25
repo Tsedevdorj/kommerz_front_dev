@@ -1166,9 +1166,10 @@ export default {
         this.campaignTargetDetail.thresholdCPA = response.data.threshold_CPA.toFixed(1) 
         this.campaignTargetDetail.thresholdVol = response.data.threshold_vol.toFixed(1) 
         this.campaignTargetDetail.CPAstd = response.data.CPA_std.toFixed(1) 
-      }).catch((error) => {
-        this.responseError = error.response.data
-      })
+      }).catch(error => {
+          this.responseError = error.response.data.message;
+          this.$message.error("Error: " + this.responseError);
+        });
     },
     setCampaignCPA(value) {
       if (value !== ""){
@@ -1229,17 +1230,17 @@ export default {
           campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
           campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
           campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-        }).then(response =>{}).catch(error =>{
-        this.responseError = error.response.data.message;
-        this.$message.error("Error: " + this.responseError);
-      });
+        }).then(response =>{}).catch(error => {
+          this.responseError = error.response.data.message;
+          this.$message.error("Error: " + this.responseError);
+        });
         this.getCampaignTarget();
         this.getCampaignDetail();
         this.requestRecommenendObjective();
-      }).catch(error =>{
-        this.responseError = error.response.data.message;
-        this.$message.error("Error: " + this.responseError);
-      })
+      }).catch(error => {
+          this.responseError = error.response.data.message;
+          this.$message.error("Error: " + this.responseError);
+        });
     },
     deleteTarget(){
       campaignTargetDelete(this.campaignID
