@@ -1292,7 +1292,7 @@ export default {
         else{
           this.campaignTargetDetailO.targetOrder = ''; 
           this.campaignTargetDetailO.targetCPO = '';
-          this.campaignTargetDetailO.targetDateRange = null;
+          this.campaignTargetDetailO.targetDateRange = [];
           this.campaignTargetDetailO.targetBudget = '';
         }
         console.log(this.campaignTargetDetailO.targetDateRange)
