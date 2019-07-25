@@ -1100,7 +1100,13 @@ export default {
     },
     truncate_float(value) {
       if (value == null) return "INF";
-      else return value.toFixed(1);
+      else
+        return value.toFixed(1);
+    },
+    truncate_float2(value) {
+      if (value == null) return "N/A";
+      else
+        return value.toFixed(1);
     },
     getRecommendedKeyword() {
       this.recommendedloading = true;
@@ -1160,17 +1166,14 @@ export default {
         this.showReduce = response.data.showReduce
         this.showAdd = response.data.showAdd
         this.showIncrease = response.data.showIncrease
-        this.campaignTargetDetail.costRunrate = response.data.cost_runrate.toFixed(1) 
-        this.campaignTargetDetail.dailyVolume = response.data.daily_vol.toFixed(1) 
-        this.campaignTargetDetail.reqVol = response.data.req_vol.toFixed(1) 
-        this.campaignTargetDetail.reqCPA = response.data.req_CPA.toFixed(1) 
-        this.campaignTargetDetail.thresholdCPA = response.data.threshold_CPA.toFixed(1) 
-        this.campaignTargetDetail.thresholdVol = response.data.threshold_vol.toFixed(1) 
-        this.campaignTargetDetail.CPAstd = response.data.CPA_std.toFixed(1) 
-      }).catch(error => {
-          this.responseError = error.response.data.msg;
-          this.$message.error("Error: " + this.responseError);
-        });
+        this.campaignTargetDetail.costRunrate = this.truncate_float2(response.data.cost_runrate)
+        this.campaignTargetDetail.dailyVolume = this.truncate_float2(response.data.daily_vol)
+        this.campaignTargetDetail.reqVol = this.truncate_float2(response.data.req_vol)
+        this.campaignTargetDetail.reqCPA = this.truncate_float2(response.data.req_CPA)
+        this.campaignTargetDetail.thresholdCPA = this.truncate_float2(response.data.threshold_CPA)
+        this.campaignTargetDetail.thresholdVol = this.truncate_float2(response.data.threshold_vol)
+        this.campaignTargetDetail.CPAstd = this.truncate_float2(response.data.CPA_std)
+      });
     },
     setCampaignCPA(value) {
       if (value !== ""){
