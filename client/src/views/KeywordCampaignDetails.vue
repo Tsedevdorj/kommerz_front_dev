@@ -97,6 +97,7 @@
         <label>Target Date range: </label>
         <a-range-picker
         v-model="campaignTargetDetail.targetDateRange"
+        :disabledDate="disabledDate"
         :format="campaignTargetDetail.targetDateFormat"
         >
           <template slot="renderExtraFooter">
@@ -1088,6 +1089,11 @@ export default {
     };
   },
   methods: {
+    disabledDate(current) {
+      // Can not select days before today and today
+      return current && current < moment().endOf('day');
+    },
+
     handleChange(){
 
     },
@@ -1354,7 +1360,10 @@ export default {
           this.campaignTargetMonthAvail = false;
           this.campaignTargetDetailO.targetOrder = ''; 
           this.campaignTargetDetailO.targetCPO = '';
-          this.campaignTargetDetailO.targetDateRange = [moment().startOf('month'), moment().endOf('month')];
+          if(moment().date() < 4)
+            this.campaignTargetDetailO.targetDateRange = [moment().subtract(1, 'month').set('date',15), moment().set('date',15)];
+          else
+            this.campaignTargetDetailO.targetDateRange = [moment().startOf('month'), moment().endOf('month')];
 
           this.campaignTargetDetailO.targetBudget = '';
         }
