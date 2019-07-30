@@ -313,6 +313,7 @@
                             title="Campaign Name"
                             dataIndex="Campaign_Name"
                             key="Campaign_Name"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -322,6 +323,7 @@
                             title="Allocation"
                             dataIndex="Allocation"
                             key="Allocation"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
@@ -331,6 +333,7 @@
                             title="Volume"
                             dataIndex="Volume"
                             key="Volume"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
@@ -345,12 +348,13 @@
                           size="small"
                           :loading="tableLoading"
                           :pagination="{ pageSize: 50 }"
-                          :scroll="{ y: 240 }"
+                          :scroll="{ y: 240, x: 380 }"
                         >
                           <a-table-column
                             title="Campaign Name"
                             dataIndex="Campaign_Name"
                             key="Campaign_Name"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -360,6 +364,7 @@
                             title="Ad Group"
                             dataIndex="adgroup"
                             key="adgroup"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -369,12 +374,17 @@
                             title="Keyword"
                             dataIndex="Keyword"
                             key="Keyword"
+                            :width=120
                           >
                             <template slot-scope="text">
                               {{ text }}
                             </template>
                           </a-table-column>
-                          <a-table-column title="Bid" dataIndex="Bid" key="Bid">
+                          <a-table-column 
+                          title="Bid" 
+                          dataIndex="Bid" 
+                          key="Bid"
+                          :width=50>
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
                             </template>
@@ -383,6 +393,7 @@
                             title="Traffic"
                             dataIndex="Traffic"
                             key="Traffic"
+                            :width=50
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -414,6 +425,7 @@
                             title="Campaign Name"
                             dataIndex="Campaign_Name"
                             key="Campaign_Name"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -423,6 +435,7 @@
                             title="Allocation"
                             dataIndex="Allocation"
                             key="Allocation"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
@@ -432,6 +445,7 @@
                             title="Volume"
                             dataIndex="Volume"
                             key="Volume"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
@@ -446,12 +460,13 @@
                           size="small"
                           :loading="tableLoading"
                           :pagination="{ pageSize: 50 }"
-                          :scroll="{ y: 240 }"
+                          :scroll="{ y: 240, x: 380 }"
                         >
                           <a-table-column
                             title="Campaign Name"
                             dataIndex="Campaign_Name"
                             key="Campaign_Name"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -461,6 +476,7 @@
                             title="Ad Group"
                             dataIndex="adgroup"
                             key="adgroup"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -470,12 +486,17 @@
                             title="Keyword"
                             dataIndex="Keyword"
                             key="Keyword"
+                            :width=120
                           >
                             <template slot-scope="text">
                               {{ text }}
                             </template>
                           </a-table-column>
-                          <a-table-column title="Bid" dataIndex="Bid" key="Bid">
+                          <a-table-column 
+                          title="Bid" 
+                          dataIndex="Bid" 
+                          key="Bid"
+                          :width=50>
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
                             </template>
@@ -484,6 +505,7 @@
                             title="Traffic"
                             dataIndex="Traffic"
                             key="Traffic"
+                            :width=50
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -589,6 +611,7 @@
                             title="Campaign Name"
                             dataIndex="Campaign_Name"
                             key="Campaign_Name"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -598,6 +621,7 @@
                             title="Allocation"
                             dataIndex="Allocation"
                             key="Allocation"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
@@ -607,6 +631,7 @@
                             title="Volume"
                             dataIndex="Volume"
                             key="Volume"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
@@ -621,12 +646,13 @@
                           size="small"
                           :loading="tableLoading"
                           :pagination="{ pageSize: 50 }"
-                          :scroll="{ y: 240 }"
+                          :scroll="{ y: 240, x: 380 }"
                         >
                           <a-table-column
                             title="Campaign Name"
                             dataIndex="Campaign_Name"
                             key="Campaign_Name"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -636,6 +662,7 @@
                             title="Ad Group"
                             dataIndex="adgroup"
                             key="adgroup"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -645,12 +672,17 @@
                             title="Keyword"
                             dataIndex="Keyword"
                             key="Keyword"
+                            :width=120
                           >
                             <template slot-scope="text">
                               {{ text }}
                             </template>
                           </a-table-column>
-                          <a-table-column title="Bid" dataIndex="Bid" key="Bid">
+                          <a-table-column 
+                          title="Bid" 
+                          dataIndex="Bid" 
+                          key="Bid"
+                          :width=50>
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
                             </template>
@@ -659,6 +691,7 @@
                             title="Traffic"
                             dataIndex="Traffic"
                             key="Traffic"
+                            :width=50
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -690,6 +723,7 @@
                             title="Campaign Name"
                             dataIndex="Campaign_Name"
                             key="Campaign_Name"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -699,6 +733,7 @@
                             title="Allocation"
                             dataIndex="Allocation"
                             key="Allocation"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
@@ -708,6 +743,7 @@
                             title="Volume"
                             dataIndex="Volume"
                             key="Volume"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
@@ -722,12 +758,13 @@
                           size="small"
                           :loading="tableLoading"
                           :pagination="{ pageSize: 50 }"
-                          :scroll="{ y: 240 }"
+                          :scroll="{ y: 240, x: 380 }"
                         >
                           <a-table-column
                             title="Campaign Name"
                             dataIndex="Campaign_Name"
                             key="Campaign_Name"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -737,6 +774,7 @@
                             title="Ad Group"
                             dataIndex="adgroup"
                             key="adgroup"
+                            :width=80
                           >
                             <template slot-scope="text">
                               {{ text }}
@@ -746,12 +784,17 @@
                             title="Keyword"
                             dataIndex="Keyword"
                             key="Keyword"
+                            :width=120
                           >
                             <template slot-scope="text">
                               {{ text }}
                             </template>
                           </a-table-column>
-                          <a-table-column title="Bid" dataIndex="Bid" key="Bid">
+                          <a-table-column 
+                          title="Bid" 
+                          dataIndex="Bid" 
+                          key="Bid"
+                          :width=50>
                             <template slot-scope="text">
                               {{ truncate_float(text) }}
                             </template>
@@ -760,6 +803,7 @@
                             title="Traffic"
                             dataIndex="Traffic"
                             key="Traffic"
+                            :width=50
                           >
                             <template slot-scope="text">
                               {{ text }}
