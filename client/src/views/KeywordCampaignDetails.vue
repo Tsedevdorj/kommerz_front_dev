@@ -1233,6 +1233,7 @@ export default {
       this.objectiveloading = true;
       recommendObjective({
         campaignId: this.campaignID,
+        dateRange: this.dateRange || 7
       }).then(response => {
         this.confirmSend = false;
         this.objectiveloading = false;
@@ -1243,7 +1244,7 @@ export default {
       requestOptimization({
         campaignId: this.campaignID,
         CPA: this.campaignCPASelect,
-        dateRange: this.dateRange || 7
+        
       }).then((response) => {
         
         this.optimizeMsg = response.data.msg
