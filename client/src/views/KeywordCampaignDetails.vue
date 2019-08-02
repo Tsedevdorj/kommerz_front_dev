@@ -829,11 +829,6 @@
           </a-table-column>
           <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
-          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag" :width=80>
-            <template slot-scope="text">
-              <a-icon v-if="text !== undefined && text===true" type="smile" theme="outlined" />
-            </template>
-          </a-table-column>
           <a-table-column
             title="Actions"
             dataIndex="actions"
@@ -841,7 +836,7 @@
             align="center"
             :width=100
           >
-            <template>
+            <template slot-scope="text, record">
               <div>
                 <a-button
                   type="primary"
@@ -900,11 +895,6 @@
           </a-table-column>
           <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
-          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag" :width=80>
-            <template slot-scope="text">
-              <a-icon v-if="text !== undefined && text===true" type="smile" theme="outlined" />
-            </template>
-          </a-table-column>
           <a-table-column
             title="Actions"
             dataIndex="actions"
@@ -912,7 +902,7 @@
             align="center"
             :width=100
           >
-            <template>
+            <template slot-scope="text, record">
               <div>
                 <a-button
                   type="primary"
@@ -971,11 +961,6 @@
           </a-table-column>
           <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
           </a-table-column>
-          <a-table-column v-if="optimizeaction==1" title="Flag" dataIndex="flag" key="flag" :width=80>
-            <template slot-scope="text">
-              <a-icon v-if="text !== undefined && text===true" type="smile" theme="outlined" />
-            </template>
-          </a-table-column>
           <a-table-column
             title="Actions"
             dataIndex="actions"
@@ -983,7 +968,7 @@
             align="center"
             :width=100
           >
-            <template>
+            <template slot-scope="text, record">
               <div>
                 <a-button
                   type="primary"
