@@ -1242,7 +1242,8 @@ export default {
       });
       requestOptimization({
         campaignId: this.campaignID,
-        CPA: this.campaignCPASelect
+        CPA: this.campaignCPASelect,
+        dateRange: this.dateRange || 7
       }).then((response) => {
         
         this.optimizeMsg = response.data.msg
