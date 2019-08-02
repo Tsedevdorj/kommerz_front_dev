@@ -80,20 +80,24 @@
       :gutter="32"
       style="padding: 0 16px 16px 16px"
     >
-      <a-col :span="6">
+      <a-col :span="4">
         <label>Target Volume: </label>
-        <a-input placeholder="Order volumne" v-model="campaignTargetDetail.targetOrder"></a-input>
+        <a-input placeholder="volume" v-model="campaignTargetDetail.targetOrder"></a-input>
         
       </a-col>
-      <a-col :span="6">
+      <a-col :span="4">
         <label>Target CPA: </label>
         <a-input placeholder="Target CPO" v-model="campaignTargetDetail.targetCPO"></a-input>
       </a-col>
-      <a-col :span="6">
+      <a-col :span="4">
         <label>Target Budget: </label>
         <a-input placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
       </a-col>
-      <a-col :span="6">
+      <a-col :span="4">
+        <label>Target ROAS: </label>
+        <a-input placeholder="ROAS" v-model="campaignTargetDetail.targetROAS"></a-input>
+      </a-col>
+      <a-col :span="8">
         <label>Target Date range: </label>
         <a-range-picker
         v-model="campaignTargetDetail.targetDateRange"
@@ -119,20 +123,24 @@
         :gutter="32"
         style="padding: 0 16px 16px 16px"
       >
-        <a-col :span="6">
+        <a-col :span="4">
           <label>Month's Volume: </label>
-          <a-input placeholder="Order volumne" v-model="campaignTargetDetailO.targetOrder" :disabled="checkedsame"></a-input>
+          <a-input placeholder="volume" v-model="campaignTargetDetailO.targetOrder" :disabled="checkedsame"></a-input>
           
         </a-col>
-        <a-col :span="6">
+        <a-col :span="4">
           <label>Month's CPA: </label>
-          <a-input placeholder="Target CPO" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
+          <a-input placeholder="Target CPA" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
         </a-col>
-        <a-col :span="6">
+        <a-col :span="4">
           <label>Month's Budget: </label>
           <a-input placeholder="Budget" v-model="campaignTargetDetailO.targetBudget" :disabled="checkedsame"></a-input>
         </a-col>
-        <a-col :span="6">
+        <a-col :span="4">
+          <label>Month's ROAS: </label>
+          <a-input placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS"></a-input>
+        </a-col>
+        <a-col :span="8">
           <label> Month's Date range: </label>
           <a-range-picker
           v-model="campaignTargetDetailO.targetDateRange"
@@ -155,17 +163,17 @@
         >
       
 
-          <a-col :span="6">
+          <a-col :span="5">
             <label>Target Daily Volume: </label>
             <a-input v-model="campaignTargetDetail.dailyVolume" placeholder="Not found" disabled />
 
           </a-col>
-          <a-col :span="6">
+          <a-col :span="5">
             <label>Required Vol: </label>
             <a-input v-model="campaignTargetDetail.reqVol" placeholder="Not found" disabled ></a-input>
           </a-col>
 
-          <a-col :span="6">
+          <a-col :span="5">
             <label>Required CPA: </label>
             <a-input v-model="campaignTargetDetail.reqCPA" placeholder="Not found" disabled />
 
@@ -173,7 +181,7 @@
 
           
 
-          <a-col :span="6">
+          <a-col :span="5">
             <label>CPA STD: </label>
             <a-input v-model="campaignTargetDetail.CPAstd" placeholder="Not found" disabled />
 
@@ -187,20 +195,32 @@
           style="padding: 0 16px 16px 16px"
         >
           
-          <a-col :span="6">
+          <a-col :span="5">
             <label>Cost runrate: </label>
             <a-input v-model="campaignTargetDetail.costRunrate" placeholder="Not found" disabled />
 
           </a-col>
-          <a-col :span="6">
+          <a-col :span="5">
             <label>Threshold Vol: </label>
             <a-input v-model="campaignTargetDetail.thresholdVol" placeholder="Not found" disabled />
 
           </a-col>
 
-          <a-col :span="6">
+          <a-col :span="5">
             <label>Threshold CPA: </label>
             <a-input v-model="campaignTargetDetail.thresholdCPA" placeholder="Not found" disabled />
+
+          </a-col>
+
+          <a-col :span="5">
+            <label>Algo CPO: </label>
+            <a-input v-model="campaignTargetDetail.algoCPO" placeholder="Not found" disabled />
+
+          </a-col>
+
+          <a-col :span="4">
+            <label>Algo Order volume: </label>
+            <a-input v-model="campaignTargetDetail.algoVolume" placeholder="Not found" disabled />
 
           </a-col>
           
@@ -366,6 +386,15 @@
             </template>
           </a-table-column>
           <a-table-column
+            title="Change Value"
+            dataIndex="keywordId"
+            :width=80
+          >
+            <template slot-scope="text, record">
+              <a-input-number :min="1" />
+            </template>
+          </a-table-column>
+          <a-table-column
             title="Actions"
             dataIndex="actions"
             key="actions"
@@ -495,7 +524,6 @@
               <a-tag v-else>
                 P
               </a-tag>
-              <a-icon v-if="(optimizeaction==2 || optimizeaction==3) && record.flag==true" type="frown" style="color:red"/>
             </template>
           </a-table-column>
           <a-table-column
@@ -512,6 +540,15 @@
               <a-select v-else style="width: 100px" @change="handleChange">
                 <a-select-option v-for="item in text" :key="item" :value="item">{{item}}</a-select-option>
               </a-select>
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Change Value"
+            dataIndex="keywordId"
+            :width=80
+          >
+            <template slot-scope="text, record">
+              <a-input-number :min="1" />
             </template>
           </a-table-column>
           <a-table-column
@@ -634,6 +671,7 @@
             title="Flag"
             dataIndex="flag"
             key="flag"
+            :width=80
           >
              <template slot-scope="text, record">
               <a-tag v-if="showIncrease">
@@ -656,6 +694,15 @@
 
                 <a-input-number v-else :min="1" :max="100000" :defaultValue="text"  @change="handleChange" />
               </template>
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Change Value"
+            dataIndex="keywordId"
+            :width=80
+          >
+            <template slot-scope="text, record">
+              <a-input-number :min="1" />
             </template>
           </a-table-column>
           <a-table-column
@@ -795,7 +842,7 @@
         </template>
         <a-table
           :rowKey="record => record.keywordId"
-          :dataSource="campaignDetail.recommendedKeywords.data"
+          :dataSource="campaignDetail.recommendedKeywords"
           size="small"
           :loading="recommendedloading"
           :scroll="{ y: 300, x: 1000}"
@@ -861,7 +908,7 @@
         </template>
         <a-table
           :rowKey="record => record.keywordId"
-          :dataSource="campaignDetail.recommendedKeywordsFromSimilarCampaign.data"
+          :dataSource="campaignDetail.recommendedKeywordsFromSimilarCampaign"
           size="small"
           :loading="recommendedloading"
           :scroll="{ y: 300, x: 1000}"
@@ -927,7 +974,7 @@
         </template>
         <a-table
           :rowKey="record => record.keywordId"
-          :dataSource="campaignDetail.competitorKeywords.data"
+          :dataSource="campaignDetail.competitorKeywords"
           size="small"
           :loading="competitorloading"
           :scroll="{ y: 300, x: 1000}"
@@ -996,7 +1043,7 @@ window.__lo_site_id = 162488;
       })();
 // Danish provided tracking script END
 
-import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, competitorKeyword, requestOptimization , campaignTargetGet, campaignTargetCreate, campaignTargetEdit, campaignTargetDelete, campaignTargetGetO, campaignTargetCreateO, campaignTargetEditO, campaignTargetDeleteO} from "@/api";
+import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, allRecommendedKeyword, competitorKeyword, requestOptimization , campaignTargetGet, campaignTargetCreate, campaignTargetEdit, campaignTargetDelete, campaignTargetGetO, campaignTargetCreateO, campaignTargetEditO, campaignTargetDeleteO} from "@/api";
 import moment from 'moment';
 moment.locale('ja')
 
@@ -1027,7 +1074,10 @@ export default {
         thresholdCPA: "",
         thresholdVol:"",
         costRunrate: "",
-        CPAstd:""
+        CPAstd:"",
+        targetROAS:"",
+        algoCPO:"",
+        algoVolume: ""
 
  
       },
@@ -1036,7 +1086,8 @@ export default {
         targetOrder: "",
         targetCPO: "",
         targetDateRange: [moment().startOf('month'), moment().endOf('month')],
-        targetDateFormat: "YYYY-MM-DD"
+        targetDateFormat: "YYYY-MM-DD",
+        targetROAS:""
 
  
       },
@@ -1090,6 +1141,8 @@ export default {
         this.campaignTargetDetailO.targetOrder = this.campaignTargetDetail.targetOrder;
         this.campaignTargetDetailO.targetCPO = this.campaignTargetDetail.targetCPO;
         this.campaignTargetDetailO.targetCPO = this.campaignTargetDetail.targetCPO;
+        this.campaignTargetDetailO.targetROAS = this.campaignTargetDetail.targetROAS;
+        
       }
 
     },
@@ -1155,6 +1208,22 @@ export default {
         this.recommendedloading = false;
       });
     },
+    getAllRecommendedKeywords(){
+      this.recommendedloading = true;
+      this.competitorloading = true;
+
+      allRecommendedKeyword({
+        campaignId: this.campaignID,
+        CPA: this.campaignCPASelect,
+        dateRange: this.dateRange || 7
+      }).then(response => {
+        this.campaignDetail.competitorKeywords =response.data.relative_keywords;
+        this.campaignDetail.recommendedKeywordsFromSimilarCampaign = response.data.similar_camp_keywords;
+        this.campaignDetail.recommendedKeywords = response.data.api_keywords;
+        this.competitorloading = false;
+        this.recommendedloading = false;
+      });
+    },
     showCampaignTargetEvent() {
       this.showCampaignTarget = !this.showCampaignTarget;
     },
@@ -1190,6 +1259,8 @@ export default {
         this.campaignTargetDetail.thresholdCPA = this.truncate_float2(response.data.threshold_CPA)
         this.campaignTargetDetail.thresholdVol = this.truncate_float2(response.data.threshold_vol)
         this.campaignTargetDetail.CPAstd = this.truncate_float2(response.data.CPA_std)
+        this.campaignTargetDetail.algoCPO = this.truncate_float2(response.data.algo_CPO)
+        this.campaignTargetDetail.algoVolume = this.truncate_float2(response.data.algo_vol)
       });
     },
     setCampaignCPA(value) {
@@ -1214,6 +1285,7 @@ export default {
         campaignTargetVolume: this.campaignTargetDetail.targetOrder,
         campaignTargetBudget: this.campaignTargetDetail.targetBudget,
         campaignTargetCPO: this.campaignTargetDetail.targetCPO,
+        campaignTargetROAS: this.campaignTargetDetail.targetROAS,
         campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response =>{
@@ -1229,6 +1301,7 @@ export default {
             campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
             campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
             campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+            campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
             campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
             campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
           }).then(response =>{}).catch(error => {
@@ -1242,6 +1315,7 @@ export default {
             campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
             campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
             campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+            campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
             campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
             campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
           }).then(response =>{}).catch(error => {
@@ -1260,6 +1334,7 @@ export default {
         campaignTargetVolume: this.campaignTargetDetail.targetOrder,
         campaignTargetBudget: this.campaignTargetDetail.targetBudget,
         campaignTargetCPO: this.campaignTargetDetail.targetCPO,
+        campaignTargetROAS: this.campaignTargetDetail.targetROAS,
         campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
         campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
       }).then(response => {
@@ -1276,6 +1351,7 @@ export default {
             campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
             campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
             campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+            campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
             campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
             campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
           }).then(response =>{}).catch(error => {
@@ -1289,6 +1365,7 @@ export default {
             campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
             campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
             campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+            campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
             campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
             campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
           }).then(response =>{}).catch(error => {
@@ -1318,6 +1395,8 @@ export default {
           this.campaignTargetDetail.targetCPO = response.data.targetCPO;
           this.campaignTargetDetail.targetDateRange = [moment(response.data.targetStartDate, "YYYY-MM-DD"), moment(response.data.targetEndDate, "YYYY-MM-DD")];
           this.campaignTargetDetail.targetBudget = response.data.targetBudget;
+          this.campaignTargetDetail.targetROAS = response.data.targetROAS;
+          
           this.campaignTargetAvail = true;
         }
         else{
@@ -1326,6 +1405,7 @@ export default {
           this.campaignTargetDetail.targetCPO = '';
           this.campaignTargetDetail.targetDateRange = [];
           this.campaignTargetDetail.targetBudget = '';
+          this.campaignTargetDetail.targetROAS = '';
         }
         console.log(this.campaignTargetDetail.targetDateRange)
         
@@ -1339,12 +1419,14 @@ export default {
           this.campaignTargetDetailO.targetCPO = response.data.targetCPO;
           this.campaignTargetDetailO.targetDateRange = [moment(response.data.targetStartDate, "YYYY-MM-DD"), moment(response.data.targetEndDate, "YYYY-MM-DD")];
           this.campaignTargetDetailO.targetBudget = response.data.targetBudget;
+          this.campaignTargetDetailO.targetROAS = response.data.targetROAS;
           this.campaignTargetMonthAvail = true;
         }
         else{
           this.campaignTargetMonthAvail = false;
           this.campaignTargetDetailO.targetOrder = ''; 
           this.campaignTargetDetailO.targetCPO = '';
+          this.campaignTargetDetailO.targetROAS = '';
           if(moment().date() < 4)
             this.campaignTargetDetailO.targetDateRange = [moment().subtract(1, 'month').set('date',15), moment().set('date',15)];
           else
@@ -1362,11 +1444,9 @@ export default {
     this.campaignID = this.$route.params.id;
     this.getCampaignInfo();
     this.getCampaignDetail();
-    this.getRecommendedKeyword();
     this.getCampaignTarget();
+    this.getAllRecommendedKeywords();
     this.requestRecommenendObjective();
-    this.getRecommendedKeywordFromSimilarCampaigns();
-    this.getCompetitorKeyword();
     
     
   }

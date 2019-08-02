@@ -123,6 +123,10 @@ export function keywordReport(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/keywords`, userData);
 }
 
+export function allRecommendedKeyword(userData){
+  return HTTP.post(`${API_URL}/keyword_churner/recommend_keyword_all`, userData);
+}
+
 export function recommendedKeyword(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/recommend_keyword`, userData);
 }
