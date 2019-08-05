@@ -82,28 +82,34 @@
     >
       <a-col :span="4">
         <label>Target Volume: </label>
-        <a-input placeholder="volume" v-model="campaignTargetDetail.targetOrder"></a-input>
-        
+        <a-input name="target_volume" v-validate.initial="{required: true, regex: /^[0-9]*$/}" placeholder="volume" v-model="campaignTargetDetail.targetOrder"></a-input>
+        <span style="color: red">{{ errors.first("target_volume") }}</span>
       </a-col>
       <a-col :span="4">
         <label>Target CPA: </label>
-        <a-input placeholder="Target CPO" v-model="campaignTargetDetail.targetCPO"></a-input>
+        <a-input name="target_cpa" v-validate.initial="{required: true, regex: /^[0-9]*$/}" placeholder="Target CPO" v-model="campaignTargetDetail.targetCPO"></a-input>
+        <span style="color: red">{{ errors.first("target_cpa") }}</span>
       </a-col>
       <a-col :span="4">
         <label>Target Budget: </label>
-        <a-input placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
+        <a-input name="target_budget" v-validate.initial="{required: true, regex: /^[0-9]*$/, min_value:campaignTargetDetail.targetOrder*campaignTargetDetail.targetCPO}" placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
+        <span style="color: red">{{ errors.first("target_budget") }}</span>
       </a-col>
       <a-col :span="4">
         <label>Target ROAS: </label>
-        <a-input placeholder="ROAS" v-model="campaignTargetDetail.targetROAS"></a-input>
+        <a-input name="target_roas" v-validate.initial="{required: campaignCPASelect==='ROS'? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetail.targetROAS" :disabled="campaignCPASelect!=='ROS'"></a-input>
+        <span style="color: red">{{ errors.first("target_roas") }}</span>
       </a-col>
       <a-col :span="8">
         <label>Target Date range: </label>
         <a-range-picker
+        name="target_date"
+        v-validate.initial="{required: true}"
         v-model="campaignTargetDetail.targetDateRange"
         :disabledDate="disabledDate"
         :format="campaignTargetDetail.targetDateFormat"
         >
+        <span style="color: red">{{ errors.first("target_date") }}</span>
           <template slot="renderExtraFooter">
             extra footer
           </template>
@@ -125,28 +131,35 @@
       >
         <a-col :span="4">
           <label>Month's Volume: </label>
-          <a-input placeholder="volume" v-model="campaignTargetDetailO.targetOrder" :disabled="checkedsame"></a-input>
+          <a-input name="month_volume" v-validate.initial="{required: true, regex: /^[0-9]*$/}" placeholder="volume" v-model="campaignTargetDetailO.targetOrder" :disabled="checkedsame"></a-input>
+          <span style="color: red">{{ errors.first("month_volume") }}</span>
           
         </a-col>
         <a-col :span="4">
           <label>Month's CPA: </label>
-          <a-input placeholder="Target CPA" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
+          <a-input name="month_cpa" v-validate.initial="{required: true, regex: /^[0-9]*$/}" placeholder="Target CPA" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
+          <span style="color: red">{{ errors.first("month_cpa") }}</span>
         </a-col>
         <a-col :span="4">
           <label>Month's Budget: </label>
-          <a-input placeholder="Budget" v-model="campaignTargetDetailO.targetBudget" :disabled="checkedsame"></a-input>
+          <a-input name="month_budget" v-validate.initial="{required: true, regex: /^[0-9]*$/, min_value:campaignTargetDetailO.targetOrder*campaignTargetDetailO.targetCPO}" placeholder="Budget" v-model="campaignTargetDetailO.targetBudget" :disabled="checkedsame"></a-input>
+          <span style="color: red">{{ errors.first("month_budget") }}</span>
         </a-col>
         <a-col :span="4">
           <label>Month's ROAS: </label>
-          <a-input placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS"></a-input>
+          <a-input name="month_roas" v-validate.initial="{required: campaignCPASelect==='ROS'? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS" :disabled="checkedsame || campaignCPASelect!=='ROS'"></a-input>
+          <span style="color: red">{{ errors.first("month_roas") }}</span>
         </a-col>
         <a-col :span="8">
           <label> Month's Date range: </label>
           <a-range-picker
+          name="moth_date"
+          v-validate.initial="{required: true}"
           v-model="campaignTargetDetailO.targetDateRange"
           :format="campaignTargetDetailO.targetDateFormat"
           :disabled="checkedsame"
           >
+          <span style="color: red">{{ errors.first("month_date") }}</span>
             <template slot="renderExtraFooter">
               extra footer
             </template>
@@ -1124,6 +1137,8 @@ export default {
       checkedsame:false,
     };
   },
+
+
   methods: {
     disabledDate(current) {
       // Can not select days before today and today
@@ -1282,102 +1297,111 @@ export default {
       });
     },
     createNewTarget(){
-      campaignTargetCreate({
-        campaignId: this.campaignID,
-        campaignTargetVolume: this.campaignTargetDetail.targetOrder,
-        campaignTargetBudget: this.campaignTargetDetail.targetBudget,
-        campaignTargetCPO: this.campaignTargetDetail.targetCPO,
-        campaignTargetROAS: this.campaignTargetDetail.targetROAS,
-        campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
-        campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
-      }).then(response =>{
-        console.log(response.data.msg)
-      }).catch(error => {
-          this.responseError = error.response.data.message;
-          this.$message.error("Error: " + this.responseError);
-      });
-      if(this.campaignTargetDetailO.targetDateRange.constructor === Array && this.campaignTargetDetailO.targetDateRange.length === 2)
-        if(this.campaignTargetMonthAvail){
-          campaignTargetEditO({
-            campaignId: this.campaignID,
-            campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-            campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-            campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-            campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
-            campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-            campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-          }).then(response =>{}).catch(error => {
+      if(this.errors.length === 0) {
+        campaignTargetCreate({
+          campaignId: this.campaignID,
+          campaignTargetVolume: this.campaignTargetDetail.targetOrder,
+          campaignTargetBudget: this.campaignTargetDetail.targetBudget,
+          campaignTargetCPO: this.campaignTargetDetail.targetCPO,
+          campaignTargetROAS: this.campaignTargetDetail.targetROAS,
+          campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
+          campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
+        }).then(response =>{
+          console.log(response.data.msg)
+        }).catch(error => {
             this.responseError = error.response.data.message;
             this.$message.error("Error: " + this.responseError);
-          });
-        }
-        else{
-          campaignTargetCreateO({
-            campaignId: this.campaignID,
-            campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-            campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-            campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-            campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
-            campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-            campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-          }).then(response =>{}).catch(error => {
+        });
+        if(this.campaignTargetDetailO.targetDateRange.constructor === Array && this.campaignTargetDetailO.targetDateRange.length === 2)
+          if(this.campaignTargetMonthAvail){
+            campaignTargetEditO({
+              campaignId: this.campaignID,
+              campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
+              campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
+              campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+              campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
+              campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
+              campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
+            }).then(response =>{}).catch(error => {
               this.responseError = error.response.data.message;
               this.$message.error("Error: " + this.responseError);
-          });;
-        }
-      this.getCampaignTarget();
-      this.getCampaignDetail();
-      this.requestRecommenendObjective();
+            });
+          }
+          else{
+            campaignTargetCreateO({
+              campaignId: this.campaignID,
+              campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
+              campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
+              campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+              campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
+              campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
+              campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
+            }).then(response =>{}).catch(error => {
+                this.responseError = error.response.data.message;
+                this.$message.error("Error: " + this.responseError);
+            });;
+          }
+        this.getCampaignTarget();
+        this.getCampaignDetail();
+        this.requestRecommenendObjective();
+      } else {
+        this.$message.error("Please fill required fields of the form.")
+      }
+      
 
     },
     modifyTarget(){
-      campaignTargetEdit({
-        campaignId: this.campaignID,
-        campaignTargetVolume: this.campaignTargetDetail.targetOrder,
-        campaignTargetBudget: this.campaignTargetDetail.targetBudget,
-        campaignTargetCPO: this.campaignTargetDetail.targetCPO,
-        campaignTargetROAS: this.campaignTargetDetail.targetROAS,
-        campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
-        campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
-      }).then(response => {
-        
-        
-      }).catch(error => {
-          this.responseError = error.response.data.message;
-          this.$message.error("Error: " + this.responseError);
-      });
-      if(this.campaignTargetDetailO.targetDateRange.constructor === Array && this.campaignTargetDetailO.targetDateRange.length === 2)
-        if(this.campaignTargetMonthAvail){
-          campaignTargetEditO({
-            campaignId: this.campaignID,
-            campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-            campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-            campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-            campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
-            campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-            campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-          }).then(response =>{}).catch(error => {
+      if(this.errors.length === 0) {
+        campaignTargetEdit({
+          campaignId: this.campaignID,
+          campaignTargetVolume: this.campaignTargetDetail.targetOrder,
+          campaignTargetBudget: this.campaignTargetDetail.targetBudget,
+          campaignTargetCPO: this.campaignTargetDetail.targetCPO,
+          campaignTargetROAS: this.campaignTargetDetail.targetROAS,
+          campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
+          campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
+        }).then(response => {
+          
+          
+        }).catch(error => {
             this.responseError = error.response.data.message;
             this.$message.error("Error: " + this.responseError);
-          });
-        }
-        else{
-          campaignTargetCreateO({
-            campaignId: this.campaignID,
-            campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-            campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-            campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-            campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
-            campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-            campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-          }).then(response =>{}).catch(error => {
+        });
+        if(this.campaignTargetDetailO.targetDateRange.constructor === Array && this.campaignTargetDetailO.targetDateRange.length === 2)
+          if(this.campaignTargetMonthAvail){
+            campaignTargetEditO({
+              campaignId: this.campaignID,
+              campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
+              campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
+              campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+              campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
+              campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
+              campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
+            }).then(response =>{}).catch(error => {
               this.responseError = error.response.data.message;
               this.$message.error("Error: " + this.responseError);
-          });;
-        }
-      this.getCampaignTarget();
-      this.getCampaignDetail();
-      this.requestRecommenendObjective();
+            });
+          }
+          else{
+            campaignTargetCreateO({
+              campaignId: this.campaignID,
+              campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
+              campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
+              campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
+              campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
+              campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
+              campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
+            }).then(response =>{}).catch(error => {
+                this.responseError = error.response.data.message;
+                this.$message.error("Error: " + this.responseError);
+            });;
+          }
+        this.getCampaignTarget();
+        this.getCampaignDetail();
+        this.requestRecommenendObjective();
+      } else {
+        this.$message.error("Please fill required fields of the form.")
+      }
     },
     deleteTarget(){
       campaignTargetDelete(this.campaignID
