@@ -1297,7 +1297,7 @@ export default {
       });
     },
     createNewTarget(){
-      if(this.errors.length === 0) {
+      if(this.errors.items.length === 0) {
         campaignTargetCreate({
           campaignId: this.campaignID,
           campaignTargetVolume: this.campaignTargetDetail.targetOrder,
@@ -1345,13 +1345,14 @@ export default {
         this.getCampaignDetail();
         this.requestRecommenendObjective();
       } else {
-        this.$message.error("Please fill required fields of the form.")
+        this.$message.error("Please fill required fields of the form. " )
+
       }
       
 
     },
     modifyTarget(){
-      if(this.errors.length === 0) {
+      if(this.errors.items.length === 0) {
         campaignTargetEdit({
           campaignId: this.campaignID,
           campaignTargetVolume: this.campaignTargetDetail.targetOrder,
@@ -1400,7 +1401,9 @@ export default {
         this.getCampaignDetail();
         this.requestRecommenendObjective();
       } else {
-        this.$message.error("Please fill required fields of the form.")
+        this.$message.error("Please fill required fields of the form. ");
+
+        
       }
     },
     deleteTarget(){
