@@ -1085,7 +1085,7 @@ export default {
         targetBudget:"",
         targetOrder: "",
         targetCPO: "",
-        targetDateRange: [moment().startOf('month'), moment().endOf('month')],
+        targetDateRange: moment().date() < 4  ? [moment().subtract(1, 'month').set('date',15), moment().set('date',15)] : [moment().startOf('month'), moment().endOf('month')],
         targetDateFormat: "YYYY-MM-DD",
         targetROAS:""
 
@@ -1449,6 +1449,7 @@ export default {
     this.getCampaignTarget();
     this.getAllRecommendedKeywords();
     this.requestRecommenendObjective();
+    console.log(moment().date());
     
     
   }
