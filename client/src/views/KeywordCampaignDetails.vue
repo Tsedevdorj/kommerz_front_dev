@@ -881,7 +881,7 @@
                   <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
-                {{truncate_str(text, 10)}}</a
+                {{text}}</a
               
                 >
               </a-popover>
@@ -947,7 +947,7 @@
                   <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
-                {{truncate_str(text, 10)}}</a
+                {{text}}</a
               
                 >
               </a-popover>
@@ -1013,7 +1013,7 @@
                   <p>Match type: {{record.matchType}}</p>
                 </template>
                 <a> 
-                {{truncate_str(text, 10)}}</a
+                {{text}}</a
               
                 >
               </a-popover>
