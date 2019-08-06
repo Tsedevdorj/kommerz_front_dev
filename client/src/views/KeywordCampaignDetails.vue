@@ -408,7 +408,7 @@
           <a-table-column
             title="Change Value"
             dataIndex="keywordId"
-            :width=80
+            :width=140
           >
             <template slot-scope="text, record">
               <a-input-number :min="1" />
@@ -565,7 +565,7 @@
           <a-table-column
             title="Change Value"
             dataIndex="keywordId"
-            :width=80
+            :width=140
           >
             <template slot-scope="text, record">
               <a-input-number :min="1" />
@@ -719,7 +719,7 @@
           <a-table-column
             title="Change Value"
             dataIndex="keywordId"
-            :width=80
+            :width=140
           >
             <template slot-scope="text, record">
               <a-input-number :min="1" />
