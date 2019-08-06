@@ -406,7 +406,7 @@
             </template>
           </a-table-column>
           <a-table-column
-            title="Change Value"
+            title="Manual bid"
             dataIndex="keywordId"
             :width=140
           >
@@ -563,7 +563,7 @@
             </template>
           </a-table-column>
           <a-table-column
-            title="Change Value"
+            title="Manual bid"
             dataIndex="keywordId"
             :width=140
           >
@@ -717,7 +717,7 @@
             </template>
           </a-table-column>
           <a-table-column
-            title="Change Value"
+            title="Manual bid"
             dataIndex="keywordId"
             :width=140
           >
