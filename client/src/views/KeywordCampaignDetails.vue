@@ -46,7 +46,7 @@
           <a-select-option value="CPM">CPM</a-select-option>
           <a-select-option value="CPC">CPC</a-select-option>
           <a-select-option value="CPO">CPO</a-select-option>
-          <a-select-option value="ROS">ROAS</a-select-option>
+          <a-select-option value="ROAS">ROAS</a-select-option>
         </a-select>
       </a-col>
       <a-col :span="1">
@@ -97,7 +97,7 @@
       </a-col>
       <a-col :span="4">
         <label>Target ROAS: </label>
-        <a-input name="target_roas" v-validate.initial="{required: campaignCPASelect==='ROS'? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetail.targetROAS" :disabled="campaignCPASelect!=='ROS'"></a-input>
+        <a-input name="target_roas" v-validate.initial="{required: campaignCPASelect==='ROAS'? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetail.targetROAS" :disabled="campaignCPASelect!=='ROAS'"></a-input>
         <span style="color: red">{{ errors.first("target_roas") }}</span>
       </a-col>
       <a-col :span="8">
@@ -147,7 +147,7 @@
         </a-col>
         <a-col :span="4">
           <label>Month's ROAS: </label>
-          <a-input name="month_roas" v-validate.initial="{required: campaignCPASelect==='ROS' && month_required? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS" :disabled="checkedsame || campaignCPASelect!=='ROS'"></a-input>
+          <a-input name="month_roas" v-validate.initial="{required: campaignCPASelect==='ROAS' && month_required? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS" :disabled="checkedsame || campaignCPASelect!=='ROAS'"></a-input>
           <span style="color: red">{{ errors.first("month_roas") }}</span>
         </a-col>
         <a-col :span="8">
@@ -353,7 +353,7 @@
             :width=80
           >
           </a-table-column>
-          <a-table-column title="ROAS" dataIndex="ROS" key="ROS" :width=80>
+          <a-table-column title="ROAS" dataIndex="ROAS" key="ROAS" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
@@ -512,7 +512,7 @@
             :width=80
           >
           </a-table-column>
-          <a-table-column title="ROAS" dataIndex="ROS" key="ROS" :width=80>
+          <a-table-column title="ROAS" dataIndex="ROAS" key="ROAS" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
@@ -668,7 +668,7 @@
             :width=80
           >
           </a-table-column>
-          <a-table-column title="ROAS" dataIndex="ROS" key="ROS" :width=80>
+          <a-table-column title="ROAS" dataIndex="ROAS" key="ROAS" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
@@ -822,7 +822,7 @@
             :width=80
           >
           </a-table-column>
-          <a-table-column title="ROAS" dataIndex="ROS" key="ROS" :width=80>
+          <a-table-column title="ROAS" dataIndex="ROAS" key="ROAS" :width=80>
             <template slot-scope="text">
               {{ truncate_float(text) }}
             </template>
