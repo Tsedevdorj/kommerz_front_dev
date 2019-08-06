@@ -74,6 +74,14 @@
         >
       </a-col>
     </a-row>
+    
+    <a-row v-if="campaignCPASelect==='ROAS'" style="padding-bottom: 10px;">
+      <a-col :span="12">
+        <a-button type="dashed"
+          >ROAS Historically: {{ ROASMsg }}</a-button
+        >
+      </a-col>
+    </a-row>
     <template v-if="showCampaignTarget">
     <label>Target </label>  
     <a-row
@@ -1142,6 +1150,7 @@ export default {
       VolumeMsg: "",
       collapseActiveKey2:[],
       checkedsame:false,
+      ROASMsg:"",
     };
   },
   computed: {
@@ -1277,6 +1286,7 @@ export default {
         this.optimizeMsg = response.data.msg
         this.CPAMsg = response.data.CPA_msg
         this.VolumeMsg = response.data.volume_msg
+        this.ROASMsg = response.data.ROAS_msg
         this.showPause = response.data.showPause
         this.showReduce = response.data.showReduce
         this.showAdd = response.data.showAdd
