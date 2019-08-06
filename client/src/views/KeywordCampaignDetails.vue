@@ -185,21 +185,26 @@
             <label>Required Vol: </label>
             <a-input v-model="campaignTargetDetail.reqVol" placeholder="Not found" disabled ></a-input>
           </a-col>
-
           <a-col :span="5">
-            <label>Required CPA: </label>
-            <a-input v-model="campaignTargetDetail.reqCPA" placeholder="Not found" disabled />
+            <label>Threshold Vol: </label>
+            <a-input v-model="campaignTargetDetail.thresholdVol" placeholder="Not found" disabled />
 
           </a-col>
 
           
 
+
           <a-col :span="5">
-            <label>CPA STD: </label>
-            <a-input v-model="campaignTargetDetail.CPAstd" placeholder="Not found" disabled />
+            <label>Algo Order volume: </label>
+            <a-input v-model="campaignTargetDetail.algoVolume" placeholder="Not found" disabled />
 
           </a-col>
 
+          <a-col :span="4">
+            <label>Cost runrate: </label>
+            <a-input v-model="campaignTargetDetail.costRunrate" placeholder="Not found" disabled />
+
+          </a-col>
 
           
         </a-row>
@@ -207,18 +212,19 @@
           :gutter="32"
           style="padding: 0 16px 16px 16px"
         >
+
+          <a-col :span="5">
+            <label>Target Daily CPA: </label>
+            <a-input v-model="campaignTargetDetail.dailyCPA" placeholder="Not found" disabled />
+
+          </a-col>
           
           <a-col :span="5">
-            <label>Cost runrate: </label>
-            <a-input v-model="campaignTargetDetail.costRunrate" placeholder="Not found" disabled />
+            <label>Required CPA: </label>
+            <a-input v-model="campaignTargetDetail.reqCPA" placeholder="Not found" disabled />
 
           </a-col>
-          <a-col :span="5">
-            <label>Threshold Vol: </label>
-            <a-input v-model="campaignTargetDetail.thresholdVol" placeholder="Not found" disabled />
-
-          </a-col>
-
+          
           <a-col :span="5">
             <label>Threshold CPA: </label>
             <a-input v-model="campaignTargetDetail.thresholdCPA" placeholder="Not found" disabled />
@@ -232,10 +238,11 @@
           </a-col>
 
           <a-col :span="4">
-            <label>Algo Order volume: </label>
-            <a-input v-model="campaignTargetDetail.algoVolume" placeholder="Not found" disabled />
+            <label>CPA STD: </label>
+            <a-input v-model="campaignTargetDetail.CPAstd" placeholder="Not found" disabled />
 
           </a-col>
+          
           
         </a-row>
       </a-collapse-panel>
@@ -1090,8 +1097,8 @@ export default {
         CPAstd:"",
         targetROAS:"",
         algoCPO:"",
-        algoVolume: ""
-
+        algoVolume: "",
+        dailyCPA:""
  
       },
       campaignTargetDetailO:{
@@ -1137,7 +1144,10 @@ export default {
       checkedsame:false,
     };
   },
+  computed: {
 
+
+  },
 
   methods: {
     disabledDate(current) {
@@ -1271,6 +1281,7 @@ export default {
         this.showIncrease = response.data.showIncrease
         this.campaignTargetDetail.costRunrate = this.truncate_float2(response.data.cost_runrate)
         this.campaignTargetDetail.dailyVolume = this.truncate_float2(response.data.daily_vol)
+        this.campaignTargetDetail.dailyCPA = this.truncate_float2(response.data.daily_CPA)
         this.campaignTargetDetail.reqVol = this.truncate_float2(response.data.req_vol)
         this.campaignTargetDetail.reqCPA = this.truncate_float2(response.data.req_CPA)
         this.campaignTargetDetail.thresholdCPA = this.truncate_float2(response.data.threshold_CPA)
