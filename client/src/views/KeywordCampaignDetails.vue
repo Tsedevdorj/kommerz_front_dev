@@ -131,30 +131,30 @@
       >
         <a-col :span="4">
           <label>Month's Volume: </label>
-          <a-input name="month_volume" v-validate.initial="{required: true, regex: /^[0-9]*$/}" placeholder="volume" v-model="campaignTargetDetailO.targetOrder" :disabled="checkedsame"></a-input>
+          <a-input name="month_volume" v-validate.initial="{required: month_required? true:false, regex: /^[0-9]*$/}" placeholder="volume" v-model="campaignTargetDetailO.targetOrder" :disabled="checkedsame"></a-input>
           <span style="color: red">{{ errors.first("month_volume") }}</span>
           
         </a-col>
         <a-col :span="4">
           <label>Month's CPA: </label>
-          <a-input name="month_cpa" v-validate.initial="{required: true, regex: /^[0-9]*$/}" placeholder="Target CPA" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
+          <a-input name="month_cpa" v-validate.initial="{required: month_required? true:false, regex: /^[0-9]*$/}" placeholder="Target CPA" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
           <span style="color: red">{{ errors.first("month_cpa") }}</span>
         </a-col>
         <a-col :span="4">
           <label>Month's Budget: </label>
-          <a-input name="month_budget" v-validate.initial="{required: true, regex: /^[0-9]*$/, min_value:campaignTargetDetailO.targetOrder*campaignTargetDetailO.targetCPO}" placeholder="Budget" v-model="campaignTargetDetailO.targetBudget" :disabled="checkedsame"></a-input>
+          <a-input name="month_budget" v-validate.initial="{required: month_required? true:false, regex: /^[0-9]*$/, min_value:campaignTargetDetailO.targetOrder*campaignTargetDetailO.targetCPO}" placeholder="Budget" v-model="campaignTargetDetailO.targetBudget" :disabled="checkedsame"></a-input>
           <span style="color: red">{{ errors.first("month_budget") }}</span>
         </a-col>
         <a-col :span="4">
           <label>Month's ROAS: </label>
-          <a-input name="month_roas" v-validate.initial="{required: campaignCPASelect==='ROS'? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS" :disabled="checkedsame || campaignCPASelect!=='ROS'"></a-input>
+          <a-input name="month_roas" v-validate.initial="{required: campaignCPASelect==='ROS' && month_required? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS" :disabled="checkedsame || campaignCPASelect!=='ROS'"></a-input>
           <span style="color: red">{{ errors.first("month_roas") }}</span>
         </a-col>
         <a-col :span="8">
           <label> Month's Date range: </label>
           <a-range-picker
           name="moth_date"
-          v-validate.initial="{required: true}"
+          v-validate.initial="{required: month_required? true:false}"
           v-model="campaignTargetDetailO.targetDateRange"
           :format="campaignTargetDetailO.targetDateFormat"
           :disabled="checkedsame"
@@ -1145,7 +1145,9 @@ export default {
     };
   },
   computed: {
-
+    month_required: function(){
+      return this.campaignTargetDetail.targetDateRange.length > 0 &&  moment().diff(this.campaignTargetDetail.targetDateRange[0], 'days') < 3 
+    }
 
   },
 
