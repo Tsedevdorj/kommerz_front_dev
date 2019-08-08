@@ -408,18 +408,21 @@
                   N/A
                 </a-tag>
 
-
-                <a-input-number v-else :min="1" :max="100000" :defaultValue="text" @change="handleChange" />
+                <a-button v-else type="dashed" @click="record.bidValue = text"
+                  >{{ text }}</a-button
+                >
+                
               </template>
             </template>
           </a-table-column>
           <a-table-column
             title="Manual bid"
-            dataIndex="keywordId"
+            dataIndex="bidValue"
+            key="bidValue"
             :width=140
           >
             <template slot-scope="text, record">
-              <a-input-number :min="1" />
+              <a-input v-model="record.bidValue"/>
             </template>
           </a-table-column>
           <a-table-column
@@ -434,7 +437,7 @@
                 <a-button
                   type="primary"
                   size="small"
-                  @click="goCampaignRecord(record.campaignId)"
+                  @click="changeBid(record)"
                   ghost
                   icon="forward"
                 ></a-button>
@@ -560,23 +563,24 @@
             key="suggestedBid"
             :width=80
           >
-            <template slot-scope="text">
+            <template slot-scope="text, record">
               <a-tag v-if="text === undefined || text.length == 0">
                 N/A
               </a-tag>
 
-              <a-select v-else style="width: 100px" @change="handleChange">
-                <a-select-option v-for="item in text" :key="item" :value="item">{{item}}</a-select-option>
+              <a-select v-else style="width: 100px" @change="function(value){record.bidValue = value}">
+                <a-select-option  v-for="item in text" :key="item" :value="item">{{item}}</a-select-option>
               </a-select>
             </template>
           </a-table-column>
           <a-table-column
             title="Manual bid"
-            dataIndex="keywordId"
+            dataIndex="bidValue"
+            key="bidValue"
             :width=140
           >
             <template slot-scope="text, record">
-              <a-input-number :min="1" />
+              <a-input v-model="record.bidValue"/>
             </template>
           </a-table-column>
           <a-table-column
@@ -591,7 +595,7 @@
                 <a-button
                   type="primary"
                   size="small"
-                  @click="goCampaignRecord(record.campaignId)"
+                  @click="changeBid(record)"
                   ghost
                   icon="forward"
                 ></a-button>
@@ -714,23 +718,26 @@
             key="suggestedBid"
             :width=80
           >
-            <template slot-scope="text">
+            <template slot-scope="text, record">
               <template  v-if="showIncrease">
                 <a-tag v-if="text === undefined || text === null">
                   N/A
                 </a-tag>
 
-                <a-input-number v-else :min="1" :max="100000" :defaultValue="text"  @change="handleChange" />
+                <a-button v-else type="dashed" @click="record.bidValue = text"
+                  >{{ text }}</a-button
+                >
               </template>
             </template>
           </a-table-column>
           <a-table-column
             title="Manual bid"
-            dataIndex="keywordId"
+            dataIndex="bidValue"
+            key="bidValue"
             :width=140
           >
             <template slot-scope="text, record">
-              <a-input-number :min="1" />
+              <a-input v-model="record.bidValue"/>
             </template>
           </a-table-column>
           <a-table-column
@@ -745,7 +752,7 @@
                 <a-button
                   type="primary"
                   size="small"
-                  @click="goCampaignRecord(record.campaignId)"
+                  @click="changeBid(record)"
                   ghost
                   icon="forward"
                 ></a-button>
@@ -913,10 +920,11 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-button
+                <a-button v-if="record.available"
                   type="primary"
                   size="small"
                   ghost
+                  @click="addKeywordLocal(record)"
                   icon="plus-square"
                 ></a-button>
               </div>
@@ -979,10 +987,11 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-button
+                <a-button v-if="record.available"
                   type="primary"
                   size="small"
                   ghost
+                  @click="addKeywordLocal(record)"
                   icon="plus-square"
                 ></a-button>
               </div>
@@ -1045,10 +1054,11 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-button
+                <a-button v-if="record.available"
                   type="primary"
                   size="small"
                   ghost
+                  @click="addKeywordLocal(record)"
                   icon="plus-square"
                 ></a-button>
               </div>
@@ -1071,7 +1081,11 @@ window.__lo_site_id = 162488;
       })();
 // Danish provided tracking script END
 
-import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign, allRecommendedKeyword, competitorKeyword, requestOptimization , campaignTargetGet, campaignTargetCreate, campaignTargetEdit, campaignTargetDelete, campaignTargetGetO, campaignTargetCreateO, campaignTargetEditO, campaignTargetDeleteO} from "@/api";
+import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign,
+ allRecommendedKeyword, competitorKeyword, requestOptimization , campaignTargetGet, campaignTargetCreate, 
+ campaignTargetEdit, campaignTargetDelete, campaignTargetGetO, campaignTargetCreateO, campaignTargetEditO, 
+ campaignTargetDeleteO, changeKeywordBid, addKeyword} from "@/api";
+
 import moment from 'moment';
 moment.locale('ja')
 
@@ -1166,7 +1180,48 @@ export default {
       return current && current < moment().endOf('day');
     },
 
-    handleChange(){
+    addKeywordLocal(value) {
+
+    },
+
+    changeBid(value){
+      console.log(value);
+      if(value.bidValue){
+        changeKeywordBid(value)
+        .then(response => {
+          console.log(response)
+          if(value.category === 'Unfavourable'){
+    
+            var index = this.campaignDetail.Unfavourable.indexOf(value)
+            console.log(index)
+            if(index != -1){
+              this.campaignDetail.Unfavourable[index].bid = response.data.bid;
+              this.$message.success("Keyword bid updated");
+            }
+
+          } else if(value.category === 'Watchlist'){
+    
+            var index = this.campaignDetail.Watchlist.indexOf(value)
+            console.log(index)
+            if(index != -1){
+              this.campaignDetail.Watchlist[index].bid = response.data.bid;
+              this.$message.success("Keyword bid updated");
+            }
+
+          } else if(value.category === 'Favourable'){
+    
+            var index = this.campaignDetail.Favourable.indexOf(value)
+            console.log(index)
+            if(index != -1){
+              this.campaignDetail.Favourable[index].bid = response.data.bid;
+              this.$message.success("Keyword bid updated");
+            }
+
+          }
+        })
+      } else{
+        this.$message.error("Error: " + "Fill bid field");
+      }
 
     },
     toggleSameAs(){

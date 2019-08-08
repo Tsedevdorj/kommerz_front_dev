@@ -79,6 +79,15 @@ export function keywordChurner(userData) {
   }
 }
 
+export function changeKeywordBid(userData){
+  return HTTP.post(`${API_URL}/keyword_churner/change_bid`, userData);
+}
+
+export function addKeyword(userData){
+  return HTTP.post(`${API_URL}/keyword_churner/add_keyword`, userData);
+}
+
+
 export function  keywordChurnerProfile() {
   return HTTP.get(`${API_URL}/keyword_churner/profiles`);
 }
