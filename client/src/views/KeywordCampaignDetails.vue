@@ -90,22 +90,22 @@
     >
       <a-col :span="4">
         <label>Target Volume: </label>
-        <a-input name="target_volume" v-validate.initial="{required: true, regex: /^[0-9]*$/}" placeholder="volume" v-model="campaignTargetDetail.targetOrder"></a-input>
+        <a-input name="target_volume" v-validate.initial="{required: true}" placeholder="volume" v-model="campaignTargetDetail.targetOrder"></a-input>
         <span style="color: red">{{ errors.first("target_volume") }}</span>
       </a-col>
       <a-col :span="4">
         <label>Target CPA: </label>
-        <a-input name="target_cpa" v-validate.initial="{required: true, regex: /^[0-9]*$/}" placeholder="Target CPO" v-model="campaignTargetDetail.targetCPO"></a-input>
+        <a-input name="target_cpa" v-validate.initial="{required: true}" placeholder="Target CPO" v-model="campaignTargetDetail.targetCPO"></a-input>
         <span style="color: red">{{ errors.first("target_cpa") }}</span>
       </a-col>
       <a-col :span="4">
         <label>Target Budget: </label>
-        <a-input name="target_budget" v-validate.initial="{required: true, regex: /^[0-9]*$/, min_value:campaignTargetDetail.targetOrder*campaignTargetDetail.targetCPO}" placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
+        <a-input name="target_budget" v-validate.initial="{required: true}" placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
         <span style="color: red">{{ errors.first("target_budget") }}</span>
       </a-col>
       <a-col :span="4">
         <label>Target ROAS: </label>
-        <a-input name="target_roas" v-validate.initial="{required: campaignCPASelect==='ROAS'? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetail.targetROAS" :disabled="campaignCPASelect!=='ROAS'"></a-input>
+        <a-input name="target_roas" v-validate.initial="{required: campaignCPASelect==='ROAS'? true:false,}" placeholder="ROAS" v-model="campaignTargetDetail.targetROAS" :disabled="campaignCPASelect!=='ROAS'"></a-input>
         <span style="color: red">{{ errors.first("target_roas") }}</span>
       </a-col>
       <a-col :span="8">
@@ -139,30 +139,30 @@
       >
         <a-col :span="4">
           <label>Month's Volume: </label>
-          <a-input name="month_volume" v-validate.initial="{required: month_required? true:false, regex: /^[0-9]*$/}" placeholder="volume" v-model="campaignTargetDetailO.targetOrder" :disabled="checkedsame"></a-input>
+          <a-input name="month_volume"  placeholder="volume" v-model="campaignTargetDetailO.targetOrder" :disabled="checkedsame"></a-input>
           <span style="color: red">{{ errors.first("month_volume") }}</span>
           
         </a-col>
         <a-col :span="4">
           <label>Month's CPA: </label>
-          <a-input name="month_cpa" v-validate.initial="{required: month_required? true:false, regex: /^[0-9]*$/}" placeholder="Target CPA" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
+          <a-input name="month_cpa"  placeholder="Target CPA" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
           <span style="color: red">{{ errors.first("month_cpa") }}</span>
         </a-col>
         <a-col :span="4">
           <label>Month's Budget: </label>
-          <a-input name="month_budget" v-validate.initial="{required: month_required? true:false, regex: /^[0-9]*$/, min_value:campaignTargetDetailO.targetOrder*campaignTargetDetailO.targetCPO}" placeholder="Budget" v-model="campaignTargetDetailO.targetBudget" :disabled="checkedsame"></a-input>
+          <a-input name="month_budget"  placeholder="Budget" v-model="campaignTargetDetailO.targetBudget" :disabled="checkedsame"></a-input>
           <span style="color: red">{{ errors.first("month_budget") }}</span>
         </a-col>
         <a-col :span="4">
           <label>Month's ROAS: </label>
-          <a-input name="month_roas" v-validate.initial="{required: campaignCPASelect==='ROAS' && month_required? true:false, regex: /^[0-9]*$/}" placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS" :disabled="checkedsame || campaignCPASelect!=='ROAS'"></a-input>
+          <a-input name="month_roas"  placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS" :disabled="checkedsame || campaignCPASelect!=='ROAS'"></a-input>
           <span style="color: red">{{ errors.first("month_roas") }}</span>
         </a-col>
         <a-col :span="8">
           <label> Month's Date range: </label>
           <a-range-picker
           name="moth_date"
-          v-validate.initial="{required: month_required? true:false}"
+          
           v-model="campaignTargetDetailO.targetDateRange"
           :format="campaignTargetDetailO.targetDateFormat"
           :disabled="checkedsame"
@@ -434,13 +434,18 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-button
-                  type="primary"
-                  size="small"
-                  @click="changeBid(record)"
-                  ghost
-                  icon="forward"
-                ></a-button>
+                <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
+                  <template slot="title">
+                    <p> Confirm change bid to {{record.bidValue}}?</p>
+                  </template>
+                  <a-button
+                    type="primary"
+                    size="small"
+                    ghost
+                    icon="forward"
+                  ></a-button>
+                </a-popconfirm>
+                
                 <a-button
                   type="danger"
                   size="small"
@@ -592,13 +597,17 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-button
-                  type="primary"
-                  size="small"
-                  @click="changeBid(record)"
-                  ghost
-                  icon="forward"
-                ></a-button>
+                <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
+                  <template slot="title">
+                    <p> Confirm change bid to {{record.bidValue}}?</p>
+                  </template>
+                  <a-button
+                    type="primary"
+                    size="small"
+                    ghost
+                    icon="forward"
+                  ></a-button>
+                </a-popconfirm>
                 <a-button
                   type="danger"
                   size="small"
@@ -749,13 +758,17 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-button
-                  type="primary"
-                  size="small"
-                  @click="changeBid(record)"
-                  ghost
-                  icon="forward"
-                ></a-button>
+                <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
+                  <template slot="title">
+                    <p> Confirm change bid to {{record.bidValue}}?</p>
+                  </template>
+                  <a-button
+                    type="primary"
+                    size="small"
+                    ghost
+                    icon="forward"
+                  ></a-button>
+                </a-popconfirm>
                 <a-button
                   type="danger"
                   size="small"
@@ -920,13 +933,18 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-button v-if="record.available"
-                  type="primary"
-                  size="small"
-                  ghost
-                  @click="addKeywordLocal(record)"
-                  icon="plus-square"
-                ></a-button>
+                <a-popconfirm v-if="record.available" okText="Yes" cancelText="No" @confirm="addKeywordLocal({record: record, type: 'api'})">
+                  <template slot="title">
+                    <p> Confirm create new keyword {{record.keywordText}}?</p>
+                  </template>
+                  <a-button 
+                    type="primary"
+                    size="small"
+                    ghost
+                    icon="plus-square"
+                  ></a-button>
+                </a-popconfirm>
+                
               </div>
             </template>
           </a-table-column>
@@ -987,13 +1005,17 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-button v-if="record.available"
-                  type="primary"
-                  size="small"
-                  ghost
-                  @click="addKeywordLocal(record)"
-                  icon="plus-square"
-                ></a-button>
+                <a-popconfirm v-if="record.available" okText="Yes" cancelText="No" @confirm="addKeywordLocal({record: record, type: 'similar'})">
+                  <template slot="title">
+                    <p> Confirm create new keyword {{record.keywordText}}?</p>
+                  </template>
+                  <a-button 
+                    type="primary"
+                    size="small"
+                    ghost
+                    icon="plus-square"
+                  ></a-button>
+                </a-popconfirm>
               </div>
             </template>
           </a-table-column>
@@ -1054,13 +1076,17 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-button v-if="record.available"
-                  type="primary"
-                  size="small"
-                  ghost
-                  @click="addKeywordLocal(record)"
-                  icon="plus-square"
-                ></a-button>
+                <a-popconfirm v-if="record.available" okText="Yes" cancelText="No" @confirm="addKeywordLocal({record: record, type: 'related'})">
+                  <template slot="title">
+                    <p> Confirm create new keyword {{record.keywordText}}?</p>
+                  </template>
+                  <a-button 
+                    type="primary"
+                    size="small"
+                    ghost
+                    icon="plus-square"
+                  ></a-button>
+                </a-popconfirm>
               </div>
             </template>
           </a-table-column>
@@ -1098,6 +1124,7 @@ export default {
         campaignName: "",
         campaignYesterdayVolume : "",
         campaignYesterdayCPO: "",
+        adgroupId:"",
       },
       
       campaignID: "",
@@ -1167,12 +1194,6 @@ export default {
       ROASMsg:"",
     };
   },
-  computed: {
-    month_required: function(){
-      return this.campaignTargetDetail.targetDateRange.length > 0 &&  moment().diff(this.campaignTargetDetail.targetDateRange[0], 'days') < 3 
-    }
-
-  },
 
   methods: {
     disabledDate(current) {
@@ -1181,7 +1202,31 @@ export default {
     },
 
     addKeywordLocal(value) {
+      addKeyword({
+        campaignId: this.campaignID,
+        adGroupId: this.campaignInformation.adgroupId,
+        keywordText: value.record.keywordText,
+        matchType: value.record.matchType,
+        bid: value.record.bid
 
+      }).then(response =>{
+        console.log(response)
+        if( value.type === 'api' ){
+          var index = this.campaignDetail.recommendedKeywords.indexOf(value.record)
+          this.campaignDetail.recommendedKeywords[index].available = false;
+        }else if(value.type === 'similar'){
+          var index = this.campaignDetail.recommendedKeywordsFromSimilarCampaign.indexOf(value.record)
+          this.campaignDetail.recommendedKeywordsFromSimilarCampaign[index].available = false;
+        }else if(value.type === 'related'){
+          var index = this.campaignDetail.competitorKeywords.indexOf(value.record)
+          this.campaignDetail.competitorKeywords[index].available = false;
+        }
+        this.$message.success("Keyword created");
+
+      }).catch(error => {
+          this.responseError = error.response.data.message;
+          this.$message.error("Error: " + this.responseError);
+        });
     },
 
     changeBid(value){
@@ -1371,6 +1416,7 @@ export default {
         this.campaignInformation.campaignName = response.data.campaign_name;
         this.campaignInformation.campaignYesterdayVolume = response.data.campaign_yesterday_volume;
         this.campaignInformation.campaignYesterdayCPA = response.data.campaign_yesterday_cpa;
+        this.campaignInformation.adgroupId = response.data.adgroup_id;
       
       });
     },
