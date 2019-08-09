@@ -1092,6 +1092,22 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
+      <a-collapse-panel key="8">
+        <template slot="header" >
+          <h3 >
+          Activity Log
+          </h3>
+
+        </template>
+        <template>
+        <div class="demo-infinite-container">
+          <a-timeline  style="display: flex; flex-direction:column">
+            <a-timeline-item v-for="item in this.campaignTargetDetail.logs" :key="item"> {{item[1]+ ' by user ' + item[0] + ' in ' + item[2]}}</a-timeline-item>
+            
+          </a-timeline>
+        </div>
+        </template>
+      </a-collapse-panel>  
     </a-collapse>
   </div>
 </template>
@@ -1147,7 +1163,8 @@ export default {
         targetROAS:"",
         algoCPO:"",
         algoVolume: "",
-        dailyCPA:""
+        dailyCPA:"",
+        logs: [],
  
       },
       campaignTargetDetailO:{
@@ -1549,7 +1566,7 @@ export default {
           this.campaignTargetDetail.targetDateRange = [moment(response.data.targetStartDate, "YYYY-MM-DD"), moment(response.data.targetEndDate, "YYYY-MM-DD")];
           this.campaignTargetDetail.targetBudget = response.data.targetBudget;
           this.campaignTargetDetail.targetROAS = response.data.targetROAS;
-          
+          this.campaignTargetDetail.logs =  response.data.activity_log;
           this.campaignTargetAvail = true;
         }
         else{
@@ -1614,4 +1631,14 @@ export default {
 .ant-table-body {
   margin: 0 !important;
 }
+
+.demo-infinite-container {
+  overflow: auto;
+  padding: 8px 24px;
+  height: 300px;
+  display:flex;
+  flex-direction: column-reverse;
+}
+
+
 </style>
