@@ -95,17 +95,19 @@
       </a-col>
       <a-col :span="4">
         <label>Target CPA: </label>
-        <a-input name="target_cpa" v-validate.initial="{required: true}" placeholder="Target CPO" v-model="campaignTargetDetail.targetCPO"></a-input>
+        <a-input name="target_cpa" v-validate.initial="{required: true}" addonBefore="¥" placeholder="Target CPO" v-model="campaignTargetDetail.targetCPO"></a-input>
         <span style="color: red">{{ errors.first("target_cpa") }}</span>
       </a-col>
       <a-col :span="4">
         <label>Target Budget: </label>
-        <a-input name="target_budget" v-validate.initial="{required: true}" placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
+        <a-input name="target_budget" v-validate.initial="{required: true}" addonBefore="¥" placeholder="Budget" v-model="campaignTargetDetail.targetBudget"></a-input>
         <span style="color: red">{{ errors.first("target_budget") }}</span>
       </a-col>
       <a-col :span="4">
         <label>Target ROAS: </label>
-        <a-input name="target_roas" v-validate.initial="{required: campaignCPASelect==='ROAS'? true:false,}" placeholder="ROAS" v-model="campaignTargetDetail.targetROAS" :disabled="campaignCPASelect!=='ROAS'"></a-input>
+        <a-tooltip placement="topLeft" title="*For 300% percent roas enter 300" arrowPointAtCenter>
+          <a-input name="target_roas" v-validate.initial="{required: campaignCPASelect==='ROAS'? true:false,}" addonAfter="%" placeholder="ROAS" v-model="campaignTargetDetail.targetROAS" :disabled="campaignCPASelect!=='ROAS'"></a-input>
+        </a-tooltip>
         <span style="color: red">{{ errors.first("target_roas") }}</span>
       </a-col>
       <a-col :span="8">
@@ -145,17 +147,19 @@
         </a-col>
         <a-col :span="4">
           <label>Month's CPA: </label>
-          <a-input name="month_cpa"  placeholder="Target CPA" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
+          <a-input name="month_cpa"  placeholder="Target CPA" addonBefore="¥" v-model="campaignTargetDetailO.targetCPO" :disabled="checkedsame"></a-input>
           <span style="color: red">{{ errors.first("month_cpa") }}</span>
         </a-col>
         <a-col :span="4">
           <label>Month's Budget: </label>
-          <a-input name="month_budget"  placeholder="Budget" v-model="campaignTargetDetailO.targetBudget" :disabled="checkedsame"></a-input>
+          <a-input name="month_budget"  placeholder="Budget" addonBefore="¥" v-model="campaignTargetDetailO.targetBudget" :disabled="checkedsame"></a-input>
           <span style="color: red">{{ errors.first("month_budget") }}</span>
         </a-col>
         <a-col :span="4">
           <label>Month's ROAS: </label>
-          <a-input name="month_roas"  placeholder="ROAS" v-model="campaignTargetDetailO.targetROAS" :disabled="checkedsame || campaignCPASelect!=='ROAS'"></a-input>
+          <a-tooltip placement="topLeft" title="*For 300% percent roas enter 300" arrowPointAtCenter>
+            <a-input name="month_roas"  placeholder="ROAS" addonAfter="%" v-model="campaignTargetDetailO.targetROAS" :disabled="checkedsame || campaignCPASelect!=='ROAS'"></a-input>
+          </a-tooltip>
           <span style="color: red">{{ errors.first("month_roas") }}</span>
         </a-col>
         <a-col :span="8">
@@ -1102,7 +1106,7 @@
         <template>
         <div class="demo-infinite-container">
           <a-timeline  style="display: flex; flex-direction:column">
-            <a-timeline-item v-for="item in this.campaignTargetDetail.logs" :key="item"> {{item[1]+ ' by user ' + item[0] + ' in ' + item[2]}}</a-timeline-item>
+            <a-timeline-item v-for="(item, index) in this.campaignTargetDetail.logs" :key="index"> {{item[1]+ ' by user ' + item[0] + ' in ' + item[2]}}</a-timeline-item>
             
           </a-timeline>
         </div>
