@@ -24,6 +24,12 @@
             ><a-icon type="layout" />Google Planner</router-link
           ></a-menu-item
         >
+        
+        <a-menu-item
+          ><router-link :to="{ name: 'seasonalanalysis' }"
+            ><a-icon type="layout" />Seasonal Analysis</router-link
+          ></a-menu-item
+        >
         <a-divider
           v-if="
             this.$store.getters.isAdmin == true ||

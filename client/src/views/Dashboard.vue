@@ -35,6 +35,23 @@
           </a-card-meta>
         </a-card>
       </a-col>
+      <a-col :span="6">
+        <a-card hoverable @click="goSeasonal">
+          <img
+            alt="example"
+            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            slot="cover"
+          />
+          <template class="ant-card-actions" slot="actions">
+            <a-icon type="table" />
+          </template>
+          <a-card-meta
+            title="Seasonal Analysis"
+            description="This is the description"
+          >
+          </a-card-meta>
+        </a-card>
+      </a-col>
     </a-row>
   </div>
 </template>
@@ -58,7 +75,10 @@ export default {
     },
     goPlanner() {
       this.$router.push({ name: "googleplanner" });
+    },
+    goSeasonal() {
+      this.$router.push({ name: "seasonalanalysis"});
     }
   }
 };
-</script>
+</script> 

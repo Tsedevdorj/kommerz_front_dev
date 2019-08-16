@@ -12,6 +12,7 @@ import NotFound from "@/views/Error/404";
 import AccessDenied from "@/views/Error/403";
 import UserManagement from "@/views/Admin/User";
 import domainManagement from "@/views/Admin/AddDomain";
+import SeasonalAnalysis from "@/views/SeasonalAnalysis";
 
 Vue.use(Router);
 
@@ -101,6 +102,15 @@ const router = new Router({
       },
       component: GooglePlanner
     },
+    {
+      path: "/seasonal",
+      name: "seasonalanalysis",
+      meta: {
+        isAuthenticated: true
+      },
+      component: SeasonalAnalysis
+    },
+    
     // auth page
     {
       path: "/login",

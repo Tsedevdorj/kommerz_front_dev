@@ -156,6 +156,20 @@ export function requestOptimization(userData) {
   return HTTP.post(`${API_URL}/keyword_churner/optimization`, userData);
 }
 
+
+export function SA_profiles() {
+  return HTTP.get(`${API_URL}/seasonal_analysis/profiles`);
+}
+
+export function SA_campaigns(userData) {
+  return HTTP.get(`${API_URL}/seasonal_analysis/campaigns/${userData}`);
+}
+
+export function SA_get_seasonal(userData) {
+  return HTTP.post(`${API_URL}/seasonal_analysis/get_seasonal`, userData );
+}
+
+
 // global interceptor for catch http status and error
 export function interceptors(cb) {
   HTTP.interceptors.response.use(
