@@ -72,9 +72,14 @@ export default {
             monthBudget: this.monthBudget,
         }).then(response => {
         console.log(response.data);
-        this.calendarData = response.data.days_data;
-        this.periodRange = response.data.period;
-        this.loading = false;
+        if(response.status === 200){
+          this.calendarData = response.data.days_data;
+          this.periodRange = response.data.period;
+          this.loading = false;
+        }else{
+          this.calendarData = [];
+          this.$message.warning(response.data.msg);
+        }
     })
 
     },
@@ -94,8 +99,10 @@ export default {
     SA_profiles()
     .then(response => {
         console.log(response.data);
-        this.availableProfiles = response.data;
-        this.loading = false;
+        
+          this.availableProfiles = response.data;
+          this.loading = false;
+        
     })
     .catch(error => {
         this.responseError = error.response.data.message;
