@@ -9,7 +9,7 @@
       </a-col>
       <a-col :span="8">
       <label>Campaign: </label>
-      <a-select style="width: 300px" placeholder="Select Campaign" @change="handleChange2">
+      <a-select style="width: 300px" placeholder="Select Campaign" v-model="selectCampaign" @change="handleChange2">
           <a-select-option v-for="(item, index) in availableCampaigns" :key="item.campaignId" :value="index">{{item.name}}</a-select-option>
         </a-select>
       </a-col>
@@ -23,20 +23,23 @@
       </a-col>
     </a-row>
     <a-row :gutter="48" style="padding-bottom: 10px;"> 
-      <a-col :span="5">
+
+      <div id="c_1"></div>
+      <!-- <a-col :span="5">
 
             
             <a-tag color="#108ee9">Period: {{periodRange}}</a-tag>
-      </a-col>
+      </a-col> -->
     </a-row>
     <a-row :gutter="48" style="padding-bottom: 10px;">
         <a-calendar>
-            <template slot="dateCellRender" slot-scope="value">
-
-                <section>{{getDaysData(value)}}</section>
-
-            </template>
-
+            <ul class="events" style="list-style-type:none;padding-left:10px;" slot="dateCellRender" slot-scope="value" >
+              <li v-for="item in getDaysData(value)" :key="item.content">
+                <a-badge :status="item.type" :text="item.content" />
+              </li>
+              
+            </ul>
+            
             
         </a-calendar>
     </a-row>
@@ -47,6 +50,8 @@
 
 import { SA_profiles, SA_campaigns, SA_get_seasonal } from "@/api";
 import moment from 'moment';
+import G2 from "@antv/g2";
+import { DataSet } from "@antv/data-set";
 moment.locale('ja')
 
 export default {
@@ -60,22 +65,87 @@ export default {
       availableProfiles:[],
       availableCampaigns:[],
       selectCampaign:"",
+      selectCampaignId:"",
       monthBudget: "",
       calendarData:[],
-      periodRange:"",
+      periodData:[],
+      chart1: null,
+      c_1Data: [{
+        item: '事例一',
+        count: 40,
+        percent: 0.4
+      }, {
+        item: '事例二',
+        count: 21,
+        percent: 0.21
+      }, {
+        item: '事例三',
+        count: 17,
+        percent: 0.17
+      }, {
+        item: '事例四',
+        count: 13,
+        percent: 0.13
+      }, {
+        item: '事例五',
+        count: 9,
+        percent: 0.09
+      }],
     };
   },
   methods: {
+    ChartFunction(data) {
+      console.log(data)
+      this.chart1 && this.chart1.destroy();
+      this.chart1 = new G2.Chart({
+        container: "c_1",
+        height: 350,
+        padding: "auto",
+        forceFit: true,
+        animate: false
+      });
+      this.chart1.source(data);
+      this.chart1.coord('theta', {
+        radius: 0.8,
+        innerRadius: 0.6  
+      });
+      this.chart1.tooltip({
+        showTitle: false,
+      });
+      this.chart1.guide().html({
+        position: ['50%', '50%'],
+        html: '<div style="color:#8c8c8c;font-size: 14px;text-align: center;width: 10em;">Period<br><span style="color:#8c8c8c;font-size:20px">'+ data.length +'</span></div>',
+        alignX: 'middle',
+        alignY: 'middle'
+      });
+      var interval = this.chart1.intervalStack().position('percent').color('periodic_num').label('percent', {
+        formatter: function formatter(val, item) {
+          return item.point.periodic_num + ': ' + val +'%';
+        }
+      }).tooltip('allocate_budget*percent', function(allocate_budget, percent) {
+        return {
+          name: allocate_budget,
+          value: percent
+        };
+      }).style({
+        lineWidth: 1,
+        stroke: '#fff'
+      });
+      this.chart1.render();
+      interval.setSelected(data[0]);
+    },
+
     getSeasonalAnalysis(){
         SA_get_seasonal({
-            campaignId: this.selectCampaign,
+            campaignId: this.selectCampaignId,
             monthBudget: this.monthBudget,
         }).then(response => {
         console.log(response.data);
         if(response.status === 200){
           this.calendarData = response.data.days_data;
-          this.periodRange = response.data.period;
+          this.periodData = response.data.period_data;
           this.loading = false;
+          this.ChartFunction(this.periodData);
         }else{
           this.calendarData = [];
           this.$message.warning(response.data.msg);
@@ -84,16 +154,21 @@ export default {
 
     },
     getDaysData(value){
-        let showdata;
+        let showdata = Array();
         let day_num = value.date() - 1
         if(value.month() === moment().month())
         if(this.calendarData && this.calendarData.length){
             if(this.calendarData[day_num].cost)
-                showdata = 'Cost:' + this.calendarData[day_num].cost.toFixed(1);
+                showdata.push({ type: 'warning', content: 'Cost:' + this.calendarData[day_num].cost.toFixed(1)});
             else if(this.calendarData[day_num].allocate_budget)
-                showdata = 'Allocate budget:' + this.calendarData[day_num].allocate_budget.toFixed(1);
+                showdata.push({ type: 'processing', content:'Allocate budget:' + this.calendarData[day_num].allocate_budget.toFixed(1)});
+            if(this.calendarData[day_num].predicted_percent)
+              showdata.push({ type: 'success', content: 'Predicted percent:' + this.calendarData[day_num].predicted_percent.toFixed(1) + '%'});
+            if(this.calendarData[day_num].actual_percent)
+              showdata.push({ type: 'default', content: 'Actual percent:' + this.calendarData[day_num].actual_percent.toFixed(1) + '%'});
         }
-        return showdata || ''
+        console.log(showdata)
+        return showdata || []
     },
     getProfilesList(){
     SA_profiles()
@@ -115,6 +190,7 @@ export default {
       SA_campaigns(value)
         .then(response => {
           this.availableCampaigns = response.data;
+          this.selectCampaign = "";
           this.loading = false;
         })
         .catch(error => {
@@ -126,9 +202,14 @@ export default {
         });
     },
     handleChange2(value){
-        console.log(this.availableCampaigns[value])
-        this.selectCampaign = this.availableCampaigns[value].campaignId;
-        this.monthBudget = this.availableCampaigns[value].monthly_budget;
+        this.periodData = [];
+        console.log(this.selectCampaign)
+        this.selectCampaignId = this.availableCampaigns[this.selectCampaign].campaignId;
+        this.monthBudget = this.availableCampaigns[this.selectCampaign].monthly_budget;
+        // if(!this.periodData) {
+        //   const chartElement = document.getElementById('c_1');
+        //   chartElement.remove();
+        // }
     }
   },
   mounted() {
