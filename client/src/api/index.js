@@ -50,6 +50,10 @@ export function corePlanner(userData) {
   return HTTP.post(`${API_URL}/planner/core_planner`, userData);
 }
 
+export function competitionPlanner(userData) {
+  return HTTP.post(`${API_URL}/planner/competition_planner`, userData);
+}
+
 export function userList() {
   return HTTP.post(`${API_URL}/admin/user/list`);
 }

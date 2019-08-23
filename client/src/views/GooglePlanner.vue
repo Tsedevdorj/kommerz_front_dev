@@ -7,20 +7,20 @@
       <a-row :gutter="32">
         <a-col :span="12" class="padding-top__20">
           <div class="form-label">
-            <label>Brand Name</label>
+            <label>Client Name</label>
           </div>
           <a-input
             v-model="CampaignInformation.brandName"
-            placeholder="Brand Name in Japanese"
+            placeholder="Client Name in Japanese"
           ></a-input>
         </a-col>
         <a-col :span="12" class="padding-top__20">
           <div class="form-label">
-            <label>Product Name</label>
+            <label>Brand Name</label>
           </div>
           <a-input
             v-model="CampaignInformation.productName"
-            placeholder="Product Name in Japanese"
+            placeholder="Brand Name in Japanese"
           ></a-input>
         </a-col>
         <a-col :span="24" class="padding-top__20">
@@ -34,20 +34,20 @@
         <div v-if="CampaignInformation.languageSwitch == true">
           <a-col :span="12" class="padding-top__20">
             <div class="form-label">
-              <label>Brand Name in English</label>
+              <label>Client Name in English</label>
             </div>
             <a-input
               v-model="CampaignInformation.brandNameEN"
-              placeholder="Brand Name in English"
+              placeholder="Client Name in English"
             ></a-input>
           </a-col>
           <a-col :span="12" class="padding-top__20">
             <div class="form-label">
-              <label>Product Name in English</label>
+              <label>Brand Name in English</label>
             </div>
             <a-input
               v-model="CampaignInformation.productNameEN"
-              placeholder="Product Name in English"
+              placeholder="Brand Name in English"
             ></a-input>
           </a-col>
         </div>
@@ -831,6 +831,304 @@
                 </a-col>
               </a-row>
             </a-tab-pane>
+            <!-- Competitor part -->
+            <a-tab-pane tab="Competition Keywords" key="3">
+              <a-row :gutter="32">
+                <a-col :span="12" style="padding: 0 16px">
+                  <h3 style="margin-left: 5px">Competition Keywords (Japanese)</h3>
+                  <a-input
+                    style="margin: 5px"
+                    placeholder="Insert additional keywords"
+                    v-model="additionalKeyword.competitionJA"
+                  >
+                    <a-icon
+                      slot="addonAfter"
+                      type="plus"
+                      @click="additionalKeywordAdd('competitionKeywordsJA')"
+                    />
+                  </a-input>
+                  <template v-for="(tag, index) in keywords.competitionKeywordsJA">
+                    <a-tag
+                      :key="tag"
+                      :closable="index !== 0"
+                      :afterClose="
+                        () =>
+                          removeKeyword({ tag: tag, type: 'competitionKeywordsJA' })
+                      "
+                    >
+                      {{ tag }}
+                    </a-tag>
+                  </template>
+                </a-col>
+                <a-col :span="12" style="padding: 0 16px">
+                  <h3 style="margin-left: 5px">Competition Keywords (English)</h3>
+                  <a-input
+                    style="margin: 5px"
+                    placeholder="Insert additional keywords"
+                    v-model="additionalKeyword.competitionEN"
+                  >
+                    <a-icon
+                      slot="addonAfter"
+                      type="plus"
+                      @click="additionalKeywordAdd('competitionKeywordsEN')"
+                    />
+                  </a-input>
+                  <template v-for="(tag, index) in keywords.competitionKeywordsEN">
+                    <a-tag
+                      :key="tag"
+                      :closable="index !== 0"
+                      :afterClose="
+                        () =>
+                          removeKeyword({ tag: tag, type: 'competitionKeywordsEN' })
+                      "
+                    >
+                      {{ tag }}
+                    </a-tag>
+                  </template>
+                </a-col>
+              </a-row>
+              <a-row>
+                <a-col :span="12">
+                  <template
+                    v-if="Object.entries(competitionPlannerResult).length !== 0"
+                  >
+                    <a-tabs
+                      defaultActiveKey="1"
+                      style="padding-top: 15px; margin: 5px;"
+                    >
+                      <a-tab-pane tab="Campaigns" key="1">
+                        <a-table
+                          :rowKey="record => record.Campaign_Name"
+                          :dataSource="competitionPlannerResult.ja_campaign"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Allocation"
+                            dataIndex="Allocation"
+                            key="Allocation"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Volume"
+                            dataIndex="Volume"
+                            key="Volume"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                      <a-tab-pane tab="Keywords" key="2">
+                        <a-table
+                          :rowKey="record => record.Keyword"
+                          :dataSource="competitionPlannerResult.ja_keyword"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240, x: 380 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Ad Group"
+                            dataIndex="adgroup"
+                            key="adgroup"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Keyword"
+                            dataIndex="Keyword"
+                            key="Keyword"
+                            :width=120
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column 
+                          title="Bid" 
+                          dataIndex="Bid" 
+                          key="Bid"
+                          :width=50>
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Traffic"
+                            dataIndex="Traffic"
+                            key="Traffic"
+                            :width=50
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                    </a-tabs>
+                  </template>
+                </a-col>
+                <a-col :span="12">
+                  <template
+                    v-if="Object.entries(competitionPlannerResult).length !== 0"
+                  >
+                    <a-tabs
+                      defaultActiveKey="1"
+                      style="padding-top: 15px; margin: 5px;"
+                    >
+                      <a-tab-pane tab="Campaigns" key="1">
+                        <a-table
+                          :rowKey="record => record.Campaign_Name"
+                          :dataSource="competitionPlannerResult.en_campaign"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Allocation"
+                            dataIndex="Allocation"
+                            key="Allocation"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Volume"
+                            dataIndex="Volume"
+                            key="Volume"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                      <a-tab-pane tab="Keywords" key="2">
+                        <a-table
+                          :rowKey="record => record.Keyword"
+                          :dataSource="competitionPlannerResult.en_keyword"
+                          size="small"
+                          :loading="tableLoading"
+                          :pagination="{ pageSize: 50 }"
+                          :scroll="{ y: 240, x: 380 }"
+                        >
+                          <a-table-column
+                            title="Campaign Name"
+                            dataIndex="Campaign_Name"
+                            key="Campaign_Name"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Ad Group"
+                            dataIndex="adgroup"
+                            key="adgroup"
+                            :width=80
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Keyword"
+                            dataIndex="Keyword"
+                            key="Keyword"
+                            :width=120
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column 
+                          title="Bid" 
+                          dataIndex="Bid" 
+                          key="Bid"
+                          :width=50>
+                            <template slot-scope="text">
+                              {{ truncate_float(text) }}
+                            </template>
+                          </a-table-column>
+                          <a-table-column
+                            title="Traffic"
+                            dataIndex="Traffic"
+                            key="Traffic"
+                            :width=50
+                          >
+                            <template slot-scope="text">
+                              {{ text }}
+                            </template>
+                          </a-table-column>
+                        </a-table>
+                      </a-tab-pane>
+                    </a-tabs>
+                  </template>
+                </a-col>
+                <a-col
+                  :span="24"
+                  style="padding: 0 16px"
+                  v-if="Object.entries(competitionPlannerResult).length === 0"
+                >
+                  <div style="width: 100%">
+                    <a-button
+                      type="primary"
+                      style="display: block; margin: 40px auto;"
+                      :loading="sendRequestCompetitionLoading"
+                      @click="sendRequestCompetition"
+                      >Send Request</a-button
+                    >
+                  </div>
+                </a-col>
+              </a-row>
+            </a-tab-pane>
           </a-tabs>
         </a-col>
       </a-row>
@@ -852,7 +1150,7 @@
 </template>
 <script>
 import categoryData from "@/assets/data/result.json";
-import { keywordPlanner, brandPlanner, corePlanner } from "@/api";
+import { keywordPlanner, brandPlanner, corePlanner, competitionPlanner } from "@/api";
 export default {
   data() {
     return {
@@ -887,19 +1185,25 @@ export default {
         brandKeywordsJA: [],
         brandKeywordsEN: [],
         coreKeywordsJA: [],
-        coreKeywordsEN: []
+        coreKeywordsEN: [],
+        competitionKeywordsJA: [],
+        competitionKeywordsEN: []
       },
       confirmNext: false,
       additionalKeyword: {
         brandJA: "",
         brandEN: "",
         coreJA: "",
-        coreEN: ""
+        coreEN: "",
+        competitionJA: "",
+        competitionEN: "",
       },
       sendRequestBrandLoading: false,
       sendRequestCoreLoading: false,
+      sendRequestCompetitionLoading: false,
       brandPlannerResult: {},
       corePlannerResult: {},
+      competitionPlannerResult: {},
       tableLoading: false
     };
   },
@@ -913,14 +1217,19 @@ export default {
         categories: this.CampaignInformation.selectedCategories,
         english_switch: this.CampaignInformation.languageSwitch,
         product: this.CampaignInformation.productName,
-        product_en: this.CampaignInformation.productNameEN
+        product_en: this.CampaignInformation.productNameEN,
+        url: this.CampaignInformation.landingURL
+  
       })
         .then(response => {
+          console.log(response)
           this.confirmNext = false;
           this.keywords.brandKeywordsJA = response.data.ja_keywords;
           this.keywords.brandKeywordsEN = response.data.en_keywords;
           this.keywords.coreKeywordsJA = response.data.ja_core_keywords;
           this.keywords.coreKeywordsEN = response.data.en_core_keywords;
+          this.keywords.competitionKeywordsJA = response.data.ja_competitor_keywords;
+          this.keywords.competitionKeywordsEN = response.data.en_competitor_keywords;
           this.current++;
         })
         .catch(() => {
@@ -936,6 +1245,9 @@ export default {
         (self.keywords = {}),
         (self.CampaignInformation.selectedCategories = new Array()),
         (self.categorySelected = {});
+        (self.brandPlannerResult= {});
+        (self.corePlannerResult= {});
+        (self.competitionPlannerResult= {});
     },
     onLanguageSwitch(checked) {
       this.CampaignInformation.languageSwitch = checked;
@@ -1026,6 +1338,28 @@ export default {
           this.$message.error("Keyword is duplicated!");
         }
       }
+      if (type == "competitionKeywordsJA"){
+        if (
+          !this.keywords.competitionKeywordsJA.includes(this.additionalKeyword.competitionJA)
+        ) {
+          this.keywords.competitionKeywordsJA.push(this.additionalKeyword.competitionJA);
+          this.additionalKeyword.competitionJA = "";
+          this.$message.success("Keyword successfully added!");
+        } else {
+          this.$message.error("Keyword is duplicated!");
+        }
+      }
+      if (type == "competitionKeywordsEN"){
+        if (
+          !this.keywords.competitionKeywordsEN.includes(this.additionalKeyword.competitionEN)
+        ) {
+          this.keywords.competitionKeywordsEN.push(this.additionalKeyword.competitionEN);
+          this.additionalKeyword.competitionEN = "";
+          this.$message.success("Keyword successfully added!");
+        } else {
+          this.$message.error("Keyword is duplicated!");
+        }
+      }
     },
     sendRequestBrand() {
       this.sendRequestBrandLoading = true;
@@ -1058,6 +1392,22 @@ export default {
       }).then(response => {
         this.sendRequestCoreLoading = false;
         this.corePlannerResult = response.data;
+      });
+    },
+    sendRequestCompetition() {
+      this.sendRequestCompetitionLoading = true;
+      competitionPlanner({
+        competition_en: this.keywords.competitionKeywordsEN,
+        competition_ja: this.keywords.competitionKeywordsJA,
+        budget: this.CampaignInformation.budget,
+        english_switch: this.CampaignInformation.languageSwitch,
+        brand_ja: this.CampaignInformation.brandName,
+        brand_en: this.CampaignInformation.brandNameEN,
+        product_ja: this.CampaignInformation.productName,
+        product_en: this.CampaignInformation.productNameEN,
+      }).then(response => {
+        this.sendRequestCompetitionLoading = false;
+        this.competitionPlannerResult = response.data;
       });
     },
     truncate_float(value) {
