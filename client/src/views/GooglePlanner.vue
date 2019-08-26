@@ -10,18 +10,24 @@
             <label>Client Name</label>
           </div>
           <a-input
+            name="client_name"
+            v-validate.initial="{required: true}"
             v-model="CampaignInformation.brandName"
             placeholder="Client Name in Japanese"
           ></a-input>
+          <span style="color: red">{{ errors.first("client_name") }}</span>
         </a-col>
         <a-col :span="12" class="padding-top__20">
           <div class="form-label">
             <label>Brand Name</label>
           </div>
           <a-input
+            name="brand_name"
+            v-validate.initial="{required: true}"
             v-model="CampaignInformation.productName"
             placeholder="Brand Name in Japanese"
           ></a-input>
+          <span style="color: red">{{ errors.first("brand_name") }}</span>
         </a-col>
         <a-col :span="24" class="padding-top__20">
           <a-switch
@@ -37,18 +43,24 @@
               <label>Client Name in English</label>
             </div>
             <a-input
+              name="en_client_name"
+              v-validate.initial="{required: CampaignInformation.brandNameEN}"
               v-model="CampaignInformation.brandNameEN"
               placeholder="Client Name in English"
             ></a-input>
+            <span style="color: red">{{ errors.first("en_client_name") }}</span>
           </a-col>
           <a-col :span="12" class="padding-top__20">
             <div class="form-label">
               <label>Brand Name in English</label>
             </div>
             <a-input
+              name="en_brand_name"
+              v-validate.initial="{required: CampaignInformation.brandNameEN}"
               v-model="CampaignInformation.productNameEN"
               placeholder="Brand Name in English"
             ></a-input>
+            <span style="color: red">{{ errors.first("en_brand_name") }}</span>
           </a-col>
         </div>
         <!-- level 1 -->
@@ -217,18 +229,24 @@
             <label>Budget</label>
           </div>
           <a-input
+            name="budget"
+            v-validate.initial="{required: true}"
             v-model="CampaignInformation.budget"
             placeholder="Budget"
           ></a-input>
+          <span style="color: red">{{ errors.first("budget") }}</span>
         </a-col>
         <a-col :span="24" class="padding-top__20">
           <div class="form-label">
             <label>Landing URL</label>
           </div>
           <a-input
+            name="landing_url"
+            v-validate.initial="{required: true}"
             v-model="CampaignInformation.landingURL"
             placeholder="Landing URL"
           ></a-input>
+          <span style="color: red">{{ errors.first("landing_url") }}</span>
         </a-col>
       </a-row>
     </div>
@@ -1209,33 +1227,39 @@ export default {
   },
   methods: {
     sendKeywords() {
-      this.confirmNext = true;
-      keywordPlanner({
-        brand: this.CampaignInformation.brandName,
-        brand_en: this.CampaignInformation.brandNameEN,
-        budget: this.CampaignInformation.budget,
-        categories: this.CampaignInformation.selectedCategories,
-        english_switch: this.CampaignInformation.languageSwitch,
-        product: this.CampaignInformation.productName,
-        product_en: this.CampaignInformation.productNameEN,
-        url: this.CampaignInformation.landingURL
-  
-      })
-        .then(response => {
-          console.log(response)
-          this.confirmNext = false;
-          this.keywords.brandKeywordsJA = response.data.ja_keywords;
-          this.keywords.brandKeywordsEN = response.data.en_keywords;
-          this.keywords.coreKeywordsJA = response.data.ja_core_keywords;
-          this.keywords.coreKeywordsEN = response.data.en_core_keywords;
-          this.keywords.competitionKeywordsJA = response.data.ja_competitor_keywords;
-          this.keywords.competitionKeywordsEN = response.data.en_competitor_keywords;
-          this.current++;
+      if(this.errors.items.length === 0) {
+        this.confirmNext = true;
+        keywordPlanner({
+          brand: this.CampaignInformation.brandName,
+          brand_en: this.CampaignInformation.brandNameEN,
+          budget: this.CampaignInformation.budget,
+          categories: this.CampaignInformation.selectedCategories,
+          english_switch: this.CampaignInformation.languageSwitch,
+          product: this.CampaignInformation.productName,
+          product_en: this.CampaignInformation.productNameEN,
+          url: this.CampaignInformation.landingURL
+    
         })
-        .catch(() => {
-          this.confirmNext = false;
-          this.$message.error("Please fill all fields");
-        });
+          .then(response => {
+            console.log(response)
+            this.confirmNext = false;
+            this.keywords.brandKeywordsJA = response.data.ja_keywords;
+            this.keywords.brandKeywordsEN = response.data.en_keywords;
+            this.keywords.coreKeywordsJA = response.data.ja_core_keywords;
+            this.keywords.coreKeywordsEN = response.data.en_core_keywords;
+            this.keywords.competitionKeywordsJA = response.data.ja_competitor_keywords;
+            this.keywords.competitionKeywordsEN = response.data.en_competitor_keywords;
+            this.current++;
+          })
+          .catch(() => {
+            this.confirmNext = false;
+            this.$message.error("Please fill all fields");
+          });
+      } else {
+        this.$message.error("Please fill required fields of the form. " )
+
+      }
+
     },
     prev() {
       this.current--;
