@@ -407,7 +407,7 @@
             :width=80
           >
             <template slot-scope="text, record">
-              <template v-if="showReduce && !record.pause">
+              <template v-if="showReduce || !record.pause">
                 <a-tag v-if="text === undefined || text === null">
                   N/A
                 </a-tag>
@@ -438,23 +438,25 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
+                <!-- <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)" disabled>
                   <template slot="title">
                     <p> Confirm change bid to {{record.bidValue}}?</p>
-                  </template>
+                  </template> -->
                   <a-button
                     type="primary"
                     size="small"
                     ghost
                     icon="forward"
+                    disabled
                   ></a-button>
-                </a-popconfirm>
+                <!-- </a-popconfirm> -->
                 
                 <a-button
                   type="danger"
                   size="small"
                   ghost
                   icon="delete"
+                  disabled
                 ></a-button>
               </div>
                 
@@ -601,22 +603,24 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
+                <!-- <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
                   <template slot="title">
                     <p> Confirm change bid to {{record.bidValue}}?</p>
-                  </template>
+                  </template> -->
                   <a-button
                     type="primary"
                     size="small"
                     ghost
                     icon="forward"
+                    disabled
                   ></a-button>
-                </a-popconfirm>
+                <!-- </a-popconfirm> -->
                 <a-button
                   type="danger"
                   size="small"
                   ghost
                   icon="delete"
+                  disabled
                 ></a-button>
               </div>
             </template>
@@ -762,22 +766,24 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
+                <!-- <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
                   <template slot="title">
                     <p> Confirm change bid to {{record.bidValue}}?</p>
-                  </template>
+                  </template> -->
                   <a-button
                     type="primary"
                     size="small"
                     ghost
                     icon="forward"
+                    disabled
                   ></a-button>
-                </a-popconfirm>
+                <!-- </a-popconfirm> -->
                 <a-button
                   type="danger"
                   size="small"
                   ghost
                   icon="delete"
+                  disabled
                 ></a-button>
               </div>
             </template>
@@ -937,17 +943,18 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-popconfirm v-if="record.available" okText="Yes" cancelText="No" @confirm="addKeywordLocal({record: record, type: 'api'})">
+                <!-- <a-popconfirm v-if="record.available" okText="Yes" cancelText="No" @confirm="addKeywordLocal({record: record, type: 'api'})">
                   <template slot="title">
                     <p> Confirm create new keyword {{record.keywordText}}?</p>
-                  </template>
+                  </template> -->
                   <a-button 
                     type="primary"
                     size="small"
                     ghost
                     icon="plus-square"
+                    disabled
                   ></a-button>
-                </a-popconfirm>
+                <!-- </a-popconfirm> -->
                 
               </div>
             </template>
@@ -1009,17 +1016,18 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-popconfirm v-if="record.available" okText="Yes" cancelText="No" @confirm="addKeywordLocal({record: record, type: 'similar'})">
+                <!-- <a-popconfirm v-if="record.available" okText="Yes" cancelText="No" @confirm="addKeywordLocal({record: record, type: 'similar'})">
                   <template slot="title">
                     <p> Confirm create new keyword {{record.keywordText}}?</p>
-                  </template>
+                  </template> -->
                   <a-button 
                     type="primary"
                     size="small"
                     ghost
                     icon="plus-square"
+                    disabled
                   ></a-button>
-                </a-popconfirm>
+                <!-- </a-popconfirm> -->
               </div>
             </template>
           </a-table-column>
@@ -1080,17 +1088,18 @@
           >
             <template slot-scope="text, record">
               <div>
-                <a-popconfirm v-if="record.available" okText="Yes" cancelText="No" @confirm="addKeywordLocal({record: record, type: 'related'})">
+                <!-- <a-popconfirm v-if="record.available" okText="Yes" cancelText="No" @confirm="addKeywordLocal({record: record, type: 'related'})">
                   <template slot="title">
                     <p> Confirm create new keyword {{record.keywordText}}?</p>
-                  </template>
+                  </template> -->
                   <a-button 
                     type="primary"
                     size="small"
                     ghost
                     icon="plus-square"
+                    disabled
                   ></a-button>
-                </a-popconfirm>
+                <!-- </a-popconfirm> -->
               </div>
             </template>
           </a-table-column>
