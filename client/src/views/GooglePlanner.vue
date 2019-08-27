@@ -1249,6 +1249,7 @@ export default {
             this.keywords.coreKeywordsEN = response.data.en_core_keywords;
             this.keywords.competitionKeywordsJA = response.data.ja_competitor_keywords;
             this.keywords.competitionKeywordsEN = response.data.en_competitor_keywords;
+            this.keywords.competitionUrls = response.data.competitor_urls;
             this.current++;
           })
           .catch(() => {
@@ -1429,6 +1430,7 @@ export default {
         brand_en: this.CampaignInformation.brandNameEN,
         product_ja: this.CampaignInformation.productName,
         product_en: this.CampaignInformation.productNameEN,
+        competition_urls:  this.keywords.competitionUrls,
       }).then(response => {
         this.sendRequestCompetitionLoading = false;
         this.competitionPlannerResult = response.data;
