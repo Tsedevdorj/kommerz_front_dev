@@ -1431,6 +1431,7 @@ export default {
         product_ja: this.CampaignInformation.productName,
         product_en: this.CampaignInformation.productNameEN,
         competition_urls:  this.keywords.competitionUrls,
+        categories: this.CampaignInformation.selectedCategories,
       }).then(response => {
         this.sendRequestCompetitionLoading = false;
         this.competitionPlannerResult = response.data;
