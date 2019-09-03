@@ -13,6 +13,7 @@ import AccessDenied from "@/views/Error/403";
 import UserManagement from "@/views/Admin/User";
 import domainManagement from "@/views/Admin/AddDomain";
 import SeasonalAnalysis from "@/views/SeasonalAnalysis";
+import Juggler from "@/views/Juggler";
 
 Vue.use(Router);
 
@@ -152,7 +153,15 @@ const router = new Router({
         isSuperAdmin: true
       },
       component: domainManagement
-    }
+    },
+    {
+      path: "/juggler",
+      name: "juggler",
+      meta: {
+        isAuthenticated: true
+      },
+      component: Juggler
+    },
   ]
 });
 

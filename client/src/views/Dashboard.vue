@@ -52,6 +52,23 @@
           </a-card-meta>
         </a-card>
       </a-col>
+      <a-col :span="6">
+        <a-card hoverable @click="goJuggler">
+          <img
+            alt="example"
+            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            slot="cover"
+          />
+          <template class="ant-card-actions" slot="actions">
+            <a-icon type="plus" />
+          </template>
+          <a-card-meta
+            title="Juggler"
+            description="Budget optimizer"
+          >
+          </a-card-meta>
+        </a-card>
+      </a-col>
     </a-row>
   </div>
 </template>
@@ -78,6 +95,9 @@ export default {
     },
     goSeasonal() {
       this.$router.push({ name: "seasonalanalysis"});
+    },
+    goJuggler() {
+      this.$router.push({ name: "juggler"});
     }
   }
 };

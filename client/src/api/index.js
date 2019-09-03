@@ -172,6 +172,35 @@ export function SA_campaigns(userData) {
 export function SA_get_seasonal(userData) {
   return HTTP.post(`${API_URL}/seasonal_analysis/get_seasonal`, userData );
 }
+// Juggler
+
+export function Juggler_get_target(userData){
+  return HTTP.get(`${API_URL}/juggler/portfolio_target/${userData}`);
+}
+
+export function Juggler_create_target(userData){
+  return HTTP.post(`${API_URL}/juggler/portfolio_target`,userData);
+}
+
+export function Juggler_edit_target(userData){
+  return HTTP.put(`${API_URL}/juggler/portfolio_target`,userData);
+}
+
+export function Juggler_budget_optimization(userData){
+  return HTTP.post(`${API_URL}/juggler/budget_optimization`,userData);
+}
+
+export function Juggler_list_profiles(){
+  return HTTP.get(`${API_URL}/juggler/profiles`);
+}
+
+export function Juggler_list_portfolios(userData){
+  return HTTP.get(`${API_URL}/juggler/porfolios/${userData}`);
+}
+
+
+
+
 
 
 // global interceptor for catch http status and error
