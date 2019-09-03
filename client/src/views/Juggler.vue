@@ -81,14 +81,13 @@
             :dataSource="portfolioTable"
             size="small"
             :loading="tableLoading"
-            :pagination="{ pageSize: 50 }"
             :scroll="{ y: 240 }"
         >
             <a-table-column
             title="Campaign"
             dataIndex="Campaign"
             key="Campaign"
-            :width=80
+            :width=200
             >
             <template slot-scope="text">
                 {{ text }}
@@ -98,7 +97,7 @@
             title="CPO"
             dataIndex="CPO"
             key="CPO"
-            :width=80
+            :width=200
             >
             <template slot-scope="text">
                 {{ text }}
@@ -108,7 +107,7 @@
             title="Vol"
             dataIndex="Vol"
             key="Vol"
-            :width=80
+            :width=200
             >
             <template slot-scope="text">
                 {{ text }}
@@ -118,7 +117,27 @@
             title="Budget allocation"
             dataIndex="remaining_budget_allocation"
             key="remaining_budget_allocation"
-            :width=80
+            :width=200
+            >
+            <template slot-scope="text">
+                {{ text }}
+            </template>
+            </a-table-column>
+            <a-table-column
+            title="Vol"
+            dataIndex="Vol"
+            key="Vol"
+            :width=200
+            >
+            <template slot-scope="text">
+                {{ text }}
+            </template>
+            </a-table-column>
+            <a-table-column
+            title="Initial allocated budget"
+            dataIndex="init_budget_allocation"
+            key="init_budget_allocation"
+            :width=200
             >
             <template slot-scope="text">
                 {{ text }}

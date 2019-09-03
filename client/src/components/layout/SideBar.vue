@@ -30,6 +30,12 @@
             ><a-icon type="layout" />Seasonal Analysis</router-link
           ></a-menu-item
         >
+
+        <a-menu-item
+          ><router-link :to="{ name: 'juggler' }"
+            ><a-icon type="layout" />Juggler</router-link
+          ></a-menu-item
+        >
         <a-divider
           v-if="
             this.$store.getters.isAdmin == true ||
