@@ -100,7 +100,7 @@
             :width=200
             >
             <template slot-scope="text">
-                {{ text }}
+                {{ text.toFixed(1) }}
             </template>
             </a-table-column>
             <a-table-column
@@ -110,7 +110,7 @@
             :width=200
             >
             <template slot-scope="text">
-                {{ text }}
+                {{ text.toFixed(1) }}
             </template>
             </a-table-column>
             <a-table-column
@@ -120,7 +120,7 @@
             :width=200
             >
             <template slot-scope="text">
-                {{ text }}
+                {{ text.toFixed(1) }}
             </template>
             </a-table-column>
             <a-table-column
@@ -130,7 +130,7 @@
             :width=200
             >
             <template slot-scope="text">
-                {{ text }}
+                {{ text.toFixed(1) }}
             </template>
             </a-table-column>
         </a-table>
