@@ -124,16 +124,6 @@
             </template>
             </a-table-column>
             <a-table-column
-            title="Vol"
-            dataIndex="Vol"
-            key="Vol"
-            :width=200
-            >
-            <template slot-scope="text">
-                {{ text }}
-            </template>
-            </a-table-column>
-            <a-table-column
             title="Initial allocated budget"
             dataIndex="init_budget_allocation"
             key="init_budget_allocation"
