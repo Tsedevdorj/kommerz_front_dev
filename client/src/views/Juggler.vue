@@ -100,7 +100,7 @@
             :width=200
             >
             <template slot-scope="text">
-                {{ text.toFixed(1) }}
+                {{ truncate_float(text) }}
             </template>
             </a-table-column>
             <a-table-column
@@ -110,7 +110,7 @@
             :width=200
             >
             <template slot-scope="text">
-                {{ text.toFixed(1) }}
+                {{ truncate_float(text) }}
             </template>
             </a-table-column>
             <a-table-column
@@ -120,7 +120,7 @@
             :width=200
             >
             <template slot-scope="text">
-                {{ text.toFixed(1) }}
+                {{ truncate_float(text) }}
             </template>
             </a-table-column>
             <a-table-column
@@ -130,7 +130,7 @@
             :width=200
             >
             <template slot-scope="text">
-                {{ text.toFixed(1) }}
+                {{ truncate_float(text) }}
             </template>
             </a-table-column>
         </a-table>
@@ -163,6 +163,11 @@ export default {
     },
 
     methods: {
+        truncate_float(value) {
+        if (value == null) return "N/A";
+        else
+            return value.toFixed(1);
+        },
         get_portfolio_target(portfolioId){
             Juggler_get_target(portfolioId)
             .then(response => {
