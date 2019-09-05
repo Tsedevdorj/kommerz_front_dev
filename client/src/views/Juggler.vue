@@ -109,7 +109,7 @@
             </template>
             </a-table-column>
             <a-table-column
-            title="Budget allocation"
+            title="Recommended Budget"
             dataIndex="remaining_budget_allocation"
             key="remaining_budget_allocation"
             :width=200
@@ -119,7 +119,7 @@
             </template>
             </a-table-column>
             <a-table-column
-            title="Initial allocated budget"
+            title="Initial Budget"
             dataIndex="init_budget_allocation"
             key="init_budget_allocation"
             :width=200
