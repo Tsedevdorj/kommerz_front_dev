@@ -75,13 +75,13 @@
             title="Campaign"
             dataIndex="Campaign"
             key="Campaign"
-            :width=200
+            :width=150
             >
             <template slot-scope="text">
                 {{ text }}
             </template>
             </a-table-column>
-            
+
             <a-table-column
             title="Campaign Name"
             dataIndex="campaignName"
@@ -97,7 +97,7 @@
             title="CPO"
             dataIndex="CPO"
             key="CPO"
-            :width=200
+            :width=150
             >
             <template slot-scope="text">
                 {{ truncate_float(text) }}
@@ -107,7 +107,7 @@
             title="Vol"
             dataIndex="Vol"
             key="Vol"
-            :width=200
+            :width=150
             >
             <template slot-scope="text">
                 {{ truncate_float(text) }}
@@ -117,10 +117,13 @@
             title="Recommended Budget"
             dataIndex="remaining_budget_allocation"
             key="remaining_budget_allocation"
-            :width=200
+            :width=150
             >
-            <template slot-scope="text">
-                {{ truncate_float(text) }}
+            <template slot-scope="text, record">
+                <div>
+                    <p>{{ truncate_float(text) }}</p>
+                    <a-tag color="blue">{{ record.remaining_budget_allocation_percent}} %</a-tag>
+                </div>
             </template>
             </a-table-column>
             <a-table-column

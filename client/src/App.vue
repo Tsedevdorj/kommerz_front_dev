@@ -65,7 +65,7 @@ export default {
         if (error.response.status) {
           if(error.response.status == 401)
             {
-            router.push("/");
+            router.push("/dashboard");
           }
           if (
             error.response.status == 400 ||
