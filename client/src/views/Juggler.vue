@@ -158,7 +158,7 @@ export default {
         truncate_float(value) {
         if (value == null) return "N/A";
         else
-            return value.toFixed(1);
+            return value.toFixed(0);
         },
         get_portfolio_target(portfolioId){
             Juggler_get_target(portfolioId)
@@ -187,8 +187,8 @@ export default {
                 targetEndDate: this.portfolioTarget.targetDateRange[1].format('YYYY-MM-DD'),
                 }).then(response =>{
                 // console.log(response.data.msg)
-                this.portfolioTarget.targetBudget = response.data.targetBudget;
-                this.portfolioTarget.userId = response.data.userId;
+                this.portfolioTarget.targetBudget = response.data.response.targetBudget;
+                this.portfolioTarget.userId = response.data.response.userId;
                 this.portfolioTarget.targetDateRange =  [moment(response.data.response.targetStartDate, "YYYY-MM-DD"), moment(response.data.response.targetEndDate, "YYYY-MM-DD")];
                 this.TargetAvail=true;
                 Juggler_budget_optimization({
@@ -243,8 +243,8 @@ export default {
                 targetEndDate: this.portfolioTarget.targetDateRange[1].format('YYYY-MM-DD'),
                 }).then(response =>{
                 // console.log(response.data.msg)
-                this.portfolioTarget.targetBudget = response.data.targetBudget;
-                this.portfolioTarget.userId = response.data.userId;
+                this.portfolioTarget.targetBudget = response.data.response.targetBudget;
+                this.portfolioTarget.userId = response.data.response.userId;
                 this.portfolioTarget.targetDateRange=  [moment(response.data.response.targetStartDate, "YYYY-MM-DD"),moment(response.data.response.targetEndDate, "YYYY-MM-DD")];
                 this.TargetAvail=true;
                 Juggler_budget_optimization({
