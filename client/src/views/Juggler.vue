@@ -19,18 +19,6 @@
           :gutter="32"
           style="padding: 0 16px 16px 16px"
         >
-
-        <a-col :span="5">
-        <label>Target CPO: </label>
-        <a-input v-model="portfolioTarget.targetCPO" placeholder="Not found" />
-
-        </a-col>
-        
-        <a-col :span="5">
-        <label>Target Volume: </label>
-        <a-input v-model="portfolioTarget.targetVolume" placeholder="Not found" />
-
-        </a-col>
         
         <a-col :span="5">
         <label>Target Budget CPA: </label>
@@ -39,19 +27,19 @@
         </a-col>
 
         <a-col :span="8">
-          <label> Algo start date: </label>
-          <a-date-picker
-          name="moth_date"
-          
-          v-model="portfolioTarget.algoStartDate"
-          :format="targetDateFormat"
-          >
-            <template slot="renderExtraFooter">
-              extra footer
-            </template>
-          </a-date-picker>
+          <label> Target start date: </label>
+          <a-range-picker
+                name="target_date"
+                v-validate.initial="{required: true}"
+                v-model="portfolioTarget.targetDateRange"
+                :format="targetDateFormat"
+                >
+                <span style="color: red">{{ errors.first("target_date") }}</span>
+                <template slot="renderExtraFooter">
+                    extra footer
+                </template>
+            </a-range-picker>
         </a-col>
-        
     </a-row>
     <a-row
       :gutter="32"
@@ -151,7 +139,11 @@ export default {
             availableProfiles:[],
             loading:false,
             selectPortfolio: "",
-            portfolioTarget: {},
+            portfolioTarget:{ 
+                targetBudget:"",
+                targetDateRange: [],
+                userId: "",
+            },
             targetDateFormat:"YYYY-MM-DD",
             TargetAvail: false,
             confirmSend: false,
@@ -190,14 +182,14 @@ export default {
             this.tableLoading=true;
             Juggler_create_target({
                 portfolioId: this.selectPortfolioId,
-                targetCPO: this.portfolioTarget.targetCPO,
-                targetVolume: this.portfolioTarget.targetVolume,
                 targetBudget: this.portfolioTarget.targetBudget,
-                algoStartDate: this.portfolioTarget.algoStartDate.format('YYYY-MM-DD'),
+                targetStartDate: this.portfolioTarget.targetDateRange[0].format('YYYY-MM-DD'),
+                targetEndDate: this.portfolioTarget.targetDateRange[1].format('YYYY-MM-DD'),
                 }).then(response =>{
                 // console.log(response.data.msg)
-                this.portfolioTarget = response.data.response;
-                this.portfolioTarget.algoStartDate=  moment(response.data.response.algoStartDate, "YYYY-MM-DD")
+                this.portfolioTarget.targetBudget = response.data.targetBudget;
+                this.portfolioTarget.userId = response.data.userId;
+                this.portfolioTarget.targetDateRange =  [moment(response.data.response.targetStartDate, "YYYY-MM-DD"), moment(response.data.response.targetEndDate, "YYYY-MM-DD")];
                 this.TargetAvail=true;
                 Juggler_budget_optimization({
                 portfolioId: this.selectPortfolioId,
@@ -226,32 +218,34 @@ export default {
             .then(response => {
 
                 if (response.data != null){
-                this.portfolioTarget = response.data;
-                this.portfolioTarget.algoStartDate=  moment(response.data.algoStartDate, "YYYY-MM-DD")
+                this.portfolioTarget.targetBudget = response.data.targetBudget;
+                this.portfolioTarget.userId = response.data.userId;
+                this.portfolioTarget.targetDateRange =  [moment(response.data.targetStartDate, "YYYY-MM-DD"),  moment(response.data.targetEndDate, "YYYY-MM-DD")];
                 this.TargetAvail =true;
                 }
                 this.loading = false;
                 this.confirmSend = false;
                 
                 // console.log(this.portfolioTarget)
-                }).catch(error => {
-              this.responseError = error.response.data.msg;
-              this.$message.error("Error: " + this.responseError);
-              this.confirmSend = false;
-            });
+                })
+            //     .catch(error => {
+            //   this.responseError = error.response.data.msg;
+            //   this.$message.error("Error: " + this.responseError);
+            //   this.confirmSend = false;
+            // });
 
         },
         modifyTarget(){
             Juggler_edit_target({
                 portfolioId: this.selectPortfolioId,
-                targetCPO: this.portfolioTarget.targetCPO,
-                targetVolume: this.portfolioTarget.targetVolume,
                 targetBudget: this.portfolioTarget.targetBudget,
-                algoStartDate: this.portfolioTarget.algoStartDate.format('YYYY-MM-DD'),
+                targetStartDate: this.portfolioTarget.targetDateRange[0].format('YYYY-MM-DD'),
+                targetEndDate: this.portfolioTarget.targetDateRange[1].format('YYYY-MM-DD'),
                 }).then(response =>{
                 // console.log(response.data.msg)
-                this.portfolioTarget = response.data.response;
-                this.portfolioTarget.algoStartDate=  moment(response.data.response.algoStartDate, "YYYY-MM-DD")
+                this.portfolioTarget.targetBudget = response.data.targetBudget;
+                this.portfolioTarget.userId = response.data.userId;
+                this.portfolioTarget.targetDateRange=  [moment(response.data.response.targetStartDate, "YYYY-MM-DD"),moment(response.data.response.targetEndDate, "YYYY-MM-DD")];
                 this.TargetAvail=true;
                 Juggler_budget_optimization({
                     portfolioId: this.selectPortfolioId,
