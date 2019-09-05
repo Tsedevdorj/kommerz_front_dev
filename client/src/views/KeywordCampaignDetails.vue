@@ -127,7 +127,7 @@
       </a-col>
       
     </a-row>
-    <label>Month </label>
+    <!-- <label>Month </label>
       <a-button
           type="primary"
           size="small"
@@ -178,7 +178,7 @@
           </a-range-picker>
         </a-col>
         
-      </a-row>
+      </a-row> -->
 
     <a-collapse v-model="collapseActiveKey2">
       <a-collapse-panel header="For internal use" key="1">
