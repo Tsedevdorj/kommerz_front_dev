@@ -77,6 +77,11 @@
             key="Campaign"
             :width=200
             >
+            <template slot-scope="text">
+                {{ text }}
+            </template>
+            </a-table-column>
+            
             <a-table-column
             title="Campaign Name"
             dataIndex="campaignName"
