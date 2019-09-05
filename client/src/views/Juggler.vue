@@ -121,8 +121,9 @@
             >
             <template slot-scope="text, record">
                 <div>
-                    <p>{{ truncate_float(text) }}</p>
+                    
                     <a-tag color="blue">{{ record.remaining_budget_allocation_percent}} %</a-tag>
+                    <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ truncate_float(text) }}</p>
                 </div>
             </template>
             </a-table-column>
