@@ -325,6 +325,7 @@
                 {{truncate_str(text, 10)}}</a
               
                 >
+                <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
               </a-popover>
             </template>
           </a-table-column>
@@ -494,6 +495,7 @@
                 {{truncate_str(text, 10)}}</a
               
                 >
+                <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
               </a-popover>
             </template>
           </a-table-column>
@@ -657,6 +659,7 @@
                 {{truncate_str(text, 10)}}</a
               
                 >
+                <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
               </a-popover>
             </template>
           </a-table-column>
@@ -820,6 +823,7 @@
                 {{truncate_str(text, 10)}}</a
               
                 >
+                <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
               </a-popover>
             </template>
           </a-table-column>
@@ -922,6 +926,7 @@
                 {{text}}</a
               
                 >
+                <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
               </a-popover>
             </template>
           </a-table-column>
@@ -995,6 +1000,7 @@
                 {{text}}</a
               
                 >
+                <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
               </a-popover>
             </template>
           </a-table-column>
@@ -1067,6 +1073,7 @@
                 {{text}}</a
               
                 >
+                <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
               </a-popover>
             </template>
           </a-table-column>
