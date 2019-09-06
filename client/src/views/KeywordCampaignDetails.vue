@@ -1416,7 +1416,6 @@ export default {
       });
       requestOptimization({
         campaignId: this.campaignID,
-        CPA: this.campaignCPASelect,
         
       }).then((response) => {
         
@@ -1461,6 +1460,7 @@ export default {
       if(this.errors.items.length === 0) {
         campaignTargetCreate({
           campaignId: this.campaignID,
+          objective: this.campaignCPASelect,
           campaignTargetVolume: this.campaignTargetDetail.targetOrder,
           campaignTargetBudget: this.campaignTargetDetail.targetBudget,
           campaignTargetCPO: this.campaignTargetDetail.targetCPO,
@@ -1477,6 +1477,7 @@ export default {
           if(this.campaignTargetMonthAvail){
             campaignTargetEditO({
               campaignId: this.campaignID,
+              objective: this.campaignCPASelect,
               campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
               campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
               campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
@@ -1516,6 +1517,7 @@ export default {
       if(this.errors.items.length === 0) {
         campaignTargetEdit({
           campaignId: this.campaignID,
+          objective: this.campaignCPASelect,
           campaignTargetVolume: this.campaignTargetDetail.targetOrder,
           campaignTargetBudget: this.campaignTargetDetail.targetBudget,
           campaignTargetCPO: this.campaignTargetDetail.targetCPO,
@@ -1580,7 +1582,7 @@ export default {
       ).then(response => {
         console.log(response)
         if (response.data != null && response.data !== undefined){
-
+          this.campaignCPASelect= response.data.objective;
           this.campaignTargetDetail.targetOrder = response.data.targetVolume;
           this.campaignTargetDetail.targetCPO = response.data.targetCPO;
           this.campaignTargetDetail.targetDateRange = [moment(response.data.targetStartDate, "YYYY-MM-DD"), moment(response.data.targetEndDate, "YYYY-MM-DD")];
