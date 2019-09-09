@@ -221,7 +221,7 @@ export default {
                     console.log('test', response.data)
                     this.portfolioTable = response.data.response;
                     this.tableLoading=false;
-                    this.historical_table.columns = response.data.historical_columns.map(value, index =>{
+                    this.historical_table.columns = response.data.historical_columns.map((value, index) =>{
                           if (value === 'campaignId'){
                             return { width: 150, title: value, 
                                 dataIndex: value, 
