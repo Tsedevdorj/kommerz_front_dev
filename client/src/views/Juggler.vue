@@ -30,7 +30,6 @@
           <label> Target start date: </label>
           <a-range-picker
               name="target_date"
-              v-validate="{required: true}"
               v-model="portfolioTarget.targetDateRange"
               :format="targetDateFormat"
               >
