@@ -29,16 +29,13 @@
         <a-col :span="8">
           <label> Target start date: </label>
           <a-range-picker
-                name="target_date"
-                v-validate.initial="{required: true}"
-                v-model="portfolioTarget.targetDateRange"
-                :format="targetDateFormat"
-                >
-                <span style="color: red">{{ errors.first("target_date") }}</span>
-                <template slot="renderExtraFooter">
-                    extra footer
-                </template>
-            </a-range-picker>
+              name="target_date"
+              v-validate="{required: true}"
+              v-model="portfolioTarget.targetDateRange"
+              :format="targetDateFormat"
+              >
+          </a-range-picker>
+          <span style="color: red">{{ errors.first("target_date") }}</span>
         </a-col>
     </a-row>
     <a-row
@@ -69,7 +66,7 @@
             :dataSource="portfolioTable"
             size="small"
             :loading="tableLoading"
-            :scroll="{ y: 240 }"
+            :scroll="{ y: 0 }"
         >
             <a-table-column
             title="Campaign"
@@ -122,7 +119,7 @@
             <template slot-scope="text, record">
                 <div>
                     
-                    <a-tag color="blue">{{ record.remaining_budget_allocation_percent}} %</a-tag>
+                    <a-tag color="blue">{{ record.assign_budget_ratio}} %</a-tag>
                     <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ truncate_float(text) }}</p>
                 </div>
             </template>
@@ -139,6 +136,14 @@
             </a-table-column>
         </a-table>
     </a-row>
+    <a-row>
+        <a-table class="historical_table" size="middle" :rowKey="record => record.campaignId" :columns="historical_table.columns" :dataSource="historical_table.data" :scroll="{ x: 1350 , y: 300 }">
+          <span slot="dates" slot-scope="text">
+            <a-tag color="blue">{{text}} %</a-tag>
+          </span>
+        </a-table>
+    </a-row>
+
   </div>
 </template>
 
@@ -167,6 +172,10 @@ export default {
             selectPortfolioId:"",
             portfolioTable: [],
             tableLoading: false,
+            historical_table:{
+                columns:[],
+                data:[],
+            },
             };
     },
 
@@ -213,6 +222,20 @@ export default {
                     console.log('test', response.data)
                     this.portfolioTable = response.data.response;
                     this.tableLoading=false;
+                    this.historical_table.columns = response.data.historical_columns.map(value, index =>{
+                          if (value === 'campaignId'){
+                            return { width: 150, title: value, 
+                                dataIndex: value, 
+                                key: index};
+                          }
+                          else{
+                            return { width: 150, title: value, 
+                                dataIndex: value, 
+                                key: index,
+                                scopedSlots: { customRender: 'dates' },};
+                          }
+                    });
+                    this.historical_table.data = response.data.historical;
         
                     }).catch(error => {
                         this.responseError = error.response.data.msg;
@@ -269,16 +292,33 @@ export default {
                     console.log('test', typeof(response.data))
                     this.portfolioTable = response.data.response;
                     this.tableLoading=false;
-        
-                    }).catch(error => {
-                        this.responseError = error.response.data.msg;
-                        this.$message.error("Error: " + this.responseError);
-                        this.tableLoading=false;
+                    this.historical_table.columns = response.data.historical_columns.map((value, index) =>{
+                        if (value === 'campaignId'){
+                            return { width: 150, title: value, 
+                                dataIndex: value, 
+                                key: index};
+                          }
+                          else{
+                            return { width: 150, title: value, 
+                                dataIndex: value, 
+                                key: index,
+                                scopedSlots: { customRender: 'dates' },};
+                          }
                     });
-                }).catch(error => {
-                    this.responseError = error.response.data.msg;
-                    this.$message.error("Error: " + this.responseError);
-                });
+                    this.historical_table.data = response.data.historical;
+        
+        
+                    })
+                    // .catch(error => {
+                    //     this.responseError = error.response.data.msg;
+                    //     this.$message.error("Error: " + this.responseError);
+                    //     this.tableLoading=false;
+                    // });
+                })
+                // .catch(error => {
+                //     this.responseError = error.response.data.msg;
+                //     this.$message.error("Error: " + this.responseError);
+                // });
             this.tableLoading=true;
             
         },
@@ -301,5 +341,12 @@ export default {
 </script>
 
 <style>
-
+  .ant-table td { white-space: nowrap; }
+  .historical_table td {
+    width: 150px!important;
+    padding-left: 10px!important;
+  }
+  .historical_table td:first {
+    padding-left: 8px;
+  }
 </style>
