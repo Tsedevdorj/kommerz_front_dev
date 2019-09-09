@@ -27,7 +27,7 @@
         </a-col>
 
         <a-col :span="8">
-          <label> Target start date: </label>
+          <label> Budget date range: </label>
           <a-range-picker
               name="target_date"
               v-model="portfolioTarget.targetDateRange"

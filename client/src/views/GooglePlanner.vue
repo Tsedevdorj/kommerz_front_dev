@@ -272,7 +272,7 @@
                   <template v-for="(tag, index) in keywords.brandKeywordsJA">
                     <a-tag
                       :key="tag"
-                      :closable="index !== 0"
+                      :closable="true"
                       :afterClose="
                         () =>
                           removeKeyword({ tag: tag, type: 'brandKeywordsJA' })
@@ -298,7 +298,7 @@
                   <template v-for="(tag, index) in keywords.brandKeywordsEN">
                     <a-tag
                       :key="tag"
-                      :closable="index !== 0"
+                      :closable="true"
                       :afterClose="
                         () =>
                           removeKeyword({ tag: tag, type: 'brandKeywordsEN' })
@@ -570,7 +570,7 @@
                   <template v-for="(tag, index) in keywords.coreKeywordsJA">
                     <a-tag
                       :key="tag"
-                      :closable="index !== 0"
+                      :closable="true"
                       :afterClose="
                         () =>
                           removeKeyword({ tag: tag, type: 'coreKeywordsJA' })
@@ -596,7 +596,7 @@
                   <template v-for="(tag, index) in keywords.coreKeywordsEN">
                     <a-tag
                       :key="tag"
-                      :closable="index !== 0"
+                      :closable="true"
                       :afterClose="
                         () =>
                           removeKeyword({ tag: tag, type: 'coreKeywordsEN' })
@@ -868,7 +868,7 @@
                   <template v-for="(tag, index) in keywords.competitionKeywordsJA">
                     <a-tag
                       :key="tag"
-                      :closable="index !== 0"
+                      :closable="true"
                       :afterClose="
                         () =>
                           removeKeyword({ tag: tag, type: 'competitionKeywordsJA' })
@@ -894,7 +894,7 @@
                   <template v-for="(tag, index) in keywords.competitionKeywordsEN">
                     <a-tag
                       :key="tag"
-                      :closable="index !== 0"
+                      :closable="true"
                       :afterClose="
                         () =>
                           removeKeyword({ tag: tag, type: 'competitionKeywordsEN' })
