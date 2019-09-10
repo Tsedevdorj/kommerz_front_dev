@@ -1,13 +1,13 @@
 <template>
   <div class="juggler">
-    <a-row :gutter="48" style="padding-bottom: 10px;">
-    <a-col :span="7">
+    <a-row :gutter="32" style="padding: 0 16px 16px 16px">
+    <a-col :span="8">
         <label>Account: </label>
         <a-select style="width: 250px" placeholder="Select Account" @change="handleChange">
             <a-select-option v-for="item in availableProfiles" :key="item.profileId" :value="item.profileId">{{item.accountName}}</a-select-option>
         </a-select>
     </a-col>
-    <a-col :span="7">
+    <a-col :span="8">
     <label>Portfolios: </label>
     <a-select style="width: 250px" placeholder="Select Portfolio" @change="handleChange2">
         <a-select-opt-group >
@@ -29,9 +29,9 @@
           style="padding: 0 16px 16px 16px"
         >
         
-        <a-col :span="5">
-        <label>Target Budget CPA: </label>
-        <a-input v-model="portfolioTarget.targetBudget" placeholder="Not found" />
+        <a-col :span="8">
+        <label>Target Budget: </label>
+        <a-input style="width: 250px" v-model="portfolioTarget.targetBudget" placeholder="Not found" />
 
         </a-col>
 
@@ -41,9 +41,22 @@
               name="target_date"
               v-model="portfolioTarget.targetDateRange"
               :format="targetDateFormat"
+              style="width: 250px"
               >
           </a-range-picker>
           <span style="color: red">{{ errors.first("target_date") }}</span>
+        </a-col>
+        <a-col :span="8">
+          <label>Choose Objectives: </label>
+          <a-select
+            v-model="CPASelect"
+            placeholder="Choose Objectives"
+            style="width: 250px"
+          >
+            <a-select-option value="CPM">CPM</a-select-option>
+            <a-select-option value="CPC">CPC</a-select-option>
+            <a-select-option value="CPO">CPO</a-select-option>
+          </a-select>
         </a-col>
     </a-row>
     <a-row
@@ -99,9 +112,9 @@
             </template>
             </a-table-column>
             <a-table-column
-            title="CPO"
-            dataIndex="CPO"
-            key="CPO"
+            title="CPA"
+            dataIndex="CPA"
+            key="CPA"
             :width=150
             >
             <template slot-scope="text">
@@ -134,8 +147,8 @@
             </a-table-column>
             <a-table-column
             title="Initial Budget"
-            dataIndex="init_budget_allocation"
-            key="init_budget_allocation"
+            dataIndex="monthly_budget"
+            key="monthly_budget"
             :width=200
             >
             <template slot-scope="text">
@@ -145,7 +158,7 @@
         </a-table>
     </a-row>
     <a-row>
-        <a-table class="historical_table" size="middle" :rowKey="record => record.campaignId" :columns="historical_table.columns" :dataSource="historical_table.data" :scroll="{ x: 1350 , y: 300 }">
+        <a-table class="historical_table" size="middle" :rowKey="record => record.campaignId" :loading="tableLoading" :columns="historical_table.columns" :dataSource="historical_table.data" :scroll="{ x: 1350 , y: 300 }">
           <span slot="dates" slot-scope="text">
             <a-tag color="blue">{{text}} %</a-tag>
           </span>
@@ -173,6 +186,7 @@ export default {
                 targetDateRange: [],
                 userId: "",
             },
+            CPASelect: "CPO",
             targetDateFormat:"YYYY-MM-DD",
             TargetAvail: false,
             confirmSend: false,
@@ -226,6 +240,7 @@ export default {
                 this.TargetAvail=true;
                 Juggler_budget_optimization({
                 portfolioId: this.selectPortfolioId,
+                CPA: this.CPASelect,
                 }).then(response =>{
                     console.log('test', response.data)
                     this.portfolioTable = response.data.response;
@@ -298,6 +313,7 @@ export default {
                 this.TargetAvail=true;
                 Juggler_budget_optimization({
                     portfolioId: this.selectPortfolioId,
+                    CPA: this.CPASelect,
                 }).then(response =>{
                     console.log('test', typeof(response.data))
                     this.portfolioTable = response.data.response;
