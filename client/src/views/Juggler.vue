@@ -10,7 +10,16 @@
     <a-col :span="7">
     <label>Portfolios: </label>
     <a-select style="width: 250px" placeholder="Select Portfolio" @change="handleChange2">
-        <a-select-option v-for="item in availablePortfolios" :key="item.portfolioId" :value="item.portfolioId">{{item.name}}</a-select-option>
+        <a-select-opt-group >
+          <span slot="label">Active</span>
+          <template>
+          <a-select-option v-for="item in availablePortfolios" :key="item.portfolioId" v-if="item.active_camp" :value="item.portfolioId">{{item.name}}</a-select-option>
+          </template>
+        </a-select-opt-group>
+        <a-select-opt-group>
+          <span slot="label">Inactive</span>
+          <a-select-option v-for="item in availablePortfolios" :key="item.portfolioId" v-if="!item.active_camp" :value="item.portfolioId">{{item.name}}</a-select-option>
+        </a-select-opt-group>
         </a-select>
     </a-col>
  
@@ -248,7 +257,9 @@ export default {
             
         },
         handleChange2(value){
-            this.portfolioTarget= {};
+            this.portfolioTarget.targetBudget = "";
+            this.portfolioTarget.userId = "";
+            this.portfolioTarget.targetDateRange = [];
             this.TargetAvail =false;
             this.confirmSend = true;
             this.selectPortfolioId = value;
@@ -266,11 +277,11 @@ export default {
                 
                 // console.log(this.portfolioTarget)
                 })
-            //     .catch(error => {
-            //   this.responseError = error.response.data.msg;
-            //   this.$message.error("Error: " + this.responseError);
-            //   this.confirmSend = false;
-            // });
+                .catch(error => {
+              this.responseError = error.response.data.msg;
+              this.$message.error("Error: " + this.responseError);
+              this.confirmSend = false;
+            });
 
         },
         modifyTarget(){
@@ -308,16 +319,16 @@ export default {
         
         
                     })
-                    // .catch(error => {
-                    //     this.responseError = error.response.data.msg;
-                    //     this.$message.error("Error: " + this.responseError);
-                    //     this.tableLoading=false;
-                    // });
+                    .catch(error => {
+                        this.responseError = error.response.data.msg;
+                        this.$message.error("Error: " + this.responseError);
+                        this.tableLoading=false;
+                    });
                 })
-                // .catch(error => {
-                //     this.responseError = error.response.data.msg;
-                //     this.$message.error("Error: " + this.responseError);
-                // });
+                .catch(error => {
+                    this.responseError = error.response.data.msg;
+                    this.$message.error("Error: " + this.responseError);
+                });
             this.tableLoading=true;
             
         },
