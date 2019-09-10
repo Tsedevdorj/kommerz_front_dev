@@ -3,24 +3,24 @@
     <a-row :gutter="32" style="padding: 0 16px 16px 16px">
     <a-col :span="8">
         <label>Account: </label>
-        <a-select style="width: 250px" placeholder="Select Account" @change="handleChange">
+        <a-select name="select_account" v-validate="{required: true}" style="width: 250px" v-model="selectProfileId" placeholder="Select Account" @change="handleChange">
             <a-select-option v-for="item in availableProfiles" :key="item.profileId" :value="item.profileId">{{item.accountName}}</a-select-option>
         </a-select>
+        <span style="color: red">{{ errors.first("select_account") }}</span>
     </a-col>
     <a-col :span="8">
     <label>Portfolios: </label>
-    <a-select style="width: 250px" placeholder="Select Portfolio" @change="handleChange2">
+    <a-select name="select_portfolio" v-validate="{required: true}" style="width: 250px" v-model="selectPortfolioId" placeholder="Select Portfolio" @change="handleChange2">
         <a-select-opt-group >
           <span slot="label">Active</span>
-          <template>
           <a-select-option v-for="item in availablePortfolios" :key="item.portfolioId" v-if="item.active_camp" :value="item.portfolioId">{{item.name}}</a-select-option>
-          </template>
         </a-select-opt-group>
         <a-select-opt-group>
           <span slot="label">Inactive</span>
           <a-select-option v-for="item in availablePortfolios" :key="item.portfolioId" v-if="!item.active_camp" :value="item.portfolioId">{{item.name}}</a-select-option>
         </a-select-opt-group>
-        </a-select>
+      </a-select>
+      <span style="color: red">{{ errors.first("select_portfolio") }}</span>
     </a-col>
  
     </a-row>
@@ -31,14 +31,15 @@
         
         <a-col :span="8">
         <label>Target Budget: </label>
-        <a-input style="width: 250px" v-model="portfolioTarget.targetBudget" placeholder="Not found" />
-
+        <a-input name="target_budget" v-validate="{required: true}" style="width: 250px" v-model="portfolioTarget.targetBudget" placeholder="Not found" />
+        <span style="color: red">{{ errors.first("target_budget") }}</span>
         </a-col>
 
         <a-col :span="8">
           <label> Budget date range: </label>
           <a-range-picker
               name="target_date"
+              v-validate="{required: true}"
               v-model="portfolioTarget.targetDateRange"
               :format="targetDateFormat"
               style="width: 250px"
@@ -192,6 +193,7 @@ export default {
             confirmSend: false,
             responseError:"",
             selectPortfolioId:"",
+            selectProfileId:"",
             portfolioTable: [],
             tableLoading: false,
             historical_table:{
@@ -216,7 +218,9 @@ export default {
         },
         handleChange(value){
             // console.log(value)
-            
+            this.portfolioTarget.targetBudget = "";
+            this.portfolioTarget.userId = "";
+            this.portfolioTarget.targetDateRange = [];
             Juggler_list_portfolios(value)
                 .then(response => {
                 this.availablePortfolios = response.data;
@@ -226,6 +230,7 @@ export default {
 
         },
         createNewTarget(){
+          if(this.errors.items.length === 0) {
             this.tableLoading=true;
             Juggler_create_target({
                 portfolioId: this.selectPortfolioId,
@@ -269,7 +274,11 @@ export default {
                     this.responseError = error.response.data.msg;
                     this.$message.error("Error: " + this.responseError);
                 });
-            
+          }
+          else {
+            this.$message.error("Please fill required fields of the form. " )
+
+          }
         },
         handleChange2(value){
             this.portfolioTarget.targetBudget = "";
@@ -300,6 +309,7 @@ export default {
 
         },
         modifyTarget(){
+          if(this.errors.items.length === 0) {
             Juggler_edit_target({
                 portfolioId: this.selectPortfolioId,
                 targetBudget: this.portfolioTarget.targetBudget,
@@ -346,7 +356,11 @@ export default {
                     this.$message.error("Error: " + this.responseError);
                 });
             this.tableLoading=true;
-            
+          }
+          else {
+            this.$message.error("Please fill required fields of the form. " )
+
+          }
         },
 
         list_profiles(){
