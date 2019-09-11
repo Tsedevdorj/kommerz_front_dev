@@ -32,7 +32,7 @@
       </a-col> -->
     </a-row>
     <a-row :gutter="48" style="padding-bottom: 10px;">
-        <a-calendar>
+        <a-calendar @change="changeCallback" v-model="selectedMonth">
             <ul class="events" style="list-style-type:none;padding-left:10px;" slot="dateCellRender" slot-scope="value" >
               <li v-for="item in getDaysData(value)" :key="item.content">
                 <a-badge :status="item.type" :text="item.content" />
@@ -68,8 +68,10 @@ export default {
       selectCampaignId:"",
       monthBudget: "",
       calendarData:[],
+      calendarMonth: moment().month(),
       periodData:[],
       chart1: null,
+      selectedMonth: moment(),
       c_1Data: [{
         item: '事例一',
         count: 40,
@@ -134,29 +136,35 @@ export default {
       this.chart1.render();
       interval.setSelected(data[0]);
     },
-
+    changeCallback(date){
+      console.log(this.selectedMonth.month())
+    },
     getSeasonalAnalysis(){
+        
         SA_get_seasonal({
             campaignId: this.selectCampaignId,
             monthBudget: this.monthBudget,
+            month: this.selectedMonth.format('YYYY-MM-DD'),
         }).then(response => {
-        console.log(response.data);
-        if(response.status === 200){
-          this.calendarData = response.data.days_data;
-          this.periodData = response.data.period_data;
-          this.loading = false;
-          this.ChartFunction(this.periodData);
-        }else{
-          this.calendarData = [];
-          this.$message.warning(response.data.msg);
-        }
-    })
+          console.log(response.data);
+          if(response.status === 200){
+            this.calendarData = response.data.days_data;
+            this.calendarMonth = parseInt(response.data.month, 10);
+            this.periodData = response.data.period_data;
+            this.loading = false;
+            this.ChartFunction(this.periodData);
+          }else{
+            this.calendarData = [];
+            this.$message.warning(response.data.msg);
+          }
+      })
 
     },
     getDaysData(value){
         let showdata = Array();
         let day_num = value.date() - 1
-        if(value.month() === moment().month())
+        console.log(value.month())
+        if(value.month() === this.calendarMonth-1)
         if(this.calendarData && this.calendarData.length){
             if(this.calendarData[day_num].cost)
                 showdata.push({ type: 'warning', content: 'Cost:' + this.calendarData[day_num].cost.toFixed(1)});
@@ -167,7 +175,6 @@ export default {
             if(this.calendarData[day_num].actual_percent)
               showdata.push({ type: 'default', content: 'Actual percent:' + this.calendarData[day_num].actual_percent.toFixed(1) + '%'});
         }
-        console.log(showdata)
         return showdata || []
     },
     getProfilesList(){
