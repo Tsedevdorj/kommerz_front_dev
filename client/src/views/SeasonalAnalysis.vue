@@ -31,6 +31,11 @@
             <a-tag color="#108ee9">Period: {{periodRange}}</a-tag>
       </a-col> -->
     </a-row>
+    <a-row :gutter="48" style="padding-bottom: 10px;"> 
+      <a-button type="dashed"
+          >Internal use: {{ interpolatedInfo }}</a-button
+        >
+    </a-row>
     <a-row :gutter="48" style="padding-bottom: 10px;">
         <a-calendar @change="changeCallback" v-model="selectedMonth">
             <ul class="events" style="list-style-type:none;padding-left:10px;" slot="dateCellRender" slot-scope="value" >
@@ -71,6 +76,7 @@ export default {
       calendarMonth: moment().month(),
       periodData:[],
       chart1: null,
+      interpolatedInfo: "",
       selectedMonth: moment(),
       c_1Data: [{
         item: '事例一',
@@ -151,6 +157,7 @@ export default {
             this.calendarData = response.data.days_data;
             this.calendarMonth = parseInt(response.data.month, 10);
             this.periodData = response.data.period_data;
+            this.interpolatedInfo = response.data.interpolated_info;
             this.loading = false;
             this.ChartFunction(this.periodData);
           }else{
