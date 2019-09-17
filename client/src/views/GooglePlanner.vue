@@ -248,6 +248,17 @@
           ></a-input>
           <span style="color: red">{{ errors.first("landing_url") }}</span>
         </a-col>
+        <a-col
+          :span="24"
+          class="padding-top__20"
+        >
+          <div class="form-label">
+            <label></label>
+          </div>
+            <competitor-form v-bind:CampaignInformation="CampaignInformation">
+            </competitor-form>
+
+        </a-col>
       </a-row>
     </div>
     <div class="steps-content" v-if="current == 1">
@@ -1144,8 +1155,10 @@
                       >Send Request</a-button
                     >
                   </div>
+
                 </a-col>
               </a-row>
+              
             </a-tab-pane>
           </a-tabs>
         </a-col>
@@ -1169,7 +1182,11 @@
 <script>
 import categoryData from "@/assets/data/result.json";
 import { keywordPlanner, brandPlanner, corePlanner, competitionPlanner } from "@/api";
+import CompetitorForm from "@/components/CompetitorForm"
 export default {
+  components: {
+    CompetitorForm
+  },
   data() {
     return {
       current: 0,
@@ -1254,7 +1271,7 @@ export default {
           })
           .catch(() => {
             this.confirmNext = false;
-            this.$message.error("Please fill all fields");
+            this.$message.error("Error on the backend");
           });
       } else {
         this.$message.error("Please fill required fields of the form. " )

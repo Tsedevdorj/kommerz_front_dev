@@ -38,6 +38,7 @@ export function newPassword(userData) {
   return HTTP.post(`${API_URL}/auth/newpassword`, userData);
 }
 
+// planner
 export function keywordPlanner(userData) {
   return HTTP.post(`${API_URL}/planner/keywords`, userData);
 }
@@ -53,6 +54,12 @@ export function corePlanner(userData) {
 export function competitionPlanner(userData) {
   return HTTP.post(`${API_URL}/planner/competition_planner`, userData);
 }
+
+export function competitorCreate(userData){
+  return HTTP.post(`${API_URL}/planner/competition`, userData);
+}
+
+// admin user part
 
 export function userList() {
   return HTTP.post(`${API_URL}/admin/user/list`);
