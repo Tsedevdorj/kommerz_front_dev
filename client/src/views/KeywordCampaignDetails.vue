@@ -452,7 +452,7 @@
                     size="small"
                     ghost
                     icon="forward"
-                    disable
+                    disabled
                   ></a-button>
                 <!-- </a-popconfirm> -->
                 
@@ -622,7 +622,7 @@
                     size="small"
                     ghost
                     icon="forward"
-                    disable
+                    disabled
                   ></a-button>
                 <!-- </a-popconfirm> -->
                 <a-button
@@ -790,7 +790,7 @@
                     size="small"
                     ghost
                     icon="forward"
-                    disable
+                    disabled
                   ></a-button>
                 <!-- </a-popconfirm> -->
                 <a-button
