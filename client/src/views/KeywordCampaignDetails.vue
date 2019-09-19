@@ -319,10 +319,10 @@
               <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
-                  <p>Match type: {{record.matchType}}</p>
+                  <p>Last updated: {{unixToFormat(record.lastUpdatedDate)}}</p>
                 </template>
                 <a> 
-                {{truncate_str(text, 10)}}</a
+                {{truncate_str(text, 6)}}</a
               
                 >
                 <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
@@ -439,16 +439,20 @@
           >
             <template slot-scope="text, record">
               <div>
-                <!-- <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)" disabled>
-                  <template slot="title">
-                    <p> Confirm change bid to {{record.bidValue}}?</p>
+                <!-- <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)" >
+                  <template v-if="checkUpdatedRecently(record.lastUpdatedDate)" >
+                    <a-icon slot="icon" type="question-circle-o" style="color: red" />
+                    <p slot="title">This keyword updated recently, Are you sure?</p>
+                  </template>
+                  <template v-else>
+                    <p slot="title" > Confirm change bid to {{record.bidValue}}?</p>
                   </template> -->
                   <a-button
                     type="primary"
                     size="small"
                     ghost
                     icon="forward"
-                    disabled
+                    disable
                   ></a-button>
                 <!-- </a-popconfirm> -->
                 
@@ -489,10 +493,10 @@
               <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
-                  <p>Match type: {{record.matchType}}</p>
+                  <p>Last updated: {{unixToFormat(record.lastUpdatedDate)}}</p>
                 </template>
                 <a> 
-                {{truncate_str(text, 10)}}</a
+                {{truncate_str(text, 6)}}</a
               
                 >
                 <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
@@ -605,16 +609,20 @@
           >
             <template slot-scope="text, record">
               <div>
-                <!-- <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
-                  <template slot="title">
-                    <p> Confirm change bid to {{record.bidValue}}?</p>
+                <!-- <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)" >
+                  <template v-if="checkUpdatedRecently(record.lastUpdatedDate)" >
+                    <a-icon slot="icon" type="question-circle-o" style="color: red" />
+                    <p slot="title">This keyword updated recently, Are you sure?</p>
+                  </template>
+                  <template v-else>
+                    <p slot="title" > Confirm change bid to {{record.bidValue}}?</p>
                   </template> -->
                   <a-button
                     type="primary"
                     size="small"
                     ghost
                     icon="forward"
-                    disabled
+                    disable
                   ></a-button>
                 <!-- </a-popconfirm> -->
                 <a-button
@@ -653,10 +661,10 @@
               <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
-                  <p>Match type: {{record.matchType}}</p>
+                  <p>Last updated: {{unixToFormat(record.lastUpdatedDate)}}</p>
                 </template>
                 <a> 
-                {{truncate_str(text, 10)}}</a
+                {{truncate_str(text, 6)}}</a
               
                 >
                 <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
@@ -769,16 +777,20 @@
           >
             <template slot-scope="text, record">
               <div>
-                <!-- <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)">
-                  <template slot="title">
-                    <p> Confirm change bid to {{record.bidValue}}?</p>
+                <!-- <a-popconfirm okText="Yes" cancelText="No" @confirm="changeBid(record)" >
+                  <template v-if="checkUpdatedRecently(record.lastUpdatedDate)" >
+                    <a-icon slot="icon" type="question-circle-o" style="color: red" />
+                    <p slot="title">This keyword updated recently, Are you sure?</p>
+                  </template>
+                  <template v-else>
+                    <p slot="title" > Confirm change bid to {{record.bidValue}}?</p>
                   </template> -->
                   <a-button
                     type="primary"
                     size="small"
                     ghost
                     icon="forward"
-                    disabled
+                    disable
                   ></a-button>
                 <!-- </a-popconfirm> -->
                 <a-button
@@ -817,10 +829,10 @@
               <a-popover title="Keyword more info">
                 <template slot="content">
                   <p>{{text}}</p>
-                  <p>Match type: {{record.matchType}}</p>
+                  <p>Last updated: {{unixToFormat(record.lastUpdatedDate)}}</p>
                 </template>
                 <a> 
-                {{truncate_str(text, 10)}}</a
+                {{truncate_str(text, 6)}}</a
               
                 >
                 <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
@@ -1236,6 +1248,13 @@ export default {
     disabledDate(current) {
       // Can not select days before today and today
       return current && current < moment().endOf('day');
+    },
+    checkUpdatedRecently(value){
+      console.log((moment(value, "x").add(2, 'd')))
+      return moment(value, "x").add(2, 'd') >= moment()
+    },
+    unixToFormat(value){
+      return moment(value, "x").format("D MMM, YYYY")
     },
 
     addKeywordLocal(value) {
