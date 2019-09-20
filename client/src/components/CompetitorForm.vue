@@ -76,7 +76,6 @@
                             }]"
                             style="width: 100%"
                             addonBefore="http://"
-                            addonAfter=".co.jp"
                             placeholder="please enter url"
                         />
 
