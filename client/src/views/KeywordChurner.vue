@@ -111,9 +111,10 @@ export default {
     getProfilesList(){
       keywordChurnerProfile()
       .then(response => {
-          console.log(response.data);
+          
           this.availableProfiles = response.data;
           this.loading = false;
+          console.log(this.availableProfiles);
         })
         .catch(error => {
           this.responseError = error.response.data.message;
