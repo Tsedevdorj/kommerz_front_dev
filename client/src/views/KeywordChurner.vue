@@ -3,7 +3,7 @@
     <a-row :gutter="48" style="padding-bottom: 10px;">
       <a-col :span="13">
       <label>Account: </label>
-      <a-select style="width: 300px" placeholder="Select Account" @change="handleChange">
+      <a-select style="width: 600px" placeholder="Select Account" @change="handleChange">
           <a-select-option v-for="item in availableProfiles" :key="item.profileId" :value="item.profileId">{{item.accountName}}</a-select-option>
         </a-select>
       </a-col>
