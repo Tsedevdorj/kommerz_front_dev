@@ -112,18 +112,17 @@
       </a-col>
       <a-col :span="8">
         <label>Target Date range: </label>
-        <a-range-picker
+        <a-month-picker
         name="target_date"
         v-validate.initial="{required: true}"
-        v-model="campaignTargetDetail.targetDateRange"
-        :disabledDate="disabledDate"
+        v-model="campaignTargetDetail.targetMonth"
         :format="campaignTargetDetail.targetDateFormat"
         >
         <span style="color: red">{{ errors.first("target_date") }}</span>
           <template slot="renderExtraFooter">
             extra footer
           </template>
-        </a-range-picker>
+        </a-month-picker>
       </a-col>
       
     </a-row>
@@ -347,8 +346,8 @@
           </a-table-column>
           <a-table-column
             title="Order"
-            dataIndex="attributedUnitsOrdered1d"
-            key="attributedUnitsOrdered1d"
+            dataIndex="attributedUnitsOrdered30d"
+            key="attributedUnitsOrdered30d"
             :width=80
           >
           </a-table-column>
@@ -361,8 +360,8 @@
           </a-table-column>
           <a-table-column
             title="Sales"
-            dataIndex="attributedSales1d"
-            key="attributedSales1d"
+            dataIndex="attributedSales30d"
+            key="attributedSales30d"
             :width=80
           >
           </a-table-column>
@@ -521,8 +520,8 @@
           </a-table-column>
           <a-table-column
             title="Order"
-            dataIndex="attributedUnitsOrdered1d"
-            key="attributedUnitsOrdered1d"
+            dataIndex="attributedUnitsOrdered30d"
+            key="attributedUnitsOrdered30d"
             :width=80
           >
           </a-table-column>
@@ -535,8 +534,8 @@
           </a-table-column>
           <a-table-column
             title="Sales"
-            dataIndex="attributedSales1d"
-            key="attributedSales1d"
+            dataIndex="attributedSales30d"
+            key="attributedSales30d"
             :width=80
           >
           </a-table-column>
@@ -689,8 +688,8 @@
           </a-table-column>
           <a-table-column
             title="Order"
-            dataIndex="attributedUnitsOrdered1d"
-            key="attributedUnitsOrdered1d"
+            dataIndex="attributedUnitsOrdered30d"
+            key="attributedUnitsOrdered30d"
             :width=80
           >
           </a-table-column>
@@ -703,8 +702,8 @@
           </a-table-column>
           <a-table-column
             title="Sales"
-            dataIndex="attributedSales1d"
-            key="attributedSales1d"
+            dataIndex="attributedSales30d"
+            key="attributedSales30d"
             :width=80
           >
           </a-table-column>
@@ -857,8 +856,8 @@
           </a-table-column>
           <a-table-column
             title="Order"
-            dataIndex="attributedUnitsOrdered1d"
-            key="attributedUnitsOrdered1d"
+            dataIndex="attributedUnitsOrdered30d"
+            key="attributedUnitsOrdered30d"
             :width=80
           >
           </a-table-column>
@@ -871,8 +870,8 @@
           </a-table-column>
           <a-table-column
             title="Sales"
-            dataIndex="attributedSales1d"
-            key="attributedSales1d"
+            dataIndex="attributedSales30d"
+            key="attributedSales30d"
             :width=80
           >
           </a-table-column>
@@ -1156,9 +1155,8 @@ window.__lo_site_id = 162488;
 // Danish provided tracking script END
 
 import {campaignInfo, keywordReport, recommendedKeyword, recommendObjective, recommendedKeywordFromSimilarCampaign,
- allRecommendedKeyword, competitorKeyword, requestOptimization , campaignTargetGet, campaignTargetCreate, 
- campaignTargetEdit, campaignTargetDelete, campaignTargetGetO, campaignTargetCreateO, campaignTargetEditO, 
- campaignTargetDeleteO, changeKeywordBid, addKeyword} from "@/api";
+ allRecommendedKeyword, competitorKeyword, requestOptimization , targetGet, targetCreate, 
+ targetEdit, targetDelete, changeKeywordBid, addKeyword} from "@/api";
 
 import moment from 'moment';
 moment.locale('ja')
@@ -1183,8 +1181,9 @@ export default {
         targetBudget:"",
         targetOrder: "",
         targetCPO: "",
+        targetMonth: "",
         targetDateRange: [],
-        targetDateFormat: "YYYY-MM-DD",
+        targetDateFormat: "YYYY-MM",
         dailyVolume:"",
         reqVol: "",
         reqCPA: "",
@@ -1477,52 +1476,30 @@ export default {
     },
     createNewTarget(){
       if(this.errors.items.length === 0) {
-        campaignTargetCreate({
-          campaignId: this.campaignID,
+        targetCreate({
+          associatedId: this.campaignID,
+          level: 'campaign',
           objective: this.campaignCPASelect,
-          campaignTargetVolume: this.campaignTargetDetail.targetOrder,
-          campaignTargetBudget: this.campaignTargetDetail.targetBudget,
-          campaignTargetCPO: this.campaignTargetDetail.targetCPO,
-          campaignTargetROAS: this.campaignTargetDetail.targetROAS,
-          campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
-          campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
+          targetVolume: this.campaignTargetDetail.targetOrder,
+          targetBudget: this.campaignTargetDetail.targetBudget,
+          targetCPO: this.campaignTargetDetail.targetCPO,
+          targetROAS: this.campaignTargetDetail.targetROAS,
+          targetMonth: this.campaignTargetDetail.targetMonth.format('YYYY-MM-DD'),
         }).then(response =>{
           console.log(response.data.msg)
+          this.campaignCPASelect= response.data.data.objective;
+          this.campaignTargetDetail.targetOrder = response.data.data.targetVolume;
+          this.campaignTargetDetail.targetCPO = response.data.data.targetCPO;
+          this.campaignTargetDetail.targetMonth = moment(response.data.data.targetMonth, "YYYY-MM-DD");
+          this.campaignTargetDetail.targetBudget = response.data.data.targetBudget;
+          this.campaignTargetDetail.targetROAS = response.data.data.targetROAS;
+          this.campaignTargetDetail.logs =  response.data.data.activity_log;
+          this.campaignTargetAvail = true;
         }).catch(error => {
             this.responseError = error.response.data.message;
             this.$message.error("Error: " + this.responseError);
         });
-        if(this.campaignTargetDetailO.targetDateRange.constructor === Array && this.campaignTargetDetailO.targetDateRange.length === 2)
-          if(this.campaignTargetMonthAvail){
-            campaignTargetEditO({
-              campaignId: this.campaignID,
-              objective: this.campaignCPASelect,
-              campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-              campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-              campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-              campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
-              campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-              campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-            }).then(response =>{}).catch(error => {
-              this.responseError = error.response.data.message;
-              this.$message.error("Error: " + this.responseError);
-            });
-          }
-          else{
-            campaignTargetCreateO({
-              campaignId: this.campaignID,
-              campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-              campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-              campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-              campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
-              campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-              campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-            }).then(response =>{}).catch(error => {
-                this.responseError = error.response.data.message;
-                this.$message.error("Error: " + this.responseError);
-            });;
-          }
-        this.getCampaignTarget();
+        
         this.getCampaignDetail();
         this.requestRecommenendObjective();
       } else {
@@ -1534,52 +1511,30 @@ export default {
     },
     modifyTarget(){
       if(this.errors.items.length === 0) {
-        campaignTargetEdit({
-          campaignId: this.campaignID,
+        targetEdit({
+          associatedId: this.campaignID,
+          level: 'campaign',
           objective: this.campaignCPASelect,
-          campaignTargetVolume: this.campaignTargetDetail.targetOrder,
-          campaignTargetBudget: this.campaignTargetDetail.targetBudget,
-          campaignTargetCPO: this.campaignTargetDetail.targetCPO,
-          campaignTargetROAS: this.campaignTargetDetail.targetROAS,
-          campaignTargetStartDate: this.campaignTargetDetail.targetDateRange[0].format('YYYY-MM-DD'),
-          campaignTargetEndDate: this.campaignTargetDetail.targetDateRange[1].format('YYYY-MM-DD'),
+          targetVolume: this.campaignTargetDetail.targetOrder,
+          targetBudget: this.campaignTargetDetail.targetBudget,
+          targetCPO: this.campaignTargetDetail.targetCPO,
+          targetROAS: this.campaignTargetDetail.targetROAS,
+          targetMonth: this.campaignTargetDetail.targetMonth.format('YYYY-MM-DD'),
         }).then(response => {
-          
+          this.campaignCPASelect= response.data.data.objective;
+          this.campaignTargetDetail.targetOrder = response.data.data.targetVolume;
+          this.campaignTargetDetail.targetCPO = response.data.data.targetCPO;
+          this.campaignTargetDetail.targetMonth = moment(response.data.data.targetMonth, "YYYY-MM-DD");
+          this.campaignTargetDetail.targetBudget = response.data.data.targetBudget;
+          this.campaignTargetDetail.targetROAS = response.data.data.targetROAS;
+          this.campaignTargetDetail.logs =  response.data.data.activity_log;
+          this.campaignTargetAvail = true;
           
         }).catch(error => {
             this.responseError = error.response.data.message;
             this.$message.error("Error: " + this.responseError);
         });
-        if(this.campaignTargetDetailO.targetDateRange.constructor === Array && this.campaignTargetDetailO.targetDateRange.length === 2)
-          if(this.campaignTargetMonthAvail){
-            campaignTargetEditO({
-              campaignId: this.campaignID,
-              campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-              campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-              campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-              campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
-              campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-              campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-            }).then(response =>{}).catch(error => {
-              this.responseError = error.response.data.message;
-              this.$message.error("Error: " + this.responseError);
-            });
-          }
-          else{
-            campaignTargetCreateO({
-              campaignId: this.campaignID,
-              campaignTargetVolume_o: this.campaignTargetDetailO.targetOrder,
-              campaignTargetBudget_o: this.campaignTargetDetailO.targetBudget,
-              campaignTargetCPO_o: this.campaignTargetDetailO.targetCPO,
-              campaignTargetROAS_o: this.campaignTargetDetailO.targetROAS,
-              campaignTargetStartDate_o: this.campaignTargetDetailO.targetDateRange[0].format('YYYY-MM-DD'),
-              campaignTargetEndDate_o: this.campaignTargetDetailO.targetDateRange[1].format('YYYY-MM-DD'),
-            }).then(response =>{}).catch(error => {
-                this.responseError = error.response.data.message;
-                this.$message.error("Error: " + this.responseError);
-            });;
-          }
-        this.getCampaignTarget();
+        
         this.getCampaignDetail();
         this.requestRecommenendObjective();
       } else {
@@ -1589,22 +1544,21 @@ export default {
       }
     },
     deleteTarget(){
-      campaignTargetDelete(this.campaignID
+      targetDelete(this.campaignID
       ).then(response => {
         
       });
-      campaignTargetDeleteO(this.campaignID).then(response => {});
       this.getCampaignTarget();
     },
     getCampaignTarget(){
-      campaignTargetGet(this.campaignID
+      targetGet(this.campaignID
       ).then(response => {
         console.log(response)
         if (response.data != null && response.data !== undefined){
           this.campaignCPASelect= response.data.objective;
           this.campaignTargetDetail.targetOrder = response.data.targetVolume;
           this.campaignTargetDetail.targetCPO = response.data.targetCPO;
-          this.campaignTargetDetail.targetDateRange = [moment(response.data.targetStartDate, "YYYY-MM-DD"), moment(response.data.targetEndDate, "YYYY-MM-DD")];
+          this.campaignTargetDetail.targetMonth = moment(response.data.targetMonth, "YYYY-MM-DD");
           this.campaignTargetDetail.targetBudget = response.data.targetBudget;
           this.campaignTargetDetail.targetROAS = response.data.targetROAS;
           this.campaignTargetDetail.logs =  response.data.activity_log;
@@ -1614,40 +1568,14 @@ export default {
           this.campaignTargetAvail = false;
           this.campaignTargetDetail.targetOrder = '';
           this.campaignTargetDetail.targetCPO = '';
-          this.campaignTargetDetail.targetDateRange = [];
+          this.campaignTargetDetail.targetMonth = null;
           this.campaignTargetDetail.targetBudget = '';
           this.campaignTargetDetail.targetROAS = '';
         }
-        console.log(this.campaignTargetDetail.targetDateRange)
+        console.log(this.campaignTargetDetail.targetMonth)
         
       });
-      campaignTargetGetO(this.campaignID
-      ).then(response => {
-        console.log(response)
-        if (response.data != null && response.data !== undefined){
-
-          this.campaignTargetDetailO.targetOrder = response.data.targetVolume;
-          this.campaignTargetDetailO.targetCPO = response.data.targetCPO;
-          this.campaignTargetDetailO.targetDateRange = [moment(response.data.targetStartDate, "YYYY-MM-DD"), moment(response.data.targetEndDate, "YYYY-MM-DD")];
-          this.campaignTargetDetailO.targetBudget = response.data.targetBudget;
-          this.campaignTargetDetailO.targetROAS = response.data.targetROAS;
-          this.campaignTargetMonthAvail = true;
-        }
-        else{
-          this.campaignTargetMonthAvail = false;
-          this.campaignTargetDetailO.targetOrder = ''; 
-          this.campaignTargetDetailO.targetCPO = '';
-          this.campaignTargetDetailO.targetROAS = '';
-          if(moment().date() < 4)
-            this.campaignTargetDetailO.targetDateRange = [moment().subtract(1, 'month').set('date',15), moment().set('date',15)];
-          else
-            this.campaignTargetDetailO.targetDateRange = [moment().startOf('month'), moment().endOf('month')];
-
-          this.campaignTargetDetailO.targetBudget = '';
-        }
-        console.log(this.campaignTargetDetailO.targetDateRange)
-        
-      });
+      
     }
   },
 
