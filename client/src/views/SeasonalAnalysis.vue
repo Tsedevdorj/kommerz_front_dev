@@ -32,9 +32,11 @@
       </a-col> -->
     </a-row>
     <a-row :gutter="48" style="padding-bottom: 10px;"> 
-      <a-button type="dashed"
-          >Internal use: {{ interpolatedInfo }}</a-button
-        >
+      <div style="width: 300px">
+        <label>Real data: </label>
+          <a-progress :percent="interpolatedInfo.true *100" size="small" />
+      </div>
+
     </a-row>
     <a-row :gutter="48" style="padding-bottom: 10px;">
         <a-calendar @change="changeCallback" v-model="selectedMonth">
