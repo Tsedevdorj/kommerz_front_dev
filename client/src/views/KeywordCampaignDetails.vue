@@ -905,6 +905,105 @@
       </a-collapse-panel>
       <a-collapse-panel key="5">
         <template slot="header" >
+          <h3 style="font-weight: bold; color:blue;">
+          No spent
+          </h3>
+        </template>
+        <a-table
+          :rowKey="record => record.keywordId"
+          :dataSource="campaignDetail.Nospent"
+          size="small"
+          :loading="loading"
+          :scroll="{ y: 300, x: 1000}"
+          :pagination="false"
+        >
+          <a-table-column
+            title="Keyword Text"
+            dataIndex="keywordText"
+            key="keywordText"
+            :width=150
+          >
+            <template slot-scope="text, record" style="width: 60px">
+              <a-popover title="Keyword more info">
+                <template slot="content">
+                  <p>{{text}}</p>
+                  <p>Last updated: {{unixToFormat(record.lastUpdatedDate)}}</p>
+                </template>
+                <a> 
+                {{truncate_str(text, 6)}}</a
+              
+                >
+                <p style="color:rgba(0, 0, 0, 0.40);font-size:10px">{{ record.matchType }}</p>
+              </a-popover>
+            </template>
+          </a-table-column>
+          <a-table-column title="Cost" dataIndex="cost" key="cost" :width=80>
+          </a-table-column>
+          <a-table-column title="Imp" dataIndex="impressions" key="impressions" :width=80>
+          </a-table-column>
+          <a-table-column title="CPM" dataIndex="CPM" key="CPM" :width=80>
+            <template slot-scope="text">
+              {{ truncate_float(text) }}
+            </template>
+          </a-table-column>
+          <a-table-column title="Clicks" dataIndex="clicks" key="clicks" :width=80>
+          </a-table-column>
+          <a-table-column title="CPC" dataIndex="CPC" key="CPC" :width=80>
+            <template slot-scope="text">
+              {{ truncate_float(text) }}
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Order"
+            dataIndex="attributedUnitsOrdered30d"
+            key="attributedUnitsOrdered30d"
+            :width=80
+          >
+          </a-table-column>
+          <a-table-column title="CPO" dataIndex="CPO" key="CPO" :width=80>
+            <template slot-scope="text">
+              <div else>
+                {{ truncate_float(text) }}
+              </div>
+            </template>
+          </a-table-column>
+          <a-table-column
+            title="Sales"
+            dataIndex="attributedSales30d"
+            key="attributedSales30d"
+            :width=80
+          >
+          </a-table-column>
+          <a-table-column title="ROAS" dataIndex="ROAS" key="ROAS" :width=80>
+            <template slot-scope="text">
+              {{ truncate_float(text) }}
+            </template>
+          </a-table-column>
+          <a-table-column title="Bid" dataIndex="bid" key="bid" :width=80>
+          </a-table-column>
+          
+          <a-table-column
+            title="Actions"
+            dataIndex="actions"
+            key="actions"
+            align="center"
+            :width=100
+          >
+            <template>
+              <div>
+                <a-button
+                  type="danger"
+                  size="small"
+                  ghost
+                  icon="delete"
+                ></a-button>
+              </div>
+            </template>
+          </a-table-column>
+        </a-table>
+      </a-collapse-panel>
+      <a-collapse-panel key="6">
+        <template slot="header" >
           <h3 >
           Recommended Keywords
           <a-tag v-if="showAdd" >
@@ -977,7 +1076,7 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel  key="6">
+      <a-collapse-panel  key="7">
         <template slot="header" >
           <h3 >
           Recommended Keywords from similar campaigns
@@ -1050,7 +1149,7 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel key="7">
+      <a-collapse-panel key="8">
         <template slot="header" >
           <h3 >
           Relevant keywords
@@ -1123,7 +1222,7 @@
           </a-table-column>
         </a-table>
       </a-collapse-panel>
-      <a-collapse-panel key="8">
+      <a-collapse-panel key="9">
         <template slot="header" >
           <h3 >
           Activity Log
@@ -1215,6 +1314,7 @@ export default {
       campaignDetail: {
         Favourable: [],
         Immature: [],
+        Nospent: [],
         Unfavourable: [],
         Watchlist: [],
         recommendedKeywords: [],
@@ -1348,6 +1448,7 @@ export default {
           this.loading = false;
           this.campaignDetail.Favourable = response.data.Favourable;
           this.campaignDetail.Immature = response.data.Immature;
+          this.campaignDetail.Nospent = response.data.Nospent;
           this.campaignDetail.Unfavourable = response.data.Unfavourable;
           this.campaignDetail.Watchlist = response.data.Watchlist;
         })
