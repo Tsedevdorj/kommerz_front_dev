@@ -90,7 +90,7 @@
     >
       <a-col :span="4">
         <label>Target Volume: </label>
-        <a-input name="target_volume" v-validate.initial="{required: true}" placeholder="volume" v-model="campaignTargetDetail.targetOrder"></a-input>
+        <a-input name="target_volume" v-validate.initial="{required: true}" placeholder="volume" v-model="campaignTargetDetail.targetOrder" disabled></a-input>
         <span style="color: red">{{ errors.first("target_volume") }}</span>
       </a-col>
       <a-col :span="4">
@@ -1480,7 +1480,6 @@ export default {
           associatedId: this.campaignID,
           level: 'campaign',
           objective: this.campaignCPASelect,
-          targetVolume: this.campaignTargetDetail.targetOrder,
           targetBudget: this.campaignTargetDetail.targetBudget,
           targetCPO: this.campaignTargetDetail.targetCPO,
           targetROAS: this.campaignTargetDetail.targetROAS,
@@ -1515,7 +1514,6 @@ export default {
           associatedId: this.campaignID,
           level: 'campaign',
           objective: this.campaignCPASelect,
-          targetVolume: this.campaignTargetDetail.targetOrder,
           targetBudget: this.campaignTargetDetail.targetBudget,
           targetCPO: this.campaignTargetDetail.targetCPO,
           targetROAS: this.campaignTargetDetail.targetROAS,
