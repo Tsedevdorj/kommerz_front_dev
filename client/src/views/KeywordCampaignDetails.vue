@@ -905,7 +905,7 @@
       </a-collapse-panel>
       <a-collapse-panel key="5">
         <template slot="header" >
-          <h3 style="font-weight: bold; color:blue;">
+          <h3 style="font-weight: bold; color:grey;">
           No spent
           </h3>
         </template>
