@@ -11,8 +11,8 @@ export const HTTP = axios;
 // default API_URL
 export const API_URL =
   window.location.href.indexOf("localhost") >= 0
-    ? "http://localhost:5000/api"
-    : "https://test.kommerz.digidon.net/api";
+    ? "http://localhost/api"
+    : window.location.origin + "/api";
 HTTP.defaults.headers.common[
   "Authorization"
 ] = `Bearer ${store.getters.authToken}`;
