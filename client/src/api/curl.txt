@@ -1,0 +1,3 @@
+curl --insecure -H 'Content-type: application/json' --data "{\"email\":\"tsedevdorj94@gmail.com\",\"password\":\"rV%W*\!H&\"}"  -X POST https://35.200.54.33/api/auth/login
+
+

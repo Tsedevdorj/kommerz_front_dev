@@ -40,7 +40,7 @@ then
     # Client side dependencies install
     if [ "$YARN_INSTALL" -eq 1 ]
     then
-        yarn
+        yarn install
     fi
     yarn build
 fi
