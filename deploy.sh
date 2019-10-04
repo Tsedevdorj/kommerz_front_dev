@@ -2,11 +2,11 @@
 
 ROOT=`pwd`
 
-git stash
+# git stash
 
 git pull origin master
 
-git stash pop
+# git stash pop
 
 YARN=0
 YARN_INSTALL=0
@@ -46,4 +46,3 @@ then
 fi
 
 # Restart nginx
-# sudo service nginx restart
