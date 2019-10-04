@@ -46,4 +46,4 @@ then
 fi
 
 # Restart nginx
-sudo service nginx restart
+# sudo service nginx restart
