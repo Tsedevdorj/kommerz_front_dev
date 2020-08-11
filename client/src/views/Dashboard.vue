@@ -53,7 +53,7 @@
         </a-card>
       </a-col>
       <a-col :span="6">
-        <a-card hoverable @click="goJuggler">
+        <a-card hoverable @click="goCrawler">
           <img
             alt="example"
             src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
@@ -63,8 +63,8 @@
             <a-icon type="plus" />
           </template>
           <a-card-meta
-            title="Juggler"
-            description="Budget optimizer"
+            title="Crawler"
+            description="Crawler report"
           >
           </a-card-meta>
         </a-card>
@@ -98,6 +98,9 @@ export default {
     },
     goJuggler() {
       this.$router.push({ name: "juggler"});
+    },
+    goCrawler() {
+      this.$router.push({ name: "crawler"});
     }
   }
 };

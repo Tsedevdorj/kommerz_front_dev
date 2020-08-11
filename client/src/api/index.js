@@ -10,9 +10,7 @@ export const HTTP = axios;
 
 // default API_URL
 export const API_URL =
-  window.location.href.indexOf("localhost") >= 0
-    ? "http://localhost/api"
-    : window.location.origin + "/api";
+  "http://test.kommerz.ddad.systems/api";
 HTTP.defaults.headers.common[
   "Authorization"
 ] = `Bearer ${store.getters.authToken}`;
@@ -205,7 +203,13 @@ export function Juggler_list_portfolios(userData){
   return HTTP.get(`${API_URL}/juggler/porfolios/${userData}`);
 }
 
+export function list_basic_profiles(){
+  return HTTP.get(`${API_URL}/keyword_churner/basic_profiles`);
+}
 
+export function crawler_report_get(userData){
+  return HTTP.post(`${API_URL}/crawler/crawler_report`,userData);
+}
 
 
 

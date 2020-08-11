@@ -14,6 +14,8 @@ import UserManagement from "@/views/Admin/User";
 import domainManagement from "@/views/Admin/AddDomain";
 import SeasonalAnalysis from "@/views/SeasonalAnalysis";
 import Juggler from "@/views/Juggler";
+import Crawler from "@/views/Crawler";
+
 
 Vue.use(Router);
 
@@ -161,6 +163,14 @@ const router = new Router({
         isAuthenticated: true
       },
       component: Juggler
+    },
+    {
+      path: "/crawler",
+      name: "crawler",
+      meta: {
+        isAuthenticated: true
+      },
+      component: Crawler
     },
   ]
 });
