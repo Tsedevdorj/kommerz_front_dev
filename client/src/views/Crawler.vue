@@ -82,7 +82,7 @@
       </a-col>
     </a-row>
     <a-row>
-        <a-table class="table" size="middle" :loading="tableLoading" :columns="table.columns" :dataSource="table.data" :pagination="{ pageSize: 100 }" :scroll="{ x: 1500, y: 300 }">
+        <a-table class="table" size="middle" :loading="tableLoading" :columns="table.columns" :dataSource="table.data" :pagination="false" :scroll="{ x: 1500, y: 300 }">
           <span slot="paid" slot-scope="text">
             <a-tag color="blue">{{text}}</a-tag>
           </span>
