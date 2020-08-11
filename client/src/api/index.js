@@ -10,7 +10,7 @@ export const HTTP = axios;
 
 // default API_URL
 export const API_URL =
-  "http://test.kommerz.ddad.systems/api";
+  "https://test.kommerz.ddad.systems/api";
 HTTP.defaults.headers.common[
   "Authorization"
 ] = `Bearer ${store.getters.authToken}`;
