@@ -11,6 +11,7 @@ export const HTTP = axios;
 // default API_URL
 export const API_URL =
   "https://test.kommerz.ddad.systems/api";
+  // "http://127.0.0.1:5000/api"
 HTTP.defaults.headers.common[
   "Authorization"
 ] = `Bearer ${store.getters.authToken}`;
@@ -207,12 +208,21 @@ export function list_basic_profiles(){
   return HTTP.get(`${API_URL}/keyword_churner/basic_profiles`);
 }
 
-export function crawler_report_get(userData){
-  return HTTP.post(`${API_URL}/crawler/crawler_report`,userData);
+export function crawler_report_get(userData) {
+  return HTTP.post(`${API_URL}/crawler/crawler_report`, userData);
 }
 
+export function get_search_keywords(userData) {
+  return HTTP.get(`${API_URL}/crawler/search_keywords`, { params: userData });
+}
 
+export function post_search_keywords(userData) {
+  return HTTP.post(`${API_URL}/crawler/search_keywords`, userData);
+}
 
+export function fetch_grouping(userData) {
+  return HTTP.get(`${API_URL}/amazon_planner/grouping`, { params: userData });
+}
 
 // global interceptor for catch http status and error
 export function interceptors(cb) {

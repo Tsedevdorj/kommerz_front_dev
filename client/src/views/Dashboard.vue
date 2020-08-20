@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <a-row :gutter="32">
+    <!-- <a-row :gutter="32">
       <a-col :span="6">
         <a-card hoverable @click="goKeyword">
           <img
@@ -52,6 +52,25 @@
           </a-card-meta>
         </a-card>
       </a-col>
+    </a-row> -->
+    <a-row :gutter="32">
+      <a-col :span="6">
+        <a-card hoverable @click="goSearchKeyword">
+          <img
+            alt="example"
+            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            slot="cover"
+          />
+          <template class="ant-card-actions" slot="actions">
+            <a-icon type="plus" />
+          </template>
+          <a-card-meta
+            title="Search Keyword Manage"
+            description="Search keyword manage"
+          >
+          </a-card-meta>
+        </a-card>
+      </a-col>
       <a-col :span="6">
         <a-card hoverable @click="goCrawler">
           <img
@@ -64,7 +83,7 @@
           </template>
           <a-card-meta
             title="Crawler"
-            description="Crawler report"
+            description="Crawler report feature"
           >
           </a-card-meta>
         </a-card>
@@ -101,6 +120,9 @@ export default {
     },
     goCrawler() {
       this.$router.push({ name: "crawler"});
+    },
+    goSearchKeyword() {
+      this.$router.push({ name: "searchkeyword"});
     }
   }
 };

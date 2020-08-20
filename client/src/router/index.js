@@ -15,6 +15,8 @@ import domainManagement from "@/views/Admin/AddDomain";
 import SeasonalAnalysis from "@/views/SeasonalAnalysis";
 import Juggler from "@/views/Juggler";
 import Crawler from "@/views/Crawler";
+import SearchKeyword from "@/views/SearchKeyword";
+
 
 
 Vue.use(Router);
@@ -171,6 +173,14 @@ const router = new Router({
         isAuthenticated: true
       },
       component: Crawler
+    },
+    {
+      path: "/search_keyword",
+      name: "searchkeyword",
+      meta: {
+        isAuthenticated: true
+      },
+      component: SearchKeyword
     },
   ]
 });
