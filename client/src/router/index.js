@@ -16,6 +16,7 @@ import SeasonalAnalysis from "@/views/SeasonalAnalysis";
 import Juggler from "@/views/Juggler";
 import Crawler from "@/views/Crawler";
 import SearchKeyword from "@/views/SearchKeyword";
+import AsinChurner from "@/views/AsinChurner";
 
 
 
@@ -90,6 +91,15 @@ const router = new Router({
       },
       // eslint-disable-next-line no-unused-vars
       component: KeywordChurner
+    },
+    {
+      path: "/asinchurner",
+      name: "asinchurner",
+      meta: {
+        isAuthenticated: true
+      },
+      // eslint-disable-next-line no-unused-vars
+      component: AsinChurner
     },
     {
       path: "/keyword/detail/:id",

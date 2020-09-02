@@ -89,6 +89,25 @@
         </a-card>
       </a-col>
     </a-row>
+    <a-row :gutter="32">
+      <a-col :span="6">
+        <a-card hoverable @click="goAsinChurner">
+          <img
+            alt="example"
+            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            slot="cover"
+          />
+          <template class="ant-card-actions" slot="actions">
+            <a-icon type="plus" />
+          </template>
+          <a-card-meta
+            title="Asin Churner"
+            description="Asin Churner feature"
+          >
+          </a-card-meta>
+        </a-card>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
@@ -106,6 +125,9 @@ window.__lo_site_id = 162488;
 export default {
   name: "dashboard",
   methods: {
+    goAsinChurner() {
+      this.$router.push({ name: "asinchurner" });
+    },
     goKeyword() {
       this.$router.push({ name: "keywordchurner" });
     },

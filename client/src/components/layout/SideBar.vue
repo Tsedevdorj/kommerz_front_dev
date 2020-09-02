@@ -15,11 +15,11 @@
           ></a-menu-item
         >
         <a-menu-item
-          ><router-link :to="{ name: 'keywordchurner' }"
-            ><a-icon type="arrows-alt" />Keyword Churner</router-link
+          ><router-link :to="{ name: 'asinchurner' }"
+            ><a-icon type="arrows-alt" />Asin Churner</router-link
           ></a-menu-item
         >
-        <a-menu-item
+        <!-- <a-menu-item
           ><router-link :to="{ name: 'googleplanner' }"
             ><a-icon type="layout" />Google Planner</router-link
           ></a-menu-item
@@ -35,7 +35,7 @@
           ><router-link :to="{ name: 'juggler' }"
             ><a-icon type="layout" />Juggler</router-link
           ></a-menu-item
-        >
+        > -->
         <a-divider
           v-if="
             this.$store.getters.isAdmin == true ||

@@ -31,7 +31,7 @@
             v-validate="{ required: true }"
             style="width: 200px"
             v-model="searchKeyword.selectedKeywordText"
-            placeholder="Select Report Type"
+            placeholder="Select Keyword Text"
           >
           </a-input>
           <span style="color: red">{{ errors.first("report_type") }}</span>
@@ -44,7 +44,7 @@
             v-validate="{ required: true }"
             style="width: 200px"
             v-model="searchKeyword.selectedMatchType"
-            placeholder="Select Keyword"
+            placeholder="Select Match Type"
           >
             <a-select-option value="exact">Exact</a-select-option>
             <a-select-option value="phrase">Phrase</a-select-option>
