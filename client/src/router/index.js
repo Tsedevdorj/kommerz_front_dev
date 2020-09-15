@@ -17,6 +17,7 @@ import Juggler from "@/views/Juggler";
 import Crawler from "@/views/Crawler";
 import SearchKeyword from "@/views/SearchKeyword";
 import AsinChurner from "@/views/AsinChurner";
+import Drift from "@/views/Drift";
 
 
 
@@ -183,6 +184,14 @@ const router = new Router({
         isAuthenticated: true
       },
       component: Crawler
+    },
+    {
+      path: "/drift",
+      name: "drift",
+      meta: {
+        isAuthenticated: true
+      },
+      component: Drift
     },
     {
       path: "/search_keyword",

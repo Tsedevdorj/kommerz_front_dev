@@ -107,6 +107,23 @@
           </a-card-meta>
         </a-card>
       </a-col>
+      <a-col :span="6">
+        <a-card hoverable @click="goDrift">
+          <img
+            alt="example"
+            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            slot="cover"
+          />
+          <template class="ant-card-actions" slot="actions">
+            <a-icon type="plus" />
+          </template>
+          <a-card-meta
+            title="Drift"
+            description="Drift feature"
+          >
+          </a-card-meta>
+        </a-card>
+      </a-col>
     </a-row>
   </div>
 </template>
@@ -145,7 +162,10 @@ export default {
     },
     goSearchKeyword() {
       this.$router.push({ name: "searchkeyword"});
-    }
+    },
+    goDrift() {
+      this.$router.push({ name: "drift"});
+    },
   }
 };
 </script> 

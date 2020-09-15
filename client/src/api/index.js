@@ -220,6 +220,11 @@ export function crawler_report_get(userData) {
   return HTTP.post(`${API_URL}/crawler/crawler_report`, userData);
 }
 
+export function review_crawler_get(userData) {
+  return HTTP.post(`${API_URL}/crawler/review_crawler`, userData);
+}
+
+
 export function get_search_keywords(userData) {
   return HTTP.get(`${API_URL}/crawler/search_keywords`, { params: userData });
 }
