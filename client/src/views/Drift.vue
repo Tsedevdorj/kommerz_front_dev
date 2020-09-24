@@ -62,7 +62,7 @@
         :words="driftData"
         :color="
           ([, weight]) =>
-            weight > 10 ? 'DeepPink' : weight > 5 ? 'RoyalBlue' : 'Indigo'
+            pick_color()
         "
         font-family="Roboto"
       >
@@ -101,6 +101,8 @@ import {
 import VueWordCloud from "vuewordcloud";
 import moment from "moment";
 moment.locale("ja");
+var Chance = require('chance');
+var chance = new Chance();
 
 export default {
   name: "drift",
@@ -131,6 +133,7 @@ export default {
       selectProfileId: "",
       portfolioTable: [],
       tableLoading: false,
+      colorItems: ['#ffd077', '#3bc4c7', '#3a9eea', '#ff4e69', '#461e47'],
       table: {
         columns: [
           {
@@ -167,6 +170,9 @@ export default {
   },
 
   methods: {
+    pick_color(){
+      return chance.pickone(this.colorItems);
+    },
     truncate_float(value) {
       if (value == null) return "N/A";
       else return value.toFixed(0);
