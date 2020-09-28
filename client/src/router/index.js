@@ -18,6 +18,7 @@ import Crawler from "@/views/Crawler";
 import SearchKeyword from "@/views/SearchKeyword";
 import AsinChurner from "@/views/AsinChurner";
 import Drift from "@/views/Drift";
+import Heatmap from "@/views/Heatmap";
 
 
 
@@ -200,6 +201,14 @@ const router = new Router({
         isAuthenticated: true
       },
       component: SearchKeyword
+    },
+    {
+      path: "/heatmap",
+      name: "heatmap",
+      meta: {
+        isAuthenticated: true
+      },
+      component: Heatmap
     },
   ]
 });

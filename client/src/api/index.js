@@ -233,9 +233,20 @@ export function post_search_keywords(userData) {
   return HTTP.post(`${API_URL}/crawler/search_keywords`, userData);
 }
 
+export function get_product_listing(userData) {
+  return HTTP.get(`${API_URL}/crawler/product_listing`, { params: userData });
+}
+
+export function get_product_listing_images(userData) {
+  return HTTP.get(`${API_URL}/crawler/product_listing/${userData}`);
+}
+
+
 export function fetch_grouping(userData) {
   return HTTP.get(`${API_URL}/amazon_planner/grouping`, { params: userData });
 }
+
+
 
 // global interceptor for catch http status and error
 export function interceptors(cb) {
