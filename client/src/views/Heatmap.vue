@@ -175,9 +175,9 @@ export default {
           this.imageObjectHeatmap = this.imageObject
             .slice()
             .sort(function(a, b) {
-              if (a.value > b.value) {
-                return -1;
-              } else return 1;
+              if (a.image_rank_heatmap > b.image_rank_heatmap) {
+                return 1;
+              } else return -1;
             });
           this.loading = false;
         })
