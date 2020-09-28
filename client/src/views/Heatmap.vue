@@ -176,8 +176,8 @@ export default {
             .slice()
             .sort(function(a, b) {
               if (a.value > b.value) {
-                return 1;
-              } else return -1;
+                return -1;
+              } else return 1;
             });
           this.loading = false;
         })
