@@ -53,8 +53,60 @@
       </a-col>
     </a-row>
 
-    <a-row>
-      <vue-word-cloud
+    <a-row style="padding-bottom: 10px;">
+      <a-table
+        :dataSource="driftData"
+        :loading="confirmSend"
+        :scroll="{ y: 300}"
+        :pagination="false"
+        :rowKey="record => record.word"
+        style="padding-bottom: 20px;"
+      >
+        <a-table-column 
+          title="Word" 
+          dataIndex="word" 
+          key="word" 
+          align="center"
+          :sorter="
+          (a, b) =>
+            a.word < b.word
+        ">
+          <template slot-scope="text">
+            {{ text }}
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="Frequency"
+          dataIndex="frequency"
+          key="frequency"
+          defaultSortOrder='descend'
+          :sorter="
+          (a, b) =>
+            a.frequency - b.frequency
+        "
+        >
+          <template slot-scope="text">
+            {{ text }}
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="Actions"
+          dataIndex="documents"
+          key="documents"
+          
+        >
+          <template slot-scope="text, record">
+            <div>
+              <a-button
+                type="primary"
+                @click="goToDocument(record)"
+                ghost
+              >List related reviews</a-button>
+            </div>
+          </template>
+        </a-table-column>
+      </a-table>
+      <!-- <vue-word-cloud
         style="
     height: 480px;
     width: 640px;
@@ -75,9 +127,27 @@
             {{ text }}
           </div>
         </template>
-      </vue-word-cloud>
+      </vue-word-cloud> -->
     </a-row>
     <a-row>
+      <a-list
+        class="comment-list"
+        :header="`${driftDataSent.length} reviews`"
+        item-layout="horizontal"
+        :data-source="driftDataSent"
+      >
+        <a-list-item slot="renderItem" slot-scope="item, index">
+          <a-comment :author="item.review_title" :datetime="item.review_score">
+
+            <p slot="content">
+              {{ item.review_text }}
+            </p>
+          </a-comment>
+        </a-list-item>
+      </a-list>
+    </a-row>
+
+    <!-- <a-row>
       <a-descriptions title="Topic representative review" bordered>
         <a-descriptions-item label="Title" :span="3">
           {{ representative_sent.review_title }}
@@ -86,7 +156,7 @@
           {{ representative_sent.review_text }}
         </a-descriptions-item>
       </a-descriptions>
-    </a-row>
+    </a-row> -->
   </div>
 </template>
 
@@ -101,7 +171,7 @@ import {
 import VueWordCloud from "vuewordcloud";
 import moment from "moment";
 moment.locale("ja");
-var Chance = require('chance');
+var Chance = require("chance");
 var chance = new Chance();
 
 export default {
@@ -112,6 +182,7 @@ export default {
   data() {
     return {
       driftData: [],
+      driftDataSent: [],
       representative_sent: { review_title: "", review_text: "" },
       addKeywordToggle: false,
       availableGroupingIds: [],
@@ -133,45 +204,52 @@ export default {
       selectProfileId: "",
       portfolioTable: [],
       tableLoading: false,
-      colorItems: ['#ffd077', '#3bc4c7', '#3a9eea', '#ff4e69', '#461e47'],
-      table: {
-        columns: [
-          {
-            title: "Keyword Text",
-            dataIndex: "keywordText",
-            key: "keywordText",
-            sorter: (a, b) => a.keywordText < b.keywordText
-          },
-          {
-            title: "Match Type",
-            dataIndex: "matchType",
-            key: "matchType",
-            filters: [
-              { text: "Exact", value: "exact" },
-              { text: "Phrase", value: "phrase" },
-              { text: "Broad", value: "broad" }
-            ],
-            onFilter: (value, record) => record.matchType.includes(value)
-          },
-          {
-            title: "Market",
-            dataIndex: "market",
-            key: "market"
-          },
-          {
-            title: "expireDate",
-            key: "expireDate",
-            dataIndex: "expireDate"
-          }
-        ],
-        data: []
-      }
+      colorItems: ["#ffd077", "#3bc4c7", "#3a9eea", "#ff4e69", "#461e47"],
+      // table: {
+      //   columns: [
+      //     {
+      //       title: "Keyword Text",
+      //       dataIndex: "keywordText",
+      //       key: "keywordText",
+      //       sorter: (a, b) => a.keywordText < b.keywordText
+      //     },
+      //     {
+      //       title: "Match Type",
+      //       dataIndex: "matchType",
+      //       key: "matchType",
+      //       filters: [
+      //         { text: "Exact", value: "exact" },
+      //         { text: "Phrase", value: "phrase" },
+      //         { text: "Broad", value: "broad" }
+      //       ],
+      //       onFilter: (value, record) => record.matchType.includes(value)
+      //     },
+      //     {
+      //       title: "Market",
+      //       dataIndex: "market",
+      //       key: "market"
+      //     },
+      //     {
+      //       title: "expireDate",
+      //       key: "expireDate",
+      //       dataIndex: "expireDate"
+      //     }
+      //   ],
+      //   data: []
+      // }
     };
   },
 
   methods: {
-    pick_color(){
+    f_sorter(a, b) {
+      return a.frequency < b.frequency;
+    },
+    pick_color() {
       return chance.pickone(this.colorItems);
+    },
+    goToDocument(record) {
+      console.log(record);
+      this.driftDataSent = record.documents;
     },
     truncate_float(value) {
       if (value == null) return "N/A";
@@ -214,15 +292,4 @@ export default {
 };
 </script>
 
-<style>
-.ant-table td {
-  white-space: nowrap;
-}
-.historical_table td {
-  width: 150px !important;
-  padding-left: 10px !important;
-}
-.historical_table td:first {
-  padding-left: 8px;
-}
-</style>
+
