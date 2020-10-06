@@ -55,20 +55,81 @@
         :rowKey="record => record.campaignId"
         :dataSource="asinChurnerData"
         :loading="loading"
+        :pagination="false"
+        :scroll="{ x: 1500, y: 400 }"
         style="padding-bottom: 20px;"
       >
+        <a-table-column title="Asin" dataIndex="asin" key="asin" width="200px">
+        </a-table-column>
+        <a-table-column title="Cost" dataIndex="cost" key="cost">
+        </a-table-column>
         <a-table-column
-          title="AdGroup ID"
-          dataIndex="adGroupId"
-          key="adGroupId"
+          title="Impressions"
+          dataIndex="impressions"
+          key="impressions"
         >
         </a-table-column>
-        <a-table-column title="Asin" dataIndex="asin" key="asin" width="200px">
+        <a-table-column title="Clicks" dataIndex="clicks" key="clicks">
+        </a-table-column>
+        <a-table-column
+          title="Orders"
+          dataIndex="attributedUnitsOrdered14d"
+          key="attributedUnitsOrdered14d"
+        >
+          <template slot-scope="text">
+            {{ truncate_float(text) }}
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="Sales"
+          dataIndex="attributedSales14d"
+          key="attributedSales14d"
+        >
+          <template slot-scope="text">
+            {{ truncate_float(text) }}
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="orderPerImp"
+          dataIndex="orderPerImp"
+          key="orderPerImp"
+        >
+          <template slot-scope="text">
+            {{ truncate_float(text) }}
+          </template>
+        </a-table-column>
+        <a-table-column title="ROAS" dataIndex="roas" key="roas">
+          <template slot-scope="text">
+            {{ truncate_float(text) }}
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="sales_weight"
+          dataIndex="sales_weight"
+          key="sales_weight"
+        >
+          <template slot-scope="text">
+            {{ truncate_float(text) }}
+          </template>
+        </a-table-column>
+        <a-table-column
+          title="selling price"
+          dataIndex="selling_price"
+          key="selling_price"
+        >
+          <template slot-scope="text">
+            {{ truncate_float(text) }}
+          </template>
+        </a-table-column>
+        <a-table-column title="CI" dataIndex="CI" key="CI">
+          <template slot-scope="text">
+            {{ truncate_float(text) }}
+          </template>
         </a-table-column>
         <a-table-column
           title="Recommend Action"
-          dataIndex="recommendAction"
-          key="recommendAction"
+          dataIndex="recommendation"
+          key="recommendation"
         >
         </a-table-column>
         <!-- <a-table-column title="State" dataIndex="state" key="state">
@@ -101,11 +162,7 @@
         >
           <template slot-scope="text, record">
             <div>
-              <a-button
-                type="primary"
-                ghost
-                icon="eye"
-              ></a-button>
+              <a-button type="primary" ghost icon="eye"></a-button>
             </div>
           </template>
         </a-table-column>
@@ -128,7 +185,12 @@ window.__lo_site_id = 162488;
 })();
 // Danish provided tracking script END
 
-import { list_basic_portfolios, list_basic_profiles, list_basic_campaigns, keywordReport } from "@/api";
+import {
+  list_basic_portfolios,
+  list_basic_profiles,
+  list_basic_campaigns,
+  keywordReport
+} from "@/api";
 
 export default {
   name: "asinchurner",
@@ -200,11 +262,11 @@ export default {
       this.loading = true;
       console.log(value);
       this.asinChurnerData = [];
-      keywordReport({ 
+      keywordReport({
         campaignId: value,
         isKeywordTargeting: false,
         isAsinChurner: true
-       })
+      })
         .then(response => {
           this.asinChurnerData = response.data;
           this.loading = false;
@@ -219,6 +281,10 @@ export default {
 
     goCampaignRecord(id) {
       this.$router.push({ name: "keywordcampaigndetails", params: { id } });
+    },
+    truncate_float(value) {
+      if (value == null) return "N/A";
+      else return value.toFixed(2);
     }
   },
   mounted() {
