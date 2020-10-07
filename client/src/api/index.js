@@ -216,6 +216,11 @@ export function list_basic_campaigns(userData){
   return HTTP.get(`${API_URL}/keyword_churner/basic_campaigns`, { params: userData });
 }
 
+export function list_basic_adgroups(userData){
+  return HTTP.get(`${API_URL}/keyword_churner/basic_adgroups`, { params: userData });
+}
+
+
 export function crawler_report_get(userData) {
   return HTTP.post(`${API_URL}/crawler/crawler_report`, userData);
 }

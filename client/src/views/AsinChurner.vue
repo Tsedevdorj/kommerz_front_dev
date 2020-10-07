@@ -49,6 +49,22 @@
           >
         </a-select>
       </a-col>
+      <a-col :span="9">
+        <label>Adgroup: </label>
+        <a-select
+          style="width: 300px"
+          placeholder="Select Adgroup"
+          @change="handleChangeAdgroup"
+          v-model="selectedAdgroup"
+        >
+          <a-select-option
+            v-for="(item, index) in availableAdgroups"
+            :key="index"
+            :value="item.adGroupId"
+            >{{ item.name }}</a-select-option
+          >
+        </a-select>
+      </a-col>
     </a-row>
     <a-row :gutter="48" style="padding-bottom: 10px;">
       <a-table
@@ -189,6 +205,7 @@ import {
   list_basic_portfolios,
   list_basic_profiles,
   list_basic_campaigns,
+  list_basic_adgroups,
   keywordReport
 } from "@/api";
 
@@ -205,7 +222,10 @@ export default {
       selectedProfile: "",
       selectedPortfolio: "",
       selectedCampaign: "",
-      asinChurnerData: []
+      asinChurnerData: [],
+      selectedAdgroup: "",
+      availableAdgroups: []
+
     };
   },
   methods: {
@@ -229,6 +249,8 @@ export default {
       this.availablePortfolios = [];
       this.selectedCampaign = "";
       this.availableCampaigns = [];
+      this.selectedAdgroup = "";
+      this.availableAdgroups = [];
       list_basic_portfolios({ profileId: value })
         .then(response => {
           this.availablePortfolios = response.data.data;
@@ -246,6 +268,8 @@ export default {
       console.log(value);
       this.selectedCampaign = "";
       this.availableCampaigns = [];
+      this.selectedAdgroup = "";
+      this.availableAdgroups = [];
       list_basic_campaigns({ portfolioId: value })
         .then(response => {
           this.availableCampaigns = response.data.data;
@@ -261,9 +285,30 @@ export default {
     handleChangeCampaign(value) {
       this.loading = true;
       console.log(value);
+      this.selectedAdgroup = "";
+      this.availableAdgroups = [];
+      list_basic_adgroups({ 
+        profileId: this.selectedProfile,
+        campaignId: value
+        })
+        .then(response => {
+          this.availableAdgroups = response.data.data;
+          this.loading = false;
+        })
+        .catch(error => {
+          this.loading = false;
+          this.responseError = error.response.data.message;
+          this.$message.error("Error: " + this.responseError);
+          this.$router.push({ name: "keywordchurner" });
+        });
+    },
+    handleChangeAdgroup(value) {
+      this.loading = true;
+      console.log(value);
       this.asinChurnerData = [];
       keywordReport({
-        campaignId: value,
+        campaignId: this.selectedCampaign,
+        adGroupId: this.selectedAdgroup,
         isKeywordTargeting: false,
         isAsinChurner: true
       })
