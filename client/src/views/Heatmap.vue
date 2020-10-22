@@ -28,7 +28,7 @@
           <a-select-option
             v-for="(item, index) in availableProducts"
             :key="index"
-            :value="item.id"
+            :value="item.asin"
             >{{ item.asin }}</a-select-option
           >
         </a-select>
@@ -171,7 +171,7 @@ export default {
       get_product_listing_images(this.selectedProduct)
         .then(response => {
           console.log(response.data);
-          this.imageObject = response.data.data;
+          this.imageObject = response.data.data.image_metric;
           this.imageObjectHeatmap = this.imageObject
             .slice()
             .sort(function(a, b) {
