@@ -181,7 +181,7 @@ export default {
       get_search_keywords({
         profileId: this.crawler.selectedProfileId
       }).then(response => {
-        this.availableKeywords = response.data.data;
+        this.availableKeywords = response.data.data.keywordList;
         this.loading = false;
         this.confirmSend = false;
       });
