@@ -138,7 +138,10 @@
       >
         <a-list-item slot="renderItem" slot-scope="item, index">
           <a-comment :author="item.review_title" :datetime="item.review_score">
-
+            <template slot="actions">
+              <span>{{ item.sentiment_text }}</span>
+              <span>{{ item.sentiment_score }}</span>
+            </template>
             <p slot="content">
               {{ item.review_text }}
             </p>
@@ -167,7 +170,7 @@ import {
   post_search_keywords,
   review_crawler_get
 } from "@/api";
-// import driftData from "@/assets/data/drift_data.json";
+import driftData from "@/assets/data/drift_data.json";
 import VueWordCloud from "vuewordcloud";
 import moment from "moment";
 moment.locale("ja");
@@ -181,7 +184,7 @@ export default {
   },
   data() {
     return {
-      driftData: [],
+      driftData,
       driftDataSent: [],
       representative_sent: { review_title: "", review_text: "" },
       addKeywordToggle: false,
