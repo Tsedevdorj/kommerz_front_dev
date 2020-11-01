@@ -41,6 +41,9 @@
         </a-select>
         <span style="color: red">{{ errors.first("report_type") }}</span>
       </a-col>
+      <a-col :span="8">
+        <a-switch v-model="crawler.selectedMobile" checked-children="Mobile" un-checked-children="Browser" />
+      </a-col>
     </a-row>
     <a-row :gutter="32" style="padding: 0 16px 16px 16px">
       <a-col :span="8">
@@ -76,19 +79,31 @@
         <span style="color: red">{{ errors.first("target_date") }}</span>
       </a-col>
       <a-col :span="8">
-        <label>Choose Period Of The Day: </label>
-        <a-select
-          v-model="crawler.selectedPeriod"
-          placeholder="Choose Period"
-          style="width: 250px"
-        >
-          <a-select-option value="overnight">Overnight</a-select-option>
-          <a-select-option value="early_morning">Early Morning</a-select-option>
-          <a-select-option value="morning">Morning</a-select-option>
-          <a-select-option value="afternoon">Afternoon</a-select-option>
-          <a-select-option value="evening">Evening</a-select-option>
-          <a-select-option value="late_evening">Late Evening</a-select-option>
-        </a-select>
+        <label>Choose Time Slot Of The Day: </label>
+         <a-row>
+
+            <a-select v-model="crawler.selectedStartHour" @change="computeEndHours">
+              <template v-slot:suffixIcon><a-icon type="clock-circle" /></template>
+              <a-select-option
+                v-for="item in availableHours"
+                :key="item"
+                :value="item"
+                >{{ item }}</a-select-option
+              >
+            </a-select>
+
+
+             <a-select v-model="crawler.selectedEndHour">
+               <template v-slot:suffixIcon><a-icon type="clock-circle" /></template>
+              <a-select-option
+                v-for="item in availableEndHours"
+                :key="item"
+                :value="item"
+                >{{ item }}</a-select-option
+              >
+            </a-select>
+
+         </a-row>
       </a-col>
     </a-row>
     <a-row :gutter="32" style="padding: 0 16px 16px 16px">
@@ -138,15 +153,21 @@ export default {
       availableProfiles: [],
       loading: false,
       selectPortfolio: "",
+      availableHours: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+      availableEndHours: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
       crawler: {
         selectedProfileId: "",
         selectedReportType: "",
         selectedSearchKeywordId: "",
         selectedDateRange: [],
-        selectedPeriod: ""
+        selectedStartHour: 0,
+        selectedEndHour: 23,
+        selectedPeriod: "",
+        selectedMobile: false,
       },
       CPASelect: "CPO",
       targetDateFormat: "YYYY-MM-DD",
+      targetHourFormat: "HH:mm",
       TargetAvail: false,
       confirmSend: false,
       responseError: "",
@@ -169,6 +190,9 @@ export default {
     truncate_float(value) {
       if (value == null) return "N/A";
       else return value.toFixed(0);
+    },
+    computeEndHours(){
+      this.availableEndHours = this.availableHours.filter(hour => hour > this.crawler.selectedStartHour);
     },
     handleChange(value) {
       this.crawler.selectedSearchKeywordId = "";
@@ -195,7 +219,9 @@ export default {
           searchKeywordId: this.crawler.selectedSearchKeywordId,
           startDate: this.crawler.selectedDateRange[0].format("YYYY-MM-DD"),
           endDate: this.crawler.selectedDateRange[1].format("YYYY-MM-DD"),
-          period: this.crawler.selectedPeriod
+          startHour: this.crawler.selectedStartHour,
+          endHour: this.crawler.selectedEndHour,
+          mobile: this.crawler.selectedMobile,
         })
           .then(response => {
             // console.log(response.data.msg)
