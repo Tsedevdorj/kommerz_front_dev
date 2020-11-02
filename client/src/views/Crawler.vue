@@ -235,7 +235,7 @@ export default {
           endDate: this.crawler.selectedDateRange[1].format("YYYY-MM-DD"),
           startHour: this.crawler.selectedStartHour,
           endHour: this.crawler.selectedEndHour,
-          mobile: this.crawler.selectedMobile,
+          deviceType: this.crawler.selectedMobile,
         })
           .then(response => {
             // console.log(response.data.msg)
