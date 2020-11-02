@@ -42,7 +42,21 @@
         <span style="color: red">{{ errors.first("report_type") }}</span>
       </a-col>
       <a-col :span="8">
-        <a-switch v-model="crawler.selectedMobile" checked-children="Mobile" un-checked-children="Browser" />
+        <label>Device Type: </label>
+        <a-select
+          name="report_type"
+          v-validate="{ required: true }"
+          style="width: 250px"
+          v-model="crawler.selectedMobile"
+          placeholder="Select Device Type"
+        >
+          <a-select-option value="browser">
+            Browser
+          </a-select-option>
+          <a-select-option value="mobile">
+            Mobile
+          </a-select-option>
+        </a-select>
       </a-col>
     </a-row>
     <a-row :gutter="32" style="padding: 0 16px 16px 16px">
